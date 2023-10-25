@@ -31,9 +31,6 @@ dependencies {
     implementation 'org.jogamp.gluegen:gluegen-rt-main:2.5.0'
     implementation 'org.jogamp.jogl:jogl-all:2.5.0'
 
-    // runtimeOnly 'org.jogamp.gluegen:gluegen-rt:2.5.0:natives-linux-amd64'
-    // runtimeOnly 'org.jogamp.jogl:jogl-all:2.5.0:natives-linux-amd64'
-
     // logging
     implementation 'ch.qos.logback:logback-classic:1.4.11'
     implementation 'org.slf4j:slf4j-api:2.0.9'
@@ -41,7 +38,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass = 'floor.planner.App'
+    mainClass = 'floor.planner.config.Bootstrap'
 
     // below is required to run with anything greater than java 9 as the classes
     // are no longer available after that; based on info found below
@@ -56,7 +53,7 @@ application {
 
 javafx {
     version = '17.0.9'
-    modules = ['javafx.controls']
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 tasks.named('test') {

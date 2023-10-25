@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane fx:id="rootPane"
+    maxHeight="-Infinity"
+    maxWidth="-Infinity"
+    minHeight="-Infinity"
+    minWidth="-Infinity"
+    prefHeight="625.0"
+    prefWidth="1000.0"
+    styleClass="custom-pane"
+    stylesheets="@dark-theme.css"
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="floor.planner.controllers.MainController"
+>
+    <top>
+        <MenuBar>
+            <menus>
+                <Menu mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuNewFile" text="New File" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Open File" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save As..." />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu fx:id="dimensionMenu" mnemonicParsing="false" text="Dimension">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuNewFile" text="2 Dimensional Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="3 Dimensional Image" />
+                    </items>
+                </Menu>
+                <Menu fx:id="floorMenu" mnemonicParsing="false" text="Floor"></Menu>
+            </menus>
+        </MenuBar>
+    </top>
+    <center></center>
+</BorderPane>
