@@ -6,5 +6,5 @@ build:
 refresh-dependencies: 
 	${gradle} --refresh-dependencies
 
-run:
+run: build
 	${gradle} run
