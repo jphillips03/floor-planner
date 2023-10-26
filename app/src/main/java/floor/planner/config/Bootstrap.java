@@ -38,7 +38,7 @@ public class Bootstrap extends Application {
             // load the main panel
             this.parent = FXMLLoader.load(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
         } catch (IOException ex) {
-            logger.error("Fatal Error: Issue loading main panel; Shutting down...");
+            logger.error("Fatal Error: Issue loading main panel; Shutting down...", ex);
             throw ex;
         }
     }
@@ -62,7 +62,9 @@ public class Bootstrap extends Application {
     @Override
     public void stop() {
         logger.info("Application shutdown");
-        this.joglConfig.stop(); // stop JOGL animations
+        if (this.joglConfig != null) {
+            this.joglConfig.stop(); // stop JOGL animations
+        }
     }
 
     public static void main(String[] args) {
