@@ -1,21 +1,35 @@
 package floor.planner.controllers;
 
+import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
+import javafx.stage.FileChooser.ExtensionFilter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.models.FloorPlan;
+import floor.planner.services.FloorPlanService;
+import floor.planner.util.FileUtil;
+
 public class MainController implements Initializable {
     /** The logger for the class. */
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+    
+    private Scene scene;
+    private Window window;
+    private FloorPlanService floorPlanService = new FloorPlanService();
 
     @FXML
     BorderPane rootPane;
@@ -32,6 +46,13 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.dimensionMenu.setDisable(true);
         this.floorMenu.setDisable(true);
+
+        // wait until initialization is complete to run the following otherwise
+        // scene will be null
+        Platform.runLater(() -> {
+            this.scene = this.rootPane.getScene();
+            this.window = this.scene.getWindow();
+        });
     }
 
     /**
@@ -80,6 +101,17 @@ public class MainController implements Initializable {
     @FXML
     private void onMenuOpenFile(ActionEvent event) {
         logger.info("Open Existing File");
-        this.initializeMenus(1);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open Resource File");
+        fileChooser.getExtensionFilters().addAll(
+            new ExtensionFilter("Text Files", "*.txt")
+        );
+        File selectedFile = fileChooser.showOpenDialog(this.window);
+        if (selectedFile != null) {
+            String contents = FileUtil.read(selectedFile);
+            FloorPlan plan = this.floorPlanService.create(contents);
+            this.initializeMenus(plan.getFloorNumbers());
+            logger.info(plan.toString());
+        }
     }
 }
