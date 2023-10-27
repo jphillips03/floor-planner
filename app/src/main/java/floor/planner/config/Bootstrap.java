@@ -5,8 +5,10 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.controllers.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -19,6 +21,7 @@ public class Bootstrap extends Application {
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private JOGLConfig joglConfig;
     private BorderPane parent;
+    private MainController main;
 
     @Override
     public void start(Stage stage) {
@@ -27,6 +30,7 @@ public class Bootstrap extends Application {
             this.initializeMainPanel();
             this.initializeJOGL();
             this.initializeScene(stage);
+            this.initializeControllerConfigs();
             logger.info("Application Initialized");
         } catch (IOException ex) {
             this.stop();
@@ -36,7 +40,9 @@ public class Bootstrap extends Application {
     private void initializeMainPanel() throws IOException {
         try {
             // load the main panel
-            this.parent = FXMLLoader.load(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
+            this.parent = loader.load();
+            this.main = (MainController) loader.getController();
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading main panel; Shutting down...", ex);
             throw ex;
@@ -45,8 +51,12 @@ public class Bootstrap extends Application {
 
     private void initializeJOGL() throws IOException {
         try {
-            joglConfig = new JOGLConfig(this.parent);
-            joglConfig.initialize();
+            this.joglConfig = new JOGLConfig(this.parent);
+            this.joglConfig.initialize();
+
+            // TODO figure out resizing...
+            // this.parent.widthProperty().addListener(this.joglConfig.resizeWidthListener);
+            // this.parent.heightProperty().addListener(this.joglConfig.resizeHeightListener);
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading JOGL... shutting down...", ex);
             throw ex;
@@ -57,6 +67,10 @@ public class Bootstrap extends Application {
         stage.setTitle("Floor Planner");
         stage.setScene(new Scene(this.parent));
         stage.show();
+    }
+
+    private void initializeControllerConfigs() {
+        this.main.setGLWindow(this.joglConfig.getGlWindow());
     }
 
     @Override

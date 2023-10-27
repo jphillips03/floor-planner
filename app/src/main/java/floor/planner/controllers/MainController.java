@@ -19,14 +19,18 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jogamp.newt.opengl.GLWindow;
+
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
+import floor.planner.util.jogl.gleventlisteners.TwoDGLEventListener;
 
 public class MainController implements Initializable {
     /** The logger for the class. */
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
-    
+
+    private GLWindow glWindow;
     private Scene scene;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
@@ -113,5 +117,9 @@ public class MainController implements Initializable {
             this.initializeMenus(plan.getFloorNumbers());
             logger.info(plan.toString());
         }
+    }
+
+    public void setGLWindow(GLWindow window) {
+        this.glWindow = window;
     }
 }
