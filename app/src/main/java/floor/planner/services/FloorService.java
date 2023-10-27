@@ -1,8 +1,14 @@
 package floor.planner.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import floor.planner.constants.ObjectType;
 import floor.planner.models.Floor;
 
 public class FloorService {
+    private static final Logger logger = LoggerFactory.getLogger(FloorService.class);
+
     /**
      * Creates and returns a new Floor using the given text, height, and width,
      * starting at the given line in the text (based on a split on "\n"). The
@@ -47,16 +53,16 @@ public class FloorService {
 
     private Floor createUtil(String[] rows, int line, int height, int width) {
         Floor floor = new Floor(height, width);
-        String[][] elements = new String[height][width];
+        ObjectType[][] elements = new ObjectType[height][width];
         String[][] elementColors = new String[height][width];
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                elements[i][j] = "" + rows[line].charAt(j);
+                elements[i][j] = ObjectType.lookup(String.valueOf(rows[line].charAt(j)));
                 elementColors[i][j] = "b"; // default to blue
             }
             line++;
         }
-        floor.setElements(elements);
+        floor.setElementsMatrix(elements);
         floor.setElementColors(elementColors);
         return floor;
     }

@@ -1,12 +1,27 @@
 package floor.planner.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import floor.planner.constants.ObjectType;
+import floor.planner.constants.ObjectType.*;
+import floor.planner.constants.Orientation;
+import floor.planner.interfaces.DrawableElement;
+import floor.planner.models.twodelements.Wall;
+
 public class Floor {
+    private static final Logger logger = LoggerFactory.getLogger(Floor.class);
+
     /** The width of a floor. */
     private int width;
     /** The height of the floor. */
     private int height;
+    private List<DrawableElement> elements;
     /** The current matrix of elements that make up the floor. */
-    private String[][] elements;
+    private ObjectType[][] elementsMatrix;
     /** The colors in this floor. */
     private String[][] elementColors;
 
@@ -20,7 +35,8 @@ public class Floor {
     public Floor(int height, int width) {
         this.width = width;
         this.height = height;
-        this.elements = new String[height][width];
+        this.elements = new ArrayList<DrawableElement>();
+        this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
     }
 
@@ -42,17 +58,52 @@ public class Floor {
         return this.width;
     }
 
+    public List<DrawableElement> getElements() {
+        return this.elements;
+    }
+    public void setElements(List<DrawableElement> val) {
+        this.elements = val;
+    }
+
     /**
      * Returns the matrix representation of this floor, containing all the 
      * elements.
      *
      * @return The matrix of this floor.
      */
-    public String[][] getElements() {
-        return this.elements;
+    public ObjectType[][] getElementsMatrix() {
+        return this.elementsMatrix;
     }
-    public void setElements(String[][] val) {
-        this.elements = val;
+    public void setElementsMatrix(ObjectType[][] val) {
+        this.elementsMatrix = val;
+        this.initElements();
+    }
+
+    private void initElements() {
+        this.elements = new ArrayList<DrawableElement>();
+        for (int i = 0; i < this.height; i++) {
+            for (int j = 0; j < this.width; j++) {
+                int r = this.height - i;
+
+                switch (this.elementsMatrix[i][j]) {
+                    case EAST_WEST_WALL:
+                        this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
+                        break;
+                    case NORTH_SOUTH_WALL:
+                        this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
+                        break;
+                    case CORNER_WALL:
+                        this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
+                        this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
+                        break;
+                    case COLUMN:
+                        this.elements.add(new Wall(new Point2D(j, r), Orientation.COLUMN));
+                    default:
+                        logger.warn("Unknown architectural object found at " + i + " " + j);
+                        break;
+                }
+            }
+        }
     }
 
     /**
@@ -78,24 +129,24 @@ public class Floor {
         this.elementColors[row][col] = c;
     }
 
-    public void setElement(int row, int col, String element) {
-        this.elements[row][col] = element;
+    public void setElement(int row, int col, ObjectType element) {
+        this.elementsMatrix[row][col] = element;
     }
 
     private boolean aboveEquals(int row, int col, String element) {
-        return this.elements[row - 1][col].equals(element);
+        return this.elementsMatrix[row - 1][col].equals(element);
     }
 
     private boolean belowEquals(int row, int col, String element) {
-        return this.elements[row + 1][col].equals(element);
+        return this.elementsMatrix[row + 1][col].equals(element);
     }
 
     private boolean leftEquals(int row, int col, String element) {
-        return this.elements[row][col - 1].equals(element);
+        return this.elementsMatrix[row][col - 1].equals(element);
     }
 
     private boolean rightEquals(int row, int col, String element) {
-        return this.elements[row][col + 1].equals(element);
+        return this.elementsMatrix[row][col + 1].equals(element);
     }
 
     /**
@@ -106,11 +157,11 @@ public class Floor {
         String floorText = "";
         for(int i = 0; i < height; i++) {
             for(int j = 0; j < width; j++) {
-                if(this.elements[i][j] == null) {
+                if(this.elementsMatrix[i][j] == null) {
                     floorText = floorText + "o";
                 }
                 else {
-                    floorText = floorText + this.elements[i][j];
+                    floorText = floorText + this.elementsMatrix[i][j];
                 }
             }
             floorText = floorText + "\n";

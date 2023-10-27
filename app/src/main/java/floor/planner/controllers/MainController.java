@@ -115,7 +115,8 @@ public class MainController implements Initializable {
             String contents = FileUtil.read(selectedFile);
             FloorPlan plan = this.floorPlanService.create(contents);
             this.initializeMenus(plan.getFloorNumbers());
-            logger.info(plan.toString());
+
+            this.glWindow.addGLEventListener(new TwoDGLEventListener(plan));
         }
     }
 
