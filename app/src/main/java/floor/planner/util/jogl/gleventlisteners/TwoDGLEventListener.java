@@ -60,10 +60,11 @@ public class TwoDGLEventListener implements GLEventListener {
         // final float aspect = (float) width / (float) height;
         // glu.gluPerspective(45.0, aspect, 0.1, 100.0);
         this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
+        //this.gluOrtho2D(width, height);
 
         // // enable model-view transform
-        // gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        // gl.glLoadIdentity();  // reset projection matrix
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
+        gl.glLoadIdentity();  // reset projection matrix
         // gl.glTranslatef(0.375f, 0.375f, 0.375f);
     }
 
@@ -71,13 +72,7 @@ public class TwoDGLEventListener implements GLEventListener {
         final GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        gl.glPushMatrix();
-
-        this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
-
         this.drawerService.drawFloor(gl, floorPlan, 0);
-
-        gl.glPopMatrix();
     }
 
     private void gluOrtho2D(int width, int height) {
