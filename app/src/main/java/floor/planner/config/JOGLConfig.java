@@ -36,7 +36,7 @@ public class JOGLConfig {
             // height remains 0; so default to center pane height
             Double height = this.rootPane.getCenter().boundsInParentProperty().getValue().getHeight();
             this.glCanvas.setHeight(height);
-        }  
+        }
     };
 
     public ChangeListener<Number> resizeWidthListener = (observable, oldValue, newValue) -> {
