@@ -116,7 +116,7 @@ public class MainController implements Initializable {
             FloorPlan plan = this.floorPlanService.create(contents);
             this.initializeMenus(plan.getFloorNumbers());
 
-            this.glWindow.addGLEventListener(new TwoDGLEventListener(plan));
+            this.glWindow.addGLEventListener(new TwoDGLEventListener(plan, this.glWindow));
         }
     }
 

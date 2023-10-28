@@ -1,5 +1,9 @@
 package floor.planner.util.jogl.gleventlisteners;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES1;
@@ -13,13 +17,16 @@ import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlan2DDrawerService;
 
 public class TwoDGLEventListener implements GLEventListener {
+    private static final Logger logger = LoggerFactory.getLogger(TwoDGLEventListener.class);
 
     private GLU glu;
+    private GLWindow glWindow;
     private FloorPlan floorPlan;
     private FloorPlan2DDrawerService drawerService = new FloorPlan2DDrawerService();
 
-    public TwoDGLEventListener(FloorPlan floorPlan) {
+    public TwoDGLEventListener(FloorPlan floorPlan, GLWindow glWindow) {
         this.floorPlan = floorPlan;
+        this.glWindow = glWindow;
     }
 
     public void init(final GLAutoDrawable drawable) {
@@ -41,19 +48,22 @@ public class TwoDGLEventListener implements GLEventListener {
         final int height
     ) {
         GL2 gl = drawable.getGL().getGL2();
-        // final float aspect = (float) width / (float) height;
 
         // set view port (display area) to cover entire window
-        //gl.glViewport(-1, -1, width + 1, height + 1);
+        // gl.glViewport(0, 0, width, height);
 
-        // setup perspective projection (aspect ratio should match viewport)
+        // // setup perspective projection (aspect ratio should match viewport)
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();  // reset projection matrix
-        // glu.gluPerspective(45.0, aspect, 0.1, 100.0);
 
-        // enable model-view transform
+        // final float aspect = (float) width / (float) height;
+        // glu.gluPerspective(45.0, aspect, 0.1, 100.0);
+        // this.gluOrtho2D(width, height);
+
+        // // enable model-view transform
         // gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         // gl.glLoadIdentity();  // reset projection matrix
+        // gl.glTranslatef(0.375f, 0.375f, 0.375f);
     }
 
     public void display(final GLAutoDrawable drawable) {
@@ -62,20 +72,33 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glLoadIdentity();
         gl.glPushMatrix();
 
-        // set up view directly above floor with spacing around it (for some
-        // reason we don't need negative value on bottom...); also, padding
-        // should match otherwise rendering is skewed
-        glu.gluOrtho2D(
-            -2,
-            this.floorPlan.getWidth() + 2,
-            0,
-            this.floorPlan.getHeight() + 2
-        );
+        this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
 
         gl.glDisable(GL.GL_DEPTH_TEST);
         this.drawerService.drawFloor(gl, floorPlan, 0);
 
         gl.glPopMatrix();
+    }
+
+    private void gluOrtho2D(int width, int height) {
+        logger.info("Width: " + width);
+        logger.info("Height: " + height);
+        final float aspect = (float) width / (float) height;
+        logger.info("Aspect: " + aspect);
+        if (width <= height) {
+            this.glu.gluOrtho2D( -1.0f, width + 1.0f, 0f, height + 2.0f * aspect );
+            //this.glu.gluOrtho2D(-1f, 1f, -1f / aspect, 1f * aspect);
+        } else {
+            this.glu.gluOrtho2D( -1.0f * aspect, width + 1.0f * aspect, 0f, height + 2.0f );
+            //this.glu.gluOrtho2D(-1f * aspect, 1f * aspect, -1f, 1f);
+        }
+        // glu.gluOrtho2D(
+        //     -aspect,
+        //     width + aspect,
+        //     0,
+        //     height + (2 * aspect)
+        // );
+        //glu.gluOrtho2D(0, width, 0, height);
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
