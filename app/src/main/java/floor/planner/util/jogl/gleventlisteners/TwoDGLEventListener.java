@@ -31,13 +31,14 @@ public class TwoDGLEventListener implements GLEventListener {
 
     public void init(final GLAutoDrawable drawable) {
         GL2 gl = drawable.getGL().getGL2();
-        this.glu = new GLU();
         gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         gl.glClearDepth(1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
         gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
+
+        this.glu = new GLU();
     }
 
     public void reshape(
@@ -50,7 +51,7 @@ public class TwoDGLEventListener implements GLEventListener {
         GL2 gl = drawable.getGL().getGL2();
 
         // set view port (display area) to cover entire window
-        // gl.glViewport(0, 0, width, height);
+        gl.glViewport(0, 0, width, height);
 
         // // setup perspective projection (aspect ratio should match viewport)
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
@@ -58,7 +59,7 @@ public class TwoDGLEventListener implements GLEventListener {
 
         // final float aspect = (float) width / (float) height;
         // glu.gluPerspective(45.0, aspect, 0.1, 100.0);
-        // this.gluOrtho2D(width, height);
+        this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
 
         // // enable model-view transform
         // gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
@@ -74,31 +75,20 @@ public class TwoDGLEventListener implements GLEventListener {
 
         this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
 
-        gl.glDisable(GL.GL_DEPTH_TEST);
         this.drawerService.drawFloor(gl, floorPlan, 0);
 
         gl.glPopMatrix();
     }
 
     private void gluOrtho2D(int width, int height) {
-        logger.info("Width: " + width);
-        logger.info("Height: " + height);
         final float aspect = (float) width / (float) height;
-        logger.info("Aspect: " + aspect);
         if (width <= height) {
-            this.glu.gluOrtho2D( -1.0f, width + 1.0f, 0f, height + 2.0f * aspect );
+            this.glu.gluOrtho2D( -2f, width + 2f, 0f, height + 2f * aspect );
             //this.glu.gluOrtho2D(-1f, 1f, -1f / aspect, 1f * aspect);
         } else {
-            this.glu.gluOrtho2D( -1.0f * aspect, width + 1.0f * aspect, 0f, height + 2.0f );
+            this.glu.gluOrtho2D( -2f * aspect, width + 2f * aspect, 0f, height + 2f );
             //this.glu.gluOrtho2D(-1f * aspect, 1f * aspect, -1f, 1f);
         }
-        // glu.gluOrtho2D(
-        //     -aspect,
-        //     width + aspect,
-        //     0,
-        //     height + (2 * aspect)
-        // );
-        //glu.gluOrtho2D(0, width, 0, height);
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
