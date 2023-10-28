@@ -4,12 +4,10 @@ import java.util.Arrays;
 
 import com.jogamp.opengl.GL2;
 
-import floor.planner.constants.Orientation;
 import floor.planner.abstractClasses.DrawableElement;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.models.Point2D;
-import floor.planner.models.twodelements.Wall;
 import floor.planner.util.jogl.drawers.TwoDDrawer;
 
 public class FloorPlan2DDrawerService {
