@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.Orientation;
 import floor.planner.abstractClasses.DrawableElement;
+import floor.planner.models.twodelements.Pole;
 import floor.planner.models.twodelements.Stairs;
 import floor.planner.models.twodelements.Wall;
 import floor.planner.models.twodelements.Window;
@@ -136,6 +137,9 @@ public class Floor {
                         break;
                     case SOUTH_NORTH_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH));
+                        break;
+                    case POLE:
+                        this.elements.add(new Pole(new Point2D(j, r), null));
                         break;
                     default:
                         logger.warn("Unknown architectural object found at " + i + " " + j);
