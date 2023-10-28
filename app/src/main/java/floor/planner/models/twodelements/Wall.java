@@ -1,29 +1,19 @@
 package floor.planner.models.twodelements;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
-import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.EastWestWallOffset2D;
 import floor.planner.constants.NorthSouthWallOffset2D;
 import floor.planner.constants.Orientation;
-import floor.planner.interfaces.DrawableElement;
+import floor.planner.abstractClasses.DrawableElement;
 import floor.planner.models.Point2D;
 
-public class Wall implements DrawableElement {
-    private Orientation orientation;
-    private Point2D point;
-    private List<Point2D> points;
-
+public class Wall extends DrawableElement {
     public Wall(Point2D point, Orientation orientation) {
-        this.point = point;
-        this.orientation = orientation;
-        this.initPoints();
+        super(point, orientation);
     }
 
-    private void initPoints() {
+    public void initPoints() {
         if (this.orientation == Orientation.EAST_WEST) {
             this.points = Arrays.asList(
                 new Point2D(
@@ -84,15 +74,5 @@ public class Wall implements DrawableElement {
                 )
             );
         }
-    }
-
-    public void draw(GL2 gl) {
-        gl.glColor3f(0f, 0f, 1f);
-        gl.glBegin(GL2.GL_POLYGON);
-        for (Point2D p : this.points) {
-            gl.glVertex2d(p.getX(), p.getY());
-        }
-        gl.glEnd();
-        gl.glFlush();
     }
 }
