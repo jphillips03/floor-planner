@@ -53,24 +53,24 @@ public class Wall extends DrawableElement {
                 )
             );
         } else if (this.orientation == Orientation.COLUMN) {
-            // basically the intersection point of corner walls, so it's a
-            // small but mighty column...
+            // slightly larger than intersection point of east-west and
+            // north-south walls
             this.points = Arrays.asList(
                 new Point2D(
-                    this.point.getX() + NorthSouthWallOffset2D.LEFT.value,
-                    this.point.getY() + EastWestWallOffset2D.TOP.value
+                    this.point.getX() + NorthSouthWallOffset2D.LEFT.value - 0.15f,
+                    this.point.getY() + EastWestWallOffset2D.TOP.value + 0.15f
                 ),
                 new Point2D(
-                    this.point.getX() + NorthSouthWallOffset2D.RIGHT.value,
-                    this.point.getY() + EastWestWallOffset2D.TOP.value
+                    this.point.getX() + NorthSouthWallOffset2D.RIGHT.value + 0.15f,
+                    this.point.getY() + EastWestWallOffset2D.TOP.value + 0.15f
                 ),
                 new Point2D(
-                    this.point.getX() + NorthSouthWallOffset2D.RIGHT.value,
-                    this.point.getY() + EastWestWallOffset2D.BOTTOM.value
+                    this.point.getX() + NorthSouthWallOffset2D.RIGHT.value + 0.15f,
+                    this.point.getY() + EastWestWallOffset2D.BOTTOM.value - 0.15f
                 ),
                 new Point2D(
-                    this.point.getX() + NorthSouthWallOffset2D.LEFT.value,
-                    this.point.getY() + EastWestWallOffset2D.BOTTOM.value
+                    this.point.getX() + NorthSouthWallOffset2D.LEFT.value - 0.15f,
+                    this.point.getY() + EastWestWallOffset2D.BOTTOM.value - 0.15f
                 )
             );
         }
