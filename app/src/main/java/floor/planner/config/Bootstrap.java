@@ -75,10 +75,12 @@ public class Bootstrap extends Application {
 
     @Override
     public void stop() {
-        logger.info("Application shutdown");
+        logger.info("Application shutdown initiated");
         if (this.joglConfig != null) {
             this.joglConfig.stop(); // stop JOGL animations
         }
+
+        System.exit(0);
     }
 
     public static void main(String[] args) {
