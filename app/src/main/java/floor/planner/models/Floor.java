@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.ObjectType.*;
 import floor.planner.constants.Orientation;
-import floor.planner.interfaces.DrawableElement;
+import floor.planner.abstractClasses.DrawableElement;
+import floor.planner.models.twodelements.Stairs;
 import floor.planner.models.twodelements.Wall;
+import floor.planner.models.twodelements.Window;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);
@@ -96,8 +98,46 @@ public class Floor {
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
                         break;
+                    case WINDOW:
+                        if (
+                            this.leftEquals(i, j, ObjectType.EAST_WEST_WALL) &&
+                            this.rightEquals(i, j, ObjectType.EAST_WEST_WALL)
+                        ) {
+                            this.elements.add(
+                                new Window(
+                                    new Point2D(j, r),
+                                    Orientation.EAST_WEST,
+                                    new Wall(new Point2D(j, r), Orientation.EAST_WEST)
+                                )
+                            );
+                        } else if (
+                            this.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL) &&
+                            this.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)
+                        ) {
+                            this.elements.add(
+                                new Window(
+                                    new Point2D(j, r),
+                                    Orientation.NORTH_SOUTH,
+                                    new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH)
+                                )
+                            );
+                        }
+                        break;
                     case COLUMN:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.COLUMN));
+                        break;
+                    case EAST_WEST_STAIRS:
+                        this.elements.add(new Stairs(new Point2D(j, r), Orientation.EAST_WEST));
+                        break;
+                    case WEST_EAST_STAIRS:
+                        this.elements.add(new Stairs(new Point2D(j, r), Orientation.WEST_EAST));
+                        break;
+                    case NORTH_SOUTH_STAIRS:
+                        this.elements.add(new Stairs(new Point2D(j, r), Orientation.NORTH_SOUTH));
+                        break;
+                    case SOUTH_NORTH_STAIRS:
+                        this.elements.add(new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH));
+                        break;
                     default:
                         logger.warn("Unknown architectural object found at " + i + " " + j);
                         break;
@@ -133,19 +173,27 @@ public class Floor {
         this.elementsMatrix[row][col] = element;
     }
 
-    private boolean aboveEquals(int row, int col, String element) {
+    private boolean aboveEquals(int row, int col, ObjectType element) {
+        if (row - 1 < 0 || row - 1 > this.elementsMatrix.length) return false;
+        if (col < 0 || col > this.elementsMatrix[0].length) return false;
         return this.elementsMatrix[row - 1][col].equals(element);
     }
 
-    private boolean belowEquals(int row, int col, String element) {
+    private boolean belowEquals(int row, int col, ObjectType element) {
+        if (row + 1 < 0 || row + 1 >= this.elementsMatrix.length) return false;
+        if (col < 0 || col >= this.elementsMatrix[0].length) return false;
         return this.elementsMatrix[row + 1][col].equals(element);
     }
 
-    private boolean leftEquals(int row, int col, String element) {
+    private boolean leftEquals(int row, int col, ObjectType element) {
+        if (row < 0 || row >= this.elementsMatrix.length) return false;
+        if (col - 1 < 0 || col - 1 >= this.elementsMatrix[0].length) return false;
         return this.elementsMatrix[row][col - 1].equals(element);
     }
 
-    private boolean rightEquals(int row, int col, String element) {
+    private boolean rightEquals(int row, int col, ObjectType element) {
+        if (row < 0 || row >= this.elementsMatrix.length) return false;
+        if (col + 1 < 0 || col + 1 >= this.elementsMatrix[0].length) return false;
         return this.elementsMatrix[row][col + 1].equals(element);
     }
 
