@@ -35,8 +35,8 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glClearDepth(1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
-        gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
         gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
+        gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
         this.glu = new GLU();
     }
@@ -57,15 +57,15 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();  // reset projection matrix
 
-        // final float aspect = (float) width / (float) height;
-        // glu.gluPerspective(45.0, aspect, 0.1, 100.0);
-        this.gluOrtho2D(this.floorPlan.getWidth(), this.floorPlan.getHeight());
-        // this.gluOrtho2D(width, height);
+        this.gluOrtho2D(width, height);
 
-        // // enable model-view transform
+        // enable model-view transform and translate everything down (-1) and
+        // to the right (1.75); this combined with gluOrtho2D is closest I've
+        // come to getting square elements centered in screen
+        // TODO: figure out actual translation values instead of just guessing
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();  // reset projection matrix
-        // gl.glTranslatef(0.375f, 0.375f, 0.375f);
+        gl.glTranslatef(1.75f, -1f, 0f);
     }
 
     public void display(final GLAutoDrawable drawable) {
@@ -74,15 +74,19 @@ public class TwoDGLEventListener implements GLEventListener {
         this.drawerService.drawFloor(gl, floorPlan, 0);
     }
 
+    // TODO figure out how to take into account aspect of floor plan because
+    // things are definitely still skewed when there is more than 2 delta
+    // between width and height
     private void gluOrtho2D(int width, int height) {
         final float aspect = (float) width / (float) height;
         if (width <= height) {
-            this.glu.gluOrtho2D( -2f, width + 2f, 0f, height + 2f * aspect );
+            this.glu.gluOrtho2D( -1f, this.floorPlan.getWidth() + 1f, -1f / aspect, (this.floorPlan.getHeight() + 1f) * aspect );
             //this.glu.gluOrtho2D(-1f, 1f, -1f / aspect, 1f * aspect);
         } else {
-            this.glu.gluOrtho2D( -2f * aspect, width + 2f * aspect, 0f, height + 2f );
+            this.glu.gluOrtho2D( -1f * aspect, (this.floorPlan.getWidth() + 1f) * aspect, -1f, this.floorPlan.getHeight() + 1f );
             //this.glu.gluOrtho2D(-1f * aspect, 1f * aspect, -1f, 1f);
         }
+        // this.glu.gluPerspective(45.0, aspect, 0.1, 100.0);
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
