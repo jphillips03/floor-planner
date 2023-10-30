@@ -14,34 +14,19 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.beans.value.ChangeListener;
 import javafx.scene.layout.BorderPane;
 
 public class JOGLConfig {
     private static final Logger logger = LoggerFactory.getLogger(JOGLConfig.class);
     private static final double minHeight = 600;
     private static final double minWidth = 1000;
+    private static final int menuBarHeight = 25;
 
     private Animator animator;
     private NewtCanvasJFX glCanvas;
     private GLWindow glWindow;
     private BorderPane rootPane;
     private Screen screen;
-
-    public ChangeListener<Number> resizeHeightListener = (observable, oldValue, newValue) -> {
-        if (this.screen.getHeight() > 0) {
-            this.glCanvas.setHeight(this.screen.getHeight());
-        } else {
-            // if screen height is 0 and glCanvas height set to that, canvas
-            // height remains 0; so default to center pane height
-            Double height = this.rootPane.getCenter().boundsInParentProperty().getValue().getHeight();
-            this.glCanvas.setHeight(height);
-        }
-    };
-
-    public ChangeListener<Number> resizeWidthListener = (observable, oldValue, newValue) -> {
-        this.glCanvas.setWidth(newValue.doubleValue());
-    };
 
     public GLWindow getGlWindow() {
         return this.glWindow;
@@ -57,7 +42,7 @@ public class JOGLConfig {
         this.screen = NewtFactory.createScreen(jfxNewtDisplay, 0);
         final GLCapabilities caps = new GLCapabilities(GLProfile.getMaxFixedFunc(true));
         this.glWindow = GLWindow.create(screen, caps);
-
+ 
         this.glCanvas = new NewtCanvasJFX(this.glWindow);
         this.glCanvas.setWidth(minWidth);
         this.glCanvas.setHeight(minHeight);
@@ -66,6 +51,25 @@ public class JOGLConfig {
         animator = new Animator(this.glWindow);
         animator.start();
         logger.info("JOGL Display Initialized Successfully");
+    }
+
+    /**
+     * Resizes the window for the canvas to given width and height. Need to
+     * manually factor out height of menu bar since given height is full
+     * height of window.
+     * 
+     * TODO figure out way to only get height of center area of BorderPanel
+     * 
+     * @param width The width to set for window.
+     * @param height The height to set for window.
+     */
+    public void resizeWindow(double width, double height) {
+        logger.info("Width x Height: " + width + " x " + height);
+        this.glWindow.setSize((int) width, (int) height - menuBarHeight);
+
+        // reposition window to top of parent pane, otherwise window shifts
+        // down and to right every time this method is called...
+        this.glWindow.setPosition(0, menuBarHeight);
     }
 
     public void stop() {

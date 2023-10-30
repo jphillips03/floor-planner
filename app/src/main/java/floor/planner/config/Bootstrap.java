@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.controllers.MainController;
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -52,10 +53,6 @@ public class Bootstrap extends Application {
         try {
             this.joglConfig = new JOGLConfig(this.parent);
             this.joglConfig.initialize();
-
-            // TODO figure out resizing...
-            // this.parent.widthProperty().addListener(this.joglConfig.resizeWidthListener);
-            // this.parent.heightProperty().addListener(this.joglConfig.resizeHeightListener);
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading JOGL... shutting down...", ex);
             throw ex;
@@ -63,9 +60,17 @@ public class Bootstrap extends Application {
     }
 
     private void initializeScene(Stage stage) {
+        Scene scene = new Scene(this.parent);
         stage.setTitle("Floor Planner");
-        stage.setScene(new Scene(this.parent));
+        stage.setScene(scene);
         stage.show();
+
+        // setup listener for screen resizing
+        ChangeListener<Number> stageSizeListener = (obs, prev, next) -> {
+            this.joglConfig.resizeWindow(scene.getWidth(), scene.getHeight());
+        };
+        scene.heightProperty().addListener(stageSizeListener);
+        scene.widthProperty().addListener(stageSizeListener);
     }
 
     private void initializeControllerConfigs() {

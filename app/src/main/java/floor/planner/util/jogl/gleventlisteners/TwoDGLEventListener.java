@@ -48,6 +48,7 @@ public class TwoDGLEventListener implements GLEventListener {
         final int width,
         final int height
     ) {
+        logger.info("Reshape: " + width + " " + height);
         GL2 gl = drawable.getGL().getGL2();
 
         // set view port (display area) to cover entire window
