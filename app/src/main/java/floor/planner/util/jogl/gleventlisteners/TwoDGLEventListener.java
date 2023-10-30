@@ -59,23 +59,19 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glLoadIdentity();  // reset projection matrix
 
         final float aspect = (float) width / (float) height;
-        if (width <= height ) {
-            gl.glOrthof(-1, 1, -1 * aspect, 1 * aspect, -1, 1);
-        } else {
-            gl.glOrthof(-1 * aspect, 1 * aspect, -1, 1, -1, 1);
-        }
+        this.gluOrtho2D(width, height, aspect);
 
         // enable model-view transform and translate everything down (-1) and
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();  // reset projection matrix
 
-        // translate and scale the image to fit; still need to figure out how
-        // to properly calculate float values for translate and scale, these
-        // are just best guesses and what works to get a 5x4 floor plan in the
-        // middle of the screen...
-        // final float floorAspect = (float) this.floorPlan.getWidth() / (float) this.floorPlan.getHeight();
-        gl.glTranslatef(-1.15f, -1.35f, 0f);
-        gl.glScalef(0.45f, 0.45f, 0f);
+        // translate and scale image to fit to center of screen
+        gl.glTranslatef(
+            - (float) this.floorPlan.getWidth() * 0.5f / 2 + 0.5f,
+            - (float) this.floorPlan.getHeight() * 0.5f / 2 + (0.5f / aspect),
+            0f
+        );
+        gl.glScalef(0.5f / aspect, 0.5f / aspect, 0f);
     }
 
     public void display(final GLAutoDrawable drawable) {
@@ -84,34 +80,12 @@ public class TwoDGLEventListener implements GLEventListener {
         this.drawerService.drawFloor(gl, floorPlan, 0);
     }
 
-    // TODO figure out how to take into account aspect of floor plan because
-    // things are definitely still skewed when there is more than 2 delta
-    // between width and height
-    private void gluOrtho2D(GL2 gl, int width, int height) {
-        final float aspect = (float) width / (float) height;
-        float canvasAspect = (float) this.floorPlan.getWidth() / (float) this.floorPlan.getHeight();
-        float scalex, scaley;
-        if (canvasAspect < aspect) {
-            scalex = canvasAspect / aspect;
-            scaley = 1.0f;
-        } else {
-            scalex = 1.0f;
-            scaley = aspect / canvasAspect;
-        }
+    private void gluOrtho2D(int width, int height, float aspect) {
         if (width <= height ) {
-            // if (this.floorPlan.getWidth() <= this.floorPlan.getHeight()) {
-            //     this.glu.gluOrtho2D( -1f, this.floorPlan.getWidth() + 1f, -1f / aspect, (this.floorPlan.getHeight() + floorAspect + 1f) * aspect );
-            // } else {
-            //     this.glu.gluOrtho2D( -1f, this.floorPlan.getWidth() + floorAspect + 1f, -1f / aspect, this.floorPlan.getHeight() + 1f );
-            // }
-            //this.glu.gluOrtho2D( -1f, this.floorPlan.getWidth() + 1f, -1f / aspect, (this.floorPlan.getHeight() + 1f) * aspect );
-            //this.glu.gluOrtho2D(-1f, this.floorPlan.getWidth() + 1f, -1f / scaley, (this.floorPlan.getHeight() + 1f) * scaley);
-            gl.glOrthof(-1, 1, -1 * aspect, 1 * aspect, -1, 1);
+            this.glu.gluOrtho2D(-1, 1, -1 * aspect, 1 * aspect);
         } else {
-            gl.glOrthof(-1 * aspect, 1 * aspect, -1, 1, -1, 1);
+            this.glu.gluOrtho2D(-1 * aspect, 1 * aspect, -1, 1);
         }
-        //this.glu.gluPerspective(45.0, aspect, 0.1, 100.0);
-        //this.glu.gluOrtho2D(0f, Float.valueOf(width), 0f, Float.valueOf(height));
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
