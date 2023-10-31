@@ -19,7 +19,7 @@
     fx:controller="floor.planner.controllers.MainController"
 >
     <top>
-        <MenuBar>
+        <MenuBar fx:id="menuBar">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
                     <items>

@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.controllers.MainController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -53,6 +54,12 @@ public class Bootstrap extends Application {
         try {
             this.joglConfig = new JOGLConfig(this.parent);
             this.joglConfig.initialize();
+
+            // wait until javafx initialization is complete to run the following
+            // otherwise scene will be null
+            Platform.runLater(() -> {
+                this.joglConfig.setMenuBarHeight(this.main.getMenuBar().getHeight());
+            });
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading JOGL... shutting down...", ex);
             throw ex;

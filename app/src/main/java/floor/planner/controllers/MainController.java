@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
@@ -45,6 +46,9 @@ public class MainController implements Initializable {
     /** The menu for selecting Floor (used in 2D view). */
     @FXML
     Menu floorMenu;
+
+    @FXML
+    MenuBar menuBar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -122,5 +126,9 @@ public class MainController implements Initializable {
 
     public void setGLWindow(GLWindow window) {
         this.glWindow = window;
+    }
+
+    public MenuBar getMenuBar() {
+        return this.menuBar;
     }
 }

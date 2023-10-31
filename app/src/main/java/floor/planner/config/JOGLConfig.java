@@ -3,6 +3,7 @@ package floor.planner.config;
 import com.jogamp.newt.Display;
 import com.jogamp.newt.NewtFactory;
 import com.jogamp.newt.Screen;
+import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.javafx.NewtCanvasJFX;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
@@ -20,16 +21,21 @@ public class JOGLConfig {
     private static final Logger logger = LoggerFactory.getLogger(JOGLConfig.class);
     private static final double minHeight = 600;
     private static final double minWidth = 1000;
-    private static final int menuBarHeight = 25;
+    
 
     private Animator animator;
     private NewtCanvasJFX glCanvas;
     private GLWindow glWindow;
+    private double menuBarHeight;
     private BorderPane rootPane;
     private Screen screen;
 
     public GLWindow getGlWindow() {
         return this.glWindow;
+    }
+
+    public void setMenuBarHeight(double height) {
+        this.menuBarHeight = height;
     }
 
     public JOGLConfig(BorderPane pane) throws IOException {
@@ -65,11 +71,11 @@ public class JOGLConfig {
      */
     public void resizeWindow(double width, double height) {
         logger.info("Width x Height: " + width + " x " + height);
-        this.glWindow.setSize((int) width, (int) height - menuBarHeight);
+        this.glWindow.setSize((int) width, (int) height - (int) menuBarHeight);
 
         // reposition window to top of parent pane, otherwise window shifts
         // down and to right every time this method is called...
-        this.glWindow.setPosition(0, menuBarHeight);
+        this.glWindow.setPosition(0, (int) menuBarHeight);
     }
 
     public void stop() {
