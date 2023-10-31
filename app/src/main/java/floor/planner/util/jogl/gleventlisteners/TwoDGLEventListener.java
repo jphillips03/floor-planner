@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GL2ES1;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
@@ -35,8 +34,8 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glClearDepth(1.0f);
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glDepthFunc(GL.GL_LEQUAL);
-        gl.glShadeModel(GLLightingFunc.GL_SMOOTH);
-        gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+        gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+        gl.glShadeModel(GL2.GL_SMOOTH);
 
         this.glu = new GLU();
     }
@@ -67,11 +66,11 @@ public class TwoDGLEventListener implements GLEventListener {
 
         // translate and scale image to fit to center of screen
         gl.glTranslatef(
-            - (float) this.floorPlan.getWidth() * 0.5f / 2 + 0.5f,
-            - (float) this.floorPlan.getHeight() * 0.5f / 2 + (0.5f / aspect),
+            - (float) this.floorPlan.getWidth() * 0.25f / 2f,
+            - (float) this.floorPlan.getHeight() * 0.25f / 2f,
             0f
         );
-        gl.glScalef(0.5f / aspect, 0.5f / aspect, 0f);
+        gl.glScalef(0.25f, 0.25f, 0f);
     }
 
     public void display(final GLAutoDrawable drawable) {
