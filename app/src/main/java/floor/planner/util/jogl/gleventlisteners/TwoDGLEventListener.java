@@ -8,11 +8,11 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
-import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.FloorPlan;
+import floor.planner.models.Line;
 import floor.planner.services.FloorPlan2DDrawerService;
 
 public class TwoDGLEventListener implements GLEventListener {
@@ -47,30 +47,16 @@ public class TwoDGLEventListener implements GLEventListener {
         final int width,
         final int height
     ) {
-        logger.info("Reshape: " + width + " " + height);
+        logger.info("Reshape (WxH): " + width + " " + height);
         GL2 gl = drawable.getGL().getGL2();
 
         // set view port (display area) to cover entire window
         gl.glViewport(0, 0, width, height);
 
-        // // setup perspective projection (aspect ratio should match viewport)
+        // setup perspective projection (aspect ratio should match viewport)
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();  // reset projection matrix
-
-        final float aspect = (float) width / (float) height;
-        this.gluOrtho2D(width, height, aspect);
-
-        // enable model-view transform and translate everything down (-1) and
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();  // reset projection matrix
-
-        // translate and scale image to fit to center of screen
-        gl.glTranslatef(
-            - (float) this.floorPlan.getWidth() * 0.25f / 2f,
-            - (float) this.floorPlan.getHeight() * 0.25f / 2f,
-            0f
-        );
-        gl.glScalef(0.25f, 0.25f, 0f);
+        this.gluOrtho2D(width, height);
     }
 
     public void display(final GLAutoDrawable drawable) {
@@ -79,13 +65,29 @@ public class TwoDGLEventListener implements GLEventListener {
         this.drawerService.drawFloor(gl, floorPlan, 0);
     }
 
-    private void gluOrtho2D(int width, int height, float aspect) {
-        if (width <= height ) {
-            this.glu.gluOrtho2D(-1, 1, -1 * aspect, 1 * aspect);
-        } else {
-            this.glu.gluOrtho2D(-1 * aspect, 1 * aspect, -1, 1);
-        }
+    public void dispose(final GLAutoDrawable drawable) {}
+
+    private void gluOrtho2D(int width, int height) {
+        float aspect = (float) width / (float) height;
+        int gcd = this.gcd(width, height);
+        float left = (float) this.floorPlan.getWidth() / 2 - (width / gcd);
+        float right = (float) this.floorPlan.getWidth() / 2 + (width / gcd);
+        float bottom = (float) this.floorPlan.getHeight() / 2 - (height / gcd);
+        float top = (float) this.floorPlan.getHeight() / 2 + (height / gcd);
+        logger.info("Aspect: " + aspect);
+        logger.info("GCD: " + gcd);
+        logger.info("Width: " + (width / gcd));
+        logger.info("Height: " + (height / gcd));
+        logger.info("Left: " + left);
+        logger.info("Right: " + right);
+        logger.info("Bottom: " + bottom);
+        logger.info("Top: " + top);
+        this.glu.gluOrtho2D(left, right, bottom, top);
     }
 
-    public void dispose(final GLAutoDrawable drawable) {}
+    private int gcd(int a, int b) {
+        // if (b == 0) return a;
+        // return gcd(b, a % b);
+        return 200;
+    }
 }
