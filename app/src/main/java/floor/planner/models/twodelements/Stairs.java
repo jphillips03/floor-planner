@@ -34,15 +34,15 @@ public class Stairs extends DrawableElement {
     public void initPoints() {
         if (eastWest.contains(this.orientation)) {
             this.points = Arrays.asList(
-                new Point2D(this.point.getX() + 0.125f, this.point.getY() + 0.75f),
-                new Point2D(this.point.getX() + 0.125f, this.point.getY() + 0.25f),
-                new Point2D(this.point.getX(), this.point.getY() + 0.25f),
-                new Point2D(this.point.getX(), this.point.getY() + 0.75f)
+                new Point2D(this.point.getX() + 0.125f, this.point.getY() - 0.75f),
+                new Point2D(this.point.getX() + 0.125f, this.point.getY() - 0.25f),
+                new Point2D(this.point.getX(), this.point.getY() - 0.25f),
+                new Point2D(this.point.getX(), this.point.getY() - 0.75f)
             );
         } else {
             this.points = Arrays.asList(
-                new Point2D(this.point.getX() + 0.75f, this.point.getY() + 0.125f),
-                new Point2D(this.point.getX() + 0.25f, this.point.getY() + 0.125f),
+                new Point2D(this.point.getX() + 0.75f, this.point.getY() - 0.125f),
+                new Point2D(this.point.getX() + 0.25f, this.point.getY() - 0.125f),
                 new Point2D(this.point.getX() + 0.25f, this.point.getY()),
                 new Point2D(this.point.getX() + 0.75f, this.point.getY())
             );
@@ -61,7 +61,7 @@ public class Stairs extends DrawableElement {
                     points.add(new Point2D(point.getX() + i, point.getY()));
                 } else {
                     // otherwise we are going north-south, add to Y
-                    points.add(new Point2D(point.getX(), point.getY() + i));
+                    points.add(new Point2D(point.getX(), point.getY() - i));
                 }
             }
             this.drawUtil(gl, points, color);

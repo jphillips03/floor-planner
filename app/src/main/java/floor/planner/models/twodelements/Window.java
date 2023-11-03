@@ -30,25 +30,25 @@ public class Window extends DrawableElement {
     public void initPoints() {
         if (this.orientation == Orientation.EAST_WEST) {
             this.triangle1Points = Arrays.asList(
-                new Point2D(this.point.getX(), this.point.getY() + 1),
-                new Point2D(this.point.getX() + 1, this.point.getY() + 1),
-                new Point2D(this.point.getX() + 0.5f, this.point.getY() + 0.5f)
+                new Point2D(this.point.getX(), this.point.getY() - 1),
+                new Point2D(this.point.getX() + 1, this.point.getY() - 1),
+                new Point2D(this.point.getX() + 0.5f, this.point.getY() - 0.5f)
             );
             this.triangle2Points = Arrays.asList(
                 new Point2D(this.point.getX(), this.point.getY()),
                 new Point2D(this.point.getX() + 1, this.point.getY()),
-                new Point2D(this.point.getX() + 0.5f, this.point.getY() + 0.5f)
+                new Point2D(this.point.getX() + 0.5f, this.point.getY() - 0.5f)
             );
         } else if (this.orientation == Orientation.NORTH_SOUTH) {
             this.triangle1Points = Arrays.asList(
-                new Point2D(this.point.getX(), this.point.getY() + 1),
+                new Point2D(this.point.getX(), this.point.getY() - 1),
                 new Point2D(this.point.getX(), this.point.getY()),
-                new Point2D(this.point.getX() + 0.5f, this.point.getY() + 0.5f)
+                new Point2D(this.point.getX() + 0.5f, this.point.getY() - 0.5f)
             );
             this.triangle2Points = Arrays.asList(
-                new Point2D(this.point.getX() + 1, this.point.getY() + 1),
+                new Point2D(this.point.getX() + 1, this.point.getY() - 1),
                 new Point2D(this.point.getX() + 1, this.point.getY()),
-                new Point2D(this.point.getX() + 0.5f, this.point.getY() + 0.5f)
+                new Point2D(this.point.getX() + 0.5f, this.point.getY() - 0.5f)
             );
         }
     }

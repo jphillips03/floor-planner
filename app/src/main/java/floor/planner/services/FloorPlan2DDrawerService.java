@@ -1,6 +1,10 @@
 package floor.planner.services;
 
 import java.util.Arrays;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.jogamp.opengl.GL2;
 
@@ -11,6 +15,7 @@ import floor.planner.models.Point2D;
 import floor.planner.util.jogl.drawers.TwoDDrawer;
 
 public class FloorPlan2DDrawerService {
+    private static final Logger logger = LoggerFactory.getLogger(FloorPlan2DDrawerService.class);
     private TwoDDrawer drawer = new TwoDDrawer();
 
     public void drawFloor(GL2 gl, FloorPlan floorPlan, int floorNum) {
@@ -29,8 +34,8 @@ public class FloorPlan2DDrawerService {
                 this.drawer.drawEmptyTile(gl, Arrays.asList(
                     new Point2D(j, r),
                     new Point2D(j + 1, r),
-                    new Point2D(j + 1, r + 1),
-                    new Point2D(j, r + 1),
+                    new Point2D(j + 1, r - 1),
+                    new Point2D(j, r - 1),
                     new Point2D(j, r)
                 ));
             }
