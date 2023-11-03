@@ -3,7 +3,6 @@ package floor.planner.config;
 import com.jogamp.newt.Display;
 import com.jogamp.newt.NewtFactory;
 import com.jogamp.newt.Screen;
-import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.javafx.NewtCanvasJFX;
 import com.jogamp.newt.opengl.GLWindow;
 import com.jogamp.opengl.GLCapabilities;
@@ -67,8 +66,6 @@ public class JOGLConfig {
      * Resizes the window for the canvas to given width and height. Need to
      * manually factor out height of menu bar since given height is full
      * height of window.
-     * 
-     * TODO figure out way to only get height of center area of BorderPanel
      * 
      * @param width The width to set for window.
      * @param height The height to set for window.

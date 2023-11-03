@@ -12,20 +12,17 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.FloorPlan;
-import floor.planner.models.Line;
 import floor.planner.services.FloorPlan2DDrawerService;
 
 public class TwoDGLEventListener implements GLEventListener {
     private static final Logger logger = LoggerFactory.getLogger(TwoDGLEventListener.class);
 
     private GLU glu;
-    private GLWindow glWindow;
     private FloorPlan floorPlan;
     private FloorPlan2DDrawerService drawerService = new FloorPlan2DDrawerService();
 
     public TwoDGLEventListener(FloorPlan floorPlan, GLWindow glWindow) {
         this.floorPlan = floorPlan;
-        this.glWindow = glWindow;
     }
 
     public void init(final GLAutoDrawable drawable) {
