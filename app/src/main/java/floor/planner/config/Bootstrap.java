@@ -9,9 +9,10 @@ import floor.planner.controllers.MainController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
@@ -21,7 +22,7 @@ public class Bootstrap extends Application {
 
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private JOGLConfig joglConfig;
-    private BorderPane parent;
+    private VBox parent;
     private MainController main;
 
     @Override
@@ -44,6 +45,7 @@ public class Bootstrap extends Application {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
             this.parent = loader.load();
             this.main = (MainController) loader.getController();
+            logger.info(this.parent.getId());
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading main panel; Shutting down...", ex);
             throw ex;
@@ -52,7 +54,7 @@ public class Bootstrap extends Application {
 
     private void initializeJOGL() throws IOException {
         try {
-            this.joglConfig = new JOGLConfig(this.parent);
+            this.joglConfig = new JOGLConfig(this.main.getOpenGLPane());
             this.joglConfig.initialize();
 
             // wait until javafx initialization is complete to run the following
@@ -72,12 +74,18 @@ public class Bootstrap extends Application {
         stage.setScene(scene);
         stage.show();
 
-        // setup listener for screen resizing
-        ChangeListener<Number> stageSizeListener = (obs, prev, next) -> {
-            this.joglConfig.resizeWindow(scene.getWidth(), scene.getHeight());
+        // setup listeners for screen resizing
+        ChangeListener<Number> widthListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            this.joglConfig.resizeWindow(newValue.intValue(), this.joglConfig.getOpenGLPane().getHeight());
+
         };
-        scene.heightProperty().addListener(stageSizeListener);
-        scene.widthProperty().addListener(stageSizeListener);
+        ChangeListener<Number> heightListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            this.joglConfig.resizeWindow(this.joglConfig.getOpenGLPane().getWidth(), newValue.intValue());
+        };
+        // scene.heightProperty().addListener(heightListener);
+        // scene.widthProperty().addListener(widthListener);
+        this.joglConfig.getOpenGLPane().widthProperty().addListener(widthListener);
+        this.joglConfig.getOpenGLPane().heightProperty().addListener(heightListener);
     }
 
     private void initializeControllerConfigs() {

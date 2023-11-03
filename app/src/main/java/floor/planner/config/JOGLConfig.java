@@ -15,7 +15,7 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
 
 public class JOGLConfig {
     private static final Logger logger = LoggerFactory.getLogger(JOGLConfig.class);
@@ -27,19 +27,23 @@ public class JOGLConfig {
     private NewtCanvasJFX glCanvas;
     private GLWindow glWindow;
     private double menuBarHeight;
-    private BorderPane rootPane;
+    private StackPane openGLPane;
     private Screen screen;
 
     public GLWindow getGlWindow() {
         return this.glWindow;
     }
 
+    public StackPane getOpenGLPane() {
+        return this.openGLPane;
+    }
+
     public void setMenuBarHeight(double height) {
         this.menuBarHeight = height;
     }
 
-    public JOGLConfig(BorderPane pane) throws IOException {
-        this.rootPane = pane;
+    public JOGLConfig(StackPane pane) throws IOException {
+        this.openGLPane = pane;
     }
 
     public void initialize() {
@@ -52,7 +56,7 @@ public class JOGLConfig {
         this.glCanvas = new NewtCanvasJFX(this.glWindow);
         this.glCanvas.setWidth(minWidth);
         this.glCanvas.setHeight(minHeight);
-        this.rootPane.setCenter(this.glCanvas);
+        this.openGLPane.getChildren().add(0, this.glCanvas);
 
         animator = new Animator(this.glWindow);
         animator.start();
@@ -70,8 +74,8 @@ public class JOGLConfig {
      * @param height The height to set for window.
      */
     public void resizeWindow(double width, double height) {
-        logger.info("Width x Height: " + width + " x " + height);
-        this.glWindow.setSize((int) width, (int) height - (int) menuBarHeight);
+        logger.info("Resize Window (WxH): " + width + " x " + height);
+        this.glWindow.setSize((int) width, (int) height);
 
         // reposition window to top of parent pane, otherwise window shifts
         // down and to right every time this method is called...

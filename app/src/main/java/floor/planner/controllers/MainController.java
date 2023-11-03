@@ -13,6 +13,8 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -26,6 +28,7 @@ import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.gleventlisteners.TwoDGLEventListener;
+import floor.planner.util.jogl.gleventlisteners.TwoDMouseListener;
 
 public class MainController implements Initializable {
     /** The logger for the class. */
@@ -37,7 +40,10 @@ public class MainController implements Initializable {
     private FloorPlanService floorPlanService = new FloorPlanService();
 
     @FXML
-    BorderPane rootPane;
+    VBox mainBox;
+
+    @FXML
+    StackPane openGLPane;
 
     /** The menu for switching between dimensions. */
     @FXML
@@ -58,7 +64,7 @@ public class MainController implements Initializable {
         // wait until initialization is complete to run the following otherwise
         // scene will be null
         Platform.runLater(() -> {
-            this.scene = this.rootPane.getScene();
+            this.scene = this.mainBox.getScene();
             this.window = this.scene.getWindow();
         });
     }
@@ -130,5 +136,9 @@ public class MainController implements Initializable {
 
     public MenuBar getMenuBar() {
         return this.menuBar;
+    }
+
+    public StackPane getOpenGLPane() {
+        return this.openGLPane;
     }
 }
