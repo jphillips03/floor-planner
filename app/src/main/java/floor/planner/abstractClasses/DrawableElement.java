@@ -57,4 +57,12 @@ public abstract class DrawableElement {
      * Initializes the points for the element representing a polygon.
      */
     public abstract void initPoints();
+
+    public String toString() {
+        String s = "";
+        for (int i = 0; i < this.points.size(); i++) {
+            s += this.points.get(i).toString() + "\n";
+        }
+        return s;
+    }
 }

@@ -23,4 +23,8 @@ public class Point2D {
     public void setY(float y) {
         this.y = y;
     }
+
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
+    }
 }
