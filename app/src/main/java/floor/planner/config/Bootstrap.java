@@ -86,6 +86,23 @@ public class Bootstrap extends Application {
         // scene.widthProperty().addListener(widthListener);
         this.joglConfig.getOpenGLPane().widthProperty().addListener(widthListener);
         this.joglConfig.getOpenGLPane().heightProperty().addListener(heightListener);
+
+        // set window dimensions needed for handling display scaling...
+        this.joglConfig.setWindowDimensions(this.main.getOpenGLPane().getWidth(), this.main.getOpenGLPane().getHeight());
+
+        // set current display scale in JOGL config
+        this.joglConfig.setScaleX(stage.getRenderScaleX());
+        this.joglConfig.setScaleY(stage.getRenderScaleY());
+
+        // set up listeners for changes to display scale
+        ChangeListener<Number> scaleXListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            this.joglConfig.setScaleX(newValue.doubleValue());
+        };
+        ChangeListener<Number> scaleYListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
+            this.joglConfig.setScaleY(newValue.doubleValue());
+        };
+        stage.outputScaleXProperty().addListener(scaleXListener);
+        stage.outputScaleYProperty().addListener(scaleYListener);
     }
 
     private void initializeControllerConfigs() {

@@ -21,13 +21,16 @@ public class JOGLConfig {
     private static final double minHeight = 600;
     private static final double minWidth = 1000;
     
-
     private Animator animator;
     private NewtCanvasJFX glCanvas;
     private GLWindow glWindow;
-    private double menuBarHeight;
+    private double menuBarHeight = 30.0;
     private StackPane openGLPane;
+    private double scaleX = 1.0;
+    private double scaleY = 1.0;
     private Screen screen;
+    private double windowWidth;
+    private double windowHeight;
 
     public GLWindow getGlWindow() {
         return this.glWindow;
@@ -38,7 +41,25 @@ public class JOGLConfig {
     }
 
     public void setMenuBarHeight(double height) {
-        this.menuBarHeight = height;
+        this.menuBarHeight = height * this.scaleY;
+    }
+
+    public void setScaleX(double val) {
+        logger.info("Screen Scale X: " + val);
+        this.scaleX = val;
+        this.resizeWindow(this.windowWidth * this.scaleX, this.windowHeight);
+    }
+
+    public void setScaleY(double val) {
+        logger.info("Screen Scale Y: " + val);
+        this.scaleY = val;
+        this.menuBarHeight *= this.scaleY;
+        this.resizeWindow(this.windowWidth, this.windowHeight * this.scaleY);
+    }
+
+    public void setWindowDimensions(double width, double height) {
+        this.windowWidth = width;
+        this.windowHeight = height;
     }
 
     public JOGLConfig(StackPane pane) throws IOException {
@@ -53,13 +74,17 @@ public class JOGLConfig {
         this.glWindow = GLWindow.create(screen, caps);
  
         this.glCanvas = new NewtCanvasJFX(this.glWindow);
-        this.glCanvas.setWidth(minWidth);
-        this.glCanvas.setHeight(minHeight);
+        this.glCanvas.setWidth(minWidth * this.scaleX);
+        this.glCanvas.setHeight(minHeight * this.scaleY);
         this.openGLPane.getChildren().add(0, this.glCanvas);
 
         animator = new Animator(this.glWindow);
         animator.start();
         logger.info("JOGL Display Initialized Successfully");
+    }
+
+    public void resizeWindow() {
+        this.resizeWindow(this.windowWidth, this.windowHeight);
     }
 
     /**
@@ -72,7 +97,8 @@ public class JOGLConfig {
      */
     public void resizeWindow(double width, double height) {
         logger.info("Resize Window (WxH): " + width + " x " + height);
-        this.glWindow.setSize((int) width, (int) height);
+        this.setWindowDimensions(width, height);
+        this.glWindow.setSize((int) width * (int) this.scaleX, (int) height * (int) this.scaleY);
 
         // reposition window to top of parent pane, otherwise window shifts
         // down and to right every time this method is called...
