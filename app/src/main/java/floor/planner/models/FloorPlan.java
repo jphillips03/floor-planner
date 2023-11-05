@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FloorPlan {
+    private ClippingPlane clippingPlane;
     /** The width of the floor plan. */
     private int width;
     /** The height of the floor plan. */
@@ -22,6 +23,13 @@ public class FloorPlan {
      */
     public FloorPlan() {
         floors = new ArrayList<Floor>();
+    }
+
+    public ClippingPlane getClippingPlane() {
+        return this.clippingPlane;
+    }
+    public void setClippingPlane(ClippingPlane plane) {
+        this.clippingPlane = plane;
     }
 
     public List<Floor> getFloors() {

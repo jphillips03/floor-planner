@@ -3,6 +3,8 @@ package floor.planner.services;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.constants.AspectRatio;
+import floor.planner.models.ClippingPlane;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 
@@ -14,8 +16,19 @@ public class FloorPlanService {
     public FloorPlan create(String text) {
         FloorPlan plan = new FloorPlan();
         this.parseDimensions(plan, text);
+        this.initClippingPlane(plan);
         this.parseFloors(plan, text);
         return plan;
+    }
+
+    private void initClippingPlane(FloorPlan plan) {
+        ClippingPlane plane = new ClippingPlane(
+            (float) plan.getWidth() / 2 - AspectRatio.X.value,
+            (float) plan.getWidth() / 2 + AspectRatio.X.value,
+            (float) plan.getHeight() / 2 - AspectRatio.Y.value,
+            (float) plan.getHeight() / 2 + AspectRatio.Y.value
+        );
+        plan.setClippingPlane(plane);
     }
 
     private void parseDimensions(FloorPlan plan, String text) {

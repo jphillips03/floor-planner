@@ -11,6 +11,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
+import floor.planner.models.ClippingPlane;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlan2DDrawerService;
 
@@ -51,9 +52,15 @@ public class TwoDGLEventListener implements GLEventListener {
         gl.glViewport(0, 0, width, height);
 
         // setup perspective projection (aspect ratio should match viewport)
+        ClippingPlane plane = this.floorPlan.getClippingPlane();
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();  // reset projection matrix
-        this.gluOrtho2D(width, height);
+        this.glu.gluOrtho2D(
+            plane.getLeft(),
+            plane.getRight(),
+            plane.getBottom(),
+            plane.getTop()
+        );
     }
 
     public void display(final GLAutoDrawable drawable) {
@@ -63,28 +70,4 @@ public class TwoDGLEventListener implements GLEventListener {
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
-
-    private void gluOrtho2D(int width, int height) {
-        float aspect = (float) width / (float) height;
-        int gcd = this.gcd(width, height);
-        float left = (float) this.floorPlan.getWidth() / 2 - (width / gcd);
-        float right = (float) this.floorPlan.getWidth() / 2 + (width / gcd);
-        float bottom = (float) this.floorPlan.getHeight() / 2 - (height / gcd);
-        float top = (float) this.floorPlan.getHeight() / 2 + (height / gcd);
-        logger.info("Aspect: " + aspect);
-        logger.info("GCD: " + gcd);
-        logger.info("Width: " + (width / gcd));
-        logger.info("Height: " + (height / gcd));
-        logger.info("Left: " + left);
-        logger.info("Right: " + right);
-        logger.info("Bottom: " + bottom);
-        logger.info("Top: " + top);
-        this.glu.gluOrtho2D(left, right, bottom, top);
-    }
-
-    private int gcd(int a, int b) {
-        // if (b == 0) return a;
-        // return gcd(b, a % b);
-        return 200;
-    }
 }
