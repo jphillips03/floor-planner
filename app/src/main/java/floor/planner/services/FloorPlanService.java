@@ -1,25 +1,34 @@
 package floor.planner.services;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 
 public class FloorPlanService {
+    private static final Logger logger = LoggerFactory.getLogger(FloorPlanService.class);
 
     private FloorService floorService = new FloorService();
 
     public FloorPlan create(String text) {
         FloorPlan plan = new FloorPlan();
-        String[] rows = text.split("\n");
+        this.parseDimensions(plan, text);
+        this.parseFloors(plan, text);
+        return plan;
+    }
 
-        // parse and set dimensions from first row of text
+    private void parseDimensions(FloorPlan plan, String text) {
+        String[] rows = text.split("\n");
         String[] dimensionsText = rows[0].split(" ");
         plan.setDimensions(
             Integer.parseInt(dimensionsText[1]),
             Integer.parseInt(dimensionsText[0]),
             Integer.parseInt(dimensionsText[2])
         );
+    }
 
-        // parse each floor
+    private void parseFloors(FloorPlan plan, String text) {
         for (int i = 0; i < plan.getFloorNumbers(); i++) {
             // first floor starts at second row (i + 1), rest of the floors
             // start at i + floor height
@@ -32,6 +41,5 @@ public class FloorPlanService {
             );
             plan.getFloors().add(floor);
         }
-        return plan;
     }
 }
