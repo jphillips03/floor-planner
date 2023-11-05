@@ -22,6 +22,7 @@ public class FloorPlanService {
     }
 
     private void initClippingPlane(FloorPlan plan) {
+        logger.info("Aspect Ratio: " + AspectRatio.X.value + ":" + AspectRatio.Y.value);
         ClippingPlane plane = new ClippingPlane(
             (float) plan.getWidth() / 2 - AspectRatio.X.value,
             (float) plan.getWidth() / 2 + AspectRatio.X.value,
