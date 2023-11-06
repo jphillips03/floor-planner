@@ -33,6 +33,7 @@ public class MainController implements Initializable {
     /** The logger for the class. */
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    private FloorPlan currentFloorPlan;
     private GLWindow glWindow;
     private Scene scene;
     private Window window;
@@ -92,7 +93,19 @@ public class MainController implements Initializable {
 
         // add a MenuItem for each floor
         for (int i = 0; i < floors; i++) {
-            this.floorMenu.getItems().add(new MenuItem("Floor " + (i + 1)));
+            int floor = i;
+            MenuItem menuItem = new MenuItem("Floor " + (i + 1));
+            this.floorMenu.getItems().add(menuItem);
+
+            // add handler for when menuItem is clicked
+            menuItem.setOnAction(e -> {
+                e.consume(); // stop further propagation of event
+
+                // just update the current floor so the GLEventListener2D
+                // display method renders the correct floor (since it uses the
+                // currentFloor property from FloorPlan)
+                this.currentFloorPlan.setCurrentFloor(floor);
+            });
         }
     }
 
@@ -123,11 +136,11 @@ public class MainController implements Initializable {
         File selectedFile = fileChooser.showOpenDialog(this.window);
         if (selectedFile != null) {
             String contents = FileUtil.read(selectedFile);
-            FloorPlan plan = this.floorPlanService.create(contents);
-            this.initializeMenus(plan.getFloorNumbers());
+            this.currentFloorPlan = this.floorPlanService.create(contents);
+            this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
 
-            this.glWindow.addGLEventListener(new GLEventListener2D(plan, this.glWindow));
-            this.glWindow.addMouseListener(new MouseListener2D(plan, this.glWindow, this.menu2DController));
+            this.glWindow.addGLEventListener(new GLEventListener2D(this.currentFloorPlan, this.glWindow));
+            this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.menu2DController));
         }
     }
 

@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FloorPlan {
+    /** The clipping plane for the 2D rendering. */
     private ClippingPlane clippingPlane;
+    /** The current floor to render in 2D (defaults to first floor i.e. 0). */
+    private int currentFloor = 0;
     /** The width of the floor plan. */
     private int width;
     /** The height of the floor plan. */
@@ -30,6 +33,23 @@ public class FloorPlan {
     }
     public void setClippingPlane(ClippingPlane plane) {
         this.clippingPlane = plane;
+    }
+
+    /**
+     * Returns the current floor to render in 2D.
+     *
+     * @return The current floor to render in 2D.
+     */
+    public int getCurrentFloor() {
+        return this.currentFloor;
+    }
+    /**
+     * Sets the current floor to render in 2D.
+     *
+     * @param val The value for the current floor.
+     */
+    public void setCurrentFloor(int val) {
+        this.currentFloor = val;
     }
 
     public List<Floor> getFloors() {

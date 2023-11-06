@@ -66,7 +66,7 @@ public class GLEventListener2D implements GLEventListener {
     public void display(final GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        this.drawerService.drawFloor(gl, floorPlan, 0);
+        this.drawerService.drawFloor(gl, floorPlan, floorPlan.getCurrentFloor());
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
