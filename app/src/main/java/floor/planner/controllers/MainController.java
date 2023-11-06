@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -38,6 +37,7 @@ public class MainController implements Initializable {
     private Scene scene;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
+    private Menu2DController menu2DController;
 
     @FXML
     VBox mainBox;
@@ -127,11 +127,16 @@ public class MainController implements Initializable {
             this.initializeMenus(plan.getFloorNumbers());
 
             this.glWindow.addGLEventListener(new TwoDGLEventListener(plan, this.glWindow));
+            this.glWindow.addMouseListener(new TwoDMouseListener(plan, this.glWindow, this.menu2DController));
         }
     }
 
     public void setGLWindow(GLWindow window) {
         this.glWindow = window;
+    }
+
+    public void setMenu2DController(Menu2DController controller) {
+        this.menu2DController = controller;
     }
 
     public MenuBar getMenuBar() {
@@ -140,5 +145,9 @@ public class MainController implements Initializable {
 
     public StackPane getOpenGLPane() {
         return this.openGLPane;
+    }
+
+    public Window getWindow() {
+        return this.window;
     }
 }

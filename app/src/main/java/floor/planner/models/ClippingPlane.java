@@ -28,4 +28,12 @@ public class ClippingPlane {
     public float getTop() {
         return this.top;
     }
+
+    public float getWidth() {
+        return this.right - this.left;
+    }
+
+    public float getHeight() {
+        return this.top - this.bottom;
+    }
 }

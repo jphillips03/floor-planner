@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane
+    styleClass="custom-pane"
+    stylesheets="@dark-theme.css"
+    fx:id="borderPane"
+    fx:controller="floor.planner.controllers.Menu2DController"
+    xmlns:fx="http://javafx.com/fxml"
+>
+    <fx:define>
+        <ContextMenu fx:id="contextMenu">
+            <items>
+                <MenuItem text="Menu Item"/>
+            </items>
+        </ContextMenu>
+    </fx:define>
+</BorderPane>
