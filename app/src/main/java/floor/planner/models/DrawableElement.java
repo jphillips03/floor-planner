@@ -1,11 +1,10 @@
-package floor.planner.abstractClasses;
+package floor.planner.models;
 
 import java.util.List;
 
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
-import floor.planner.models.Point2D;
 
 /**
  * 

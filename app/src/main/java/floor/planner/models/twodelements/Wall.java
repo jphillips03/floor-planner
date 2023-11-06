@@ -5,7 +5,7 @@ import java.util.Arrays;
 import floor.planner.constants.EastWestWallOffset2D;
 import floor.planner.constants.NorthSouthWallOffset2D;
 import floor.planner.constants.Orientation;
-import floor.planner.abstractClasses.DrawableElement;
+import floor.planner.models.DrawableElement;
 import floor.planner.models.Point2D;
 
 public class Wall extends DrawableElement {

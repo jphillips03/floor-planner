@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jogamp.opengl.GL2;
 
-import floor.planner.abstractClasses.DrawableElement;
+import floor.planner.models.DrawableElement;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.models.Point2D;

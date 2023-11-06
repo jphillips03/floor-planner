@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.Orientation;
-import floor.planner.abstractClasses.DrawableElement;
 import floor.planner.models.twodelements.Pole;
 import floor.planner.models.twodelements.Stairs;
 import floor.planner.models.twodelements.Wall;

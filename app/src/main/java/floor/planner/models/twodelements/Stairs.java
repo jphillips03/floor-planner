@@ -6,8 +6,8 @@ import java.util.List;
 
 import com.jogamp.opengl.GL2;
 
-import floor.planner.abstractClasses.DrawableElement;
 import floor.planner.constants.Orientation;
+import floor.planner.models.DrawableElement;
 import floor.planner.models.Point2D;
 
 public class Stairs extends DrawableElement {
