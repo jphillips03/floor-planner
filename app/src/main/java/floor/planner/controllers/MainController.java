@@ -26,8 +26,8 @@ import com.jogamp.newt.opengl.GLWindow;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
-import floor.planner.util.jogl.gleventlisteners.TwoDGLEventListener;
-import floor.planner.util.jogl.gleventlisteners.TwoDMouseListener;
+import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
+import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
 
 public class MainController implements Initializable {
     /** The logger for the class. */
@@ -126,8 +126,8 @@ public class MainController implements Initializable {
             FloorPlan plan = this.floorPlanService.create(contents);
             this.initializeMenus(plan.getFloorNumbers());
 
-            this.glWindow.addGLEventListener(new TwoDGLEventListener(plan, this.glWindow));
-            this.glWindow.addMouseListener(new TwoDMouseListener(plan, this.glWindow, this.menu2DController));
+            this.glWindow.addGLEventListener(new GLEventListener2D(plan, this.glWindow));
+            this.glWindow.addMouseListener(new MouseListener2D(plan, this.glWindow, this.menu2DController));
         }
     }
 

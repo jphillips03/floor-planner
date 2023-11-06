@@ -11,14 +11,14 @@ import floor.planner.controllers.Menu2DController;
 import floor.planner.models.ClippingPlane;
 import floor.planner.models.FloorPlan;
 
-public class TwoDMouseListener implements MouseListener {
-    private static final Logger logger = LoggerFactory.getLogger(TwoDMouseListener.class);
+public class MouseListener2D implements MouseListener {
+    private static final Logger logger = LoggerFactory.getLogger(MouseListener2D.class);
 
     private FloorPlan floorPlan;
     private GLWindow glWindow;
     private Menu2DController menu2D;
 
-    public TwoDMouseListener(FloorPlan floorPlan, GLWindow glWindow, Menu2DController menu2D) {
+    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, Menu2DController menu2D) {
         this.floorPlan = floorPlan;
         this.glWindow = glWindow;
         this.menu2D = menu2D;

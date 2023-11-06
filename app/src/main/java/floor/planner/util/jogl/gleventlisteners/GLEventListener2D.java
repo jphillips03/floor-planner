@@ -15,14 +15,14 @@ import floor.planner.models.ClippingPlane;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlan2DDrawerService;
 
-public class TwoDGLEventListener implements GLEventListener {
-    private static final Logger logger = LoggerFactory.getLogger(TwoDGLEventListener.class);
+public class GLEventListener2D implements GLEventListener {
+    private static final Logger logger = LoggerFactory.getLogger(GLEventListener2D.class);
 
     private GLU glu;
     private FloorPlan floorPlan;
     private FloorPlan2DDrawerService drawerService = new FloorPlan2DDrawerService();
 
-    public TwoDGLEventListener(FloorPlan floorPlan, GLWindow glWindow) {
+    public GLEventListener2D(FloorPlan floorPlan, GLWindow glWindow) {
         this.floorPlan = floorPlan;
     }
 
