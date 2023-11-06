@@ -91,8 +91,6 @@ public class Bootstrap extends Application {
         ChangeListener<Number> heightListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
             this.joglConfig.resizeWindow(this.joglConfig.getOpenGLPane().getWidth(), newValue.intValue());
         };
-        // scene.heightProperty().addListener(heightListener);
-        // scene.widthProperty().addListener(widthListener);
         this.joglConfig.getOpenGLPane().widthProperty().addListener(widthListener);
         this.joglConfig.getOpenGLPane().heightProperty().addListener(heightListener);
 
