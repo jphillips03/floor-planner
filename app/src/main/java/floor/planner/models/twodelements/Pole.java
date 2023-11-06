@@ -22,7 +22,10 @@ public class Pole extends DrawableElement {
         double r = 0.15;
         for(int i = 0; i < 360; i++) {
 			double radians = i*Math.PI/180;
-			gl.glVertex2d(Math.cos(radians)*r + this.point.getX() + 0.5, Math.sin(radians)*r - this.point.getY() + 0.5);
+			gl.glVertex2d(
+                Math.cos(radians)*r + this.point.getX() + 0.5,
+                Math.sin(radians)*r + this.point.getY() - 0.5
+            );
 		}
         gl.glEnd();
         gl.glFlush();
