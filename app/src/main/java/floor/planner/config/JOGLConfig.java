@@ -47,14 +47,14 @@ public class JOGLConfig {
     public void setScaleX(double val) {
         logger.info("Screen Scale X: " + val);
         this.scaleX = val;
-        this.resizeWindow(this.windowWidth * this.scaleX, this.windowHeight);
+        this.resizeWindow();
     }
 
     public void setScaleY(double val) {
         logger.info("Screen Scale Y: " + val);
         this.scaleY = val;
         this.menuBarHeight *= this.scaleY;
-        this.resizeWindow(this.windowWidth, this.windowHeight * this.scaleY);
+        this.resizeWindow();
     }
 
     public void setWindowDimensions(double width, double height) {
