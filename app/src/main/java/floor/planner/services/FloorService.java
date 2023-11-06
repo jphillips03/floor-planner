@@ -1,5 +1,7 @@
 package floor.planner.services;
 
+import java.util.Arrays;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,9 +25,23 @@ public class FloorService {
      */
     public Floor create(String text, int line, int height, int width) {
         String[] rows = text.split("\n");
-        if (rows[0].length() - 1 > width || width < rows[0].length() - 1) {
+        String[] floorRows = Arrays.copyOfRange(rows, line, line + height);
+        // TODO throw Exceptions instead of returning null...
+        if (width < floorRows[0].length() - 1) {
+            logger.error("Error parsing floor plan more elements than defined width");
+            logger.error("Elements vs defined width: " + (floorRows[0].length() - 1) + " vs " + width);
             return null;
-        } else if (rows.length/2 > height || height < rows.length/2) {
+        } else if (width > floorRows[0].length()) {
+            logger.error("Error parsing floor plan fewer elements than defined width");
+            logger.error("Elements vs defined width: " + (floorRows[0].length() - 1) + " vs " + width);
+            return null;
+        } else if (height < floorRows.length - 1) {
+            logger.error("Error parsing floor plan more elements than defined height");
+            logger.error("Elements vs defined height: " + (floorRows.length - 1) + " vs " + height);
+            return null;
+        } else if (height > floorRows.length) {
+            logger.error("Error parsing floor plan fewer elements than defined height");
+            logger.error("Elements vs defined height: " + (floorRows.length - 1) + " vs " + height);
             return null;
         }
 
