@@ -14,7 +14,18 @@
     <fx:define>
         <ContextMenu fx:id="contextMenu">
             <items>
-                <MenuItem text="Menu Item"/>
+                <MenuItem text="Floor Tile"/>
+                <MenuItem text="East-West Wall ('-')"/>
+                <MenuItem text="North-Sourth Wall ('|')"/>
+                <MenuItem text="Corner Wall ('+')"/>
+                <MenuItem text="Window ('#')"/>
+                <MenuItem text="Column ('x')"/>
+                <MenuItem text="Pole ('.')"/>
+                <MenuItem text="East-West Stairs ('&gt;')"/>
+                <MenuItem text="West-East Stairs ('&lt;')"/>
+                <MenuItem text="North-South Stairs ('v')"/>
+                <MenuItem text="South-North Stairs ('^')"/>
+                <MenuItem text="Hole ('o')"/>
             </items>
         </ContextMenu>
     </fx:define>
