@@ -31,8 +31,8 @@
                 </Menu>
                 <Menu fx:id="dimensionMenu" mnemonicParsing="false" text="Dimension">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuNewFile" text="2 Dimensional Image" />
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="3 Dimensional Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenu2D" text="2 Dimensional Image" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenu3D" text="3 Dimensional Image" />
                     </items>
                 </Menu>
                 <Menu fx:id="floorMenu" mnemonicParsing="false" text="Floor"></Menu>

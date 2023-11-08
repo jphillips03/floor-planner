@@ -27,6 +27,7 @@ import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
+import floor.planner.util.jogl.gleventlisteners.GLEventListener3D;
 import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
 
 public class MainController implements Initializable {
@@ -38,6 +39,8 @@ public class MainController implements Initializable {
     private Scene scene;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
+    private GLEventListener2D eventListener2D;
+    private GLEventListener3D eventListener3D;
     private Menu2DController menu2DController;
 
     @FXML
@@ -138,10 +141,27 @@ public class MainController implements Initializable {
             String contents = FileUtil.read(selectedFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
-
-            this.glWindow.addGLEventListener(new GLEventListener2D(this.currentFloorPlan, this.glWindow));
-            this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.menu2DController));
+            this.init2D();
         }
+    }
+
+    @FXML
+    private void onMenu2D(ActionEvent event) {
+        this.glWindow.removeGLEventListener(this.eventListener3D);
+        this.init2D();
+    }
+
+    private void init2D() {
+        this.eventListener2D = new GLEventListener2D(this.currentFloorPlan, this.glWindow);
+        this.glWindow.addGLEventListener(this.eventListener2D);
+        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.menu2DController));
+    }
+
+    @FXML
+    private void onMenu3D(ActionEvent event) {
+        this.glWindow.removeGLEventListener(this.eventListener2D);
+        this.eventListener3D = new GLEventListener3D(this.currentFloorPlan, this.glWindow);
+        this.glWindow.addGLEventListener(this.eventListener3D);
     }
 
     public void setGLWindow(GLWindow window) {
