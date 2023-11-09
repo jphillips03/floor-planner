@@ -26,6 +26,7 @@ import com.jogamp.newt.opengl.GLWindow;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
+import floor.planner.util.jogl.event.KeyListenerMove3D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener3D;
 import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
@@ -41,6 +42,7 @@ public class MainController implements Initializable {
     private FloorPlanService floorPlanService = new FloorPlanService();
     private GLEventListener2D eventListener2D;
     private GLEventListener3D eventListener3D;
+    private KeyListenerMove3D keyListener3D;
     private Menu2DController menu2DController;
 
     @FXML
@@ -148,6 +150,7 @@ public class MainController implements Initializable {
     @FXML
     private void onMenu2D(ActionEvent event) {
         this.glWindow.removeGLEventListener(this.eventListener3D);
+        this.glWindow.removeKeyListener(this.keyListener3D);
         this.init2D();
     }
 
@@ -162,6 +165,10 @@ public class MainController implements Initializable {
         this.glWindow.removeGLEventListener(this.eventListener2D);
         this.eventListener3D = new GLEventListener3D(this.currentFloorPlan, this.glWindow);
         this.glWindow.addGLEventListener(this.eventListener3D);
+
+        this.keyListener3D = new KeyListenerMove3D(this.currentFloorPlan);
+        this.glWindow.addKeyListener(this.keyListener3D);
+        this.glWindow.requestFocus(); // so key events are registered and fire
     }
 
     public void setGLWindow(GLWindow window) {
