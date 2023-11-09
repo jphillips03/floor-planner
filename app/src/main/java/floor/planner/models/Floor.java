@@ -14,6 +14,7 @@ import floor.planner.util.jogl.objects.obj2d.Stairs;
 import floor.planner.util.jogl.objects.obj2d.Wall;
 import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
+import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
 
@@ -26,6 +27,7 @@ public class Floor {
     /** The height of the floor. */
     private int height;
     private List<DrawableElement2D> elements;
+    private List<DrawableElement3D> elements3D;
     /** The current matrix of elements that make up the floor. */
     private ObjectType[][] elementsMatrix;
     /** The colors in this floor. */
@@ -44,22 +46,9 @@ public class Floor {
         this.width = width;
         this.height = height;
         this.elements = new ArrayList<DrawableElement2D>();
+        this.elements3D = new ArrayList<DrawableElement3D>();
         this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
-    }
-
-    private void initFloorTileVertices() {
-        this.floorTileVertices = new ArrayList<float[][]>();
-        for (int i = 0; i < this.height; i++) {
-            // int r = this.height - i;
-            float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
-            vertices = Matrix.translateY(vertices, i);
-            for (int j = 0; j < this.width; j++) {
-                if (!this.elementsMatrix[i][j].equals(ObjectType.HOLE)) {
-                    floorTileVertices.add(Matrix.translateX(vertices, j));
-                }
-            }
-        }
     }
 
     public List<float[][]> getFloorTileVertices() {
@@ -95,6 +84,10 @@ public class Floor {
         this.elements = val;
     }
 
+    public List<DrawableElement3D> getElements3D() {
+        return this.elements3D;
+    }
+
     /**
      * Returns the matrix representation of this floor, containing all the 
      * elements.
@@ -108,6 +101,21 @@ public class Floor {
         this.elementsMatrix = val;
         this.initElements();
         this.initFloorTileVertices();
+    }
+
+    private void initFloorTileVertices() {
+        this.floorTileVertices = new ArrayList<float[][]>();
+        for (int i = 0; i < this.height; i++) {
+            // int r = this.height - i;
+            float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
+            vertices = Matrix.translateY(vertices, i);
+            for (int j = 0; j < this.width; j++) {
+                if (!this.elementsMatrix[i][j].equals(ObjectType.HOLE)) {
+                    //floorTileVertices.add();
+                    this.elements3D.add(new Cube(Matrix.translateX(vertices, j)));
+                }
+            }
+        }
     }
 
     private void initElements() {

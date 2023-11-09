@@ -19,5 +19,5 @@ public abstract class DrawableElement {
     /**
      * Initializes the points for the element representing a polygon.
      */
-    public abstract void initPoints();
+    // public abstract void initPoints();
 }

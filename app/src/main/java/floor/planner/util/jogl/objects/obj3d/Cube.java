@@ -1,6 +1,10 @@
 package floor.planner.util.jogl.objects.obj3d;
 
-public class Cube {
+import com.jogamp.opengl.GL2;
+
+import java.util.Arrays;
+
+public class Cube extends DrawableElement3D {
     /**
      * Default vertices for a 1x1x1 cube located at the origin extending in
      * positive x, y, z planes.
@@ -20,4 +24,26 @@ public class Cube {
         {4, 5, 6, 7},
         {5, 4, 0, 1}
     };
+
+    private float[][] vertices;
+
+    public Cube(float[][] vertices) {
+        this.vertices = vertices;
+    }
+
+    public void draw(GL2 gl) {
+        int[][] verticesOrder = Cube.VERTICES_ORDER;
+        for (int i = 0; i < verticesOrder.length; i++) {
+            int[] order = verticesOrder[i];
+            this.drawPolygon(
+                gl,
+                Arrays.asList(
+                    vertices[order[0]],
+                    vertices[order[1]],
+                    vertices[order[2]],
+                    vertices[order[3]]
+                )
+            );
+        }
+    }
 }
