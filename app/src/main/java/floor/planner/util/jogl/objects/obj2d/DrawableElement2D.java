@@ -5,17 +5,18 @@ import java.util.List;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.jogl.objects.DrawableElement;
 import floor.planner.util.math.Point2D;
 
 /**
  * 
  */
-public abstract class DrawableElement {
+public abstract class DrawableElement2D extends DrawableElement {
     protected Orientation orientation;
     protected Point2D point;
     protected List<Point2D> points;
 
-    public DrawableElement(Point2D point, Orientation orientation) {
+    public DrawableElement2D(Point2D point, Orientation orientation) {
         this.point = point;
         this.orientation = orientation;
         this.initPoints();

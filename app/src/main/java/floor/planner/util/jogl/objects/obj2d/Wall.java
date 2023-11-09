@@ -7,7 +7,7 @@ import floor.planner.constants.NorthSouthWallOffset2D;
 import floor.planner.constants.Orientation;
 import floor.planner.util.math.Point2D;
 
-public class Wall extends DrawableElement {
+public class Wall extends DrawableElement2D {
     public Wall(Point2D point, Orientation orientation) {
         super(point, orientation);
     }

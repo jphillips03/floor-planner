@@ -9,7 +9,7 @@ import com.jogamp.opengl.GL2;
 import floor.planner.constants.Orientation;
 import floor.planner.util.math.Point2D;
 
-public class Stairs extends DrawableElement {
+public class Stairs extends DrawableElement2D {
     private static final List<Orientation> eastWest = Arrays.asList(Orientation.EAST_WEST, Orientation.WEST_EAST);
     private float colorDelta;
     private float colorStart;

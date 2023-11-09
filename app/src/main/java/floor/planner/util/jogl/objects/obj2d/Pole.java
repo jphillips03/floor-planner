@@ -5,7 +5,7 @@ import com.jogamp.opengl.GL2;
 import floor.planner.constants.Orientation;
 import floor.planner.util.math.Point2D;
 
-public class Pole extends DrawableElement {
+public class Pole extends DrawableElement2D {
     
     public Pole(Point2D point, Orientation orientation) {
         super(point, orientation);

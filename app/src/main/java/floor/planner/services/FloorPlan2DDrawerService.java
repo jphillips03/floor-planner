@@ -10,7 +10,7 @@ import com.jogamp.opengl.GL2;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.drawers.TwoDDrawer;
-import floor.planner.util.jogl.objects.obj2d.DrawableElement;
+import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
 import floor.planner.util.math.Point2D;
 
 public class FloorPlan2DDrawerService {
@@ -20,7 +20,7 @@ public class FloorPlan2DDrawerService {
     public void drawFloor(GL2 gl, FloorPlan floorPlan, int floorNum) {
         Floor floor = floorPlan.getFloor(floorNum);
         // draw each of the elements on the floor
-        for (DrawableElement element : floor.getElements()) {
+        for (DrawableElement2D element : floor.getElements()) {
             element.draw(gl);
         }
 

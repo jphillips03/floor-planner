@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.Orientation;
-import floor.planner.util.jogl.objects.obj2d.DrawableElement;
+import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
 import floor.planner.util.jogl.objects.obj2d.Pole;
 import floor.planner.util.jogl.objects.obj2d.Stairs;
 import floor.planner.util.jogl.objects.obj2d.Wall;
@@ -25,7 +25,7 @@ public class Floor {
     private int width;
     /** The height of the floor. */
     private int height;
-    private List<DrawableElement> elements;
+    private List<DrawableElement2D> elements;
     /** The current matrix of elements that make up the floor. */
     private ObjectType[][] elementsMatrix;
     /** The colors in this floor. */
@@ -43,7 +43,7 @@ public class Floor {
         this.floorNumber = floorNumber;
         this.width = width;
         this.height = height;
-        this.elements = new ArrayList<DrawableElement>();
+        this.elements = new ArrayList<DrawableElement2D>();
         this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
     }
@@ -88,10 +88,10 @@ public class Floor {
         return this.width;
     }
 
-    public List<DrawableElement> getElements() {
+    public List<DrawableElement2D> getElements() {
         return this.elements;
     }
-    public void setElements(List<DrawableElement> val) {
+    public void setElements(List<DrawableElement2D> val) {
         this.elements = val;
     }
 
@@ -111,7 +111,7 @@ public class Floor {
     }
 
     private void initElements() {
-        this.elements = new ArrayList<DrawableElement>();
+        this.elements = new ArrayList<DrawableElement2D>();
         for (int i = 0; i < this.height; i++) {
             for (int j = 0; j < this.width; j++) {
                 int r = this.height - i;

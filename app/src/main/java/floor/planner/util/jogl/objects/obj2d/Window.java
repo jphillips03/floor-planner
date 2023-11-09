@@ -13,7 +13,7 @@ import floor.planner.util.math.Point2D;
  * where the tips meet. The wall helps visually orient the window to be
  * EAST_WEST or NORTH_SOUTH.
  */
-public class Window extends DrawableElement {
+public class Window extends DrawableElement2D {
     /** The set of points for one of the triangles. */
     private List<Point2D> triangle1Points;
     /** The set of points for the other triangle. */
