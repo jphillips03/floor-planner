@@ -2,6 +2,8 @@ package floor.planner.util.jogl.objects.obj3d;
 
 import com.jogamp.opengl.GL2;
 
+import floor.planner.util.jogl.objects.Color;
+
 import java.util.Arrays;
 
 public class Cube extends DrawableElement3D {
@@ -29,6 +31,9 @@ public class Cube extends DrawableElement3D {
 
     public Cube(float[][] vertices) {
         this.vertices = vertices;
+
+        // default to red for now...
+        this.color = new Color(1f, 0f, 0f);
     }
 
     public float[][] getVertices() {
