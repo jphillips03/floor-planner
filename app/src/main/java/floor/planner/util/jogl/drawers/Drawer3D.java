@@ -14,7 +14,6 @@ public class Drawer3D {
     private static final Logger logger = LoggerFactory.getLogger(Drawer3D.class);
 
     public void draw(GL2 gl, GLU glu, FloorPlan floorPlan) {
-        // draw the floor plan in 3D
         for (Floor floor : floorPlan.getFloors()) {
             for (DrawableElement3D element : floor.getElements3D()) {
                 element.draw(gl);

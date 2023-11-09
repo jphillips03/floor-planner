@@ -2,8 +2,6 @@ package floor.planner.util.jogl.drawers;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.glu.GLU;
-
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
