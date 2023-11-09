@@ -34,6 +34,7 @@ public class GLEventListener2D implements GLEventListener {
         gl.glDepthFunc(GL2.GL_LEQUAL);
         gl.glHint(GL2.GL_PERSPECTIVE_CORRECTION_HINT, GL2.GL_NICEST);
         gl.glShadeModel(GL2.GL_SMOOTH);
+        gl.glLoadIdentity();
 
         this.glu = new GLU();
     }
@@ -55,6 +56,7 @@ public class GLEventListener2D implements GLEventListener {
         ClippingPlane plane = this.floorPlan.getClippingPlane();
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();  // reset projection matrix
+
         this.glu.gluOrtho2D(
             plane.getLeft(),
             plane.getRight(),
