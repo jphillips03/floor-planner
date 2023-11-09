@@ -49,6 +49,7 @@ public class FloorPlanService {
             int floorStartsAt = i == 0 ? i + 1 : i + plan.getHeight();
             Floor floor = floorService.create(
                 text,
+                i,
                 floorStartsAt,
                 plan.getHeight(),
                 plan.getWidth()

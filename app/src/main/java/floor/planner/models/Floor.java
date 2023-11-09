@@ -12,10 +12,13 @@ import floor.planner.models.twodelements.Pole;
 import floor.planner.models.twodelements.Stairs;
 import floor.planner.models.twodelements.Wall;
 import floor.planner.models.twodelements.Window;
+import floor.planner.util.jogl.objects.obj3d.Cube;
+import floor.planner.util.math.Matrix;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);
 
+    private int floorNumber;
     /** The width of a floor. */
     private int width;
     /** The height of the floor. */
@@ -25,6 +28,7 @@ public class Floor {
     private ObjectType[][] elementsMatrix;
     /** The colors in this floor. */
     private String[][] elementColors;
+    private List<float[][]> floorTileVertices;
 
     /**
      * Constructor for the Floor class. Creates a matrix for a 
@@ -33,12 +37,35 @@ public class Floor {
      * @param width
      * @param height
      */
-    public Floor(int height, int width) {
+    public Floor(int floorNumber, int height, int width) {
+        this.floorNumber = floorNumber;
         this.width = width;
         this.height = height;
         this.elements = new ArrayList<DrawableElement>();
         this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
+    }
+
+    private void initFloorTileVertices() {
+        this.floorTileVertices = new ArrayList<float[][]>();
+        for (int i = 0; i < this.height; i++) {
+            // int r = this.height - i;
+            float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
+            vertices = Matrix.translateY(vertices, i);
+            for (int j = 0; j < this.width; j++) {
+                if (!this.elementsMatrix[i][j].equals(ObjectType.HOLE)) {
+                    floorTileVertices.add(Matrix.translateX(vertices, j));
+                }
+            }
+        }
+    }
+
+    public List<float[][]> getFloorTileVertices() {
+        return this.floorTileVertices;
+    }
+
+    public ObjectType getElementByRowAndCol(int row, int col) {
+        return this.elementsMatrix[row][col];
     }
 
     /**
@@ -78,6 +105,7 @@ public class Floor {
     public void setElementsMatrix(ObjectType[][] val) {
         this.elementsMatrix = val;
         this.initElements();
+        this.initFloorTileVertices();
     }
 
     private void initElements() {

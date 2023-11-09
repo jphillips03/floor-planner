@@ -23,7 +23,7 @@ public class FloorService {
      * @param width The width of the floor.
      * @return A Floor based on given text starting at the given line.
      */
-    public Floor create(String text, int line, int height, int width) {
+    public Floor create(String text, int floorNumber, int line, int height, int width) {
         String[] rows = text.split("\n");
         String[] floorRows = Arrays.copyOfRange(rows, line, line + height);
         // TODO throw Exceptions instead of returning null...
@@ -45,7 +45,7 @@ public class FloorService {
             return null;
         }
 
-        return this.createUtil(rows, line, height, width);
+        return this.createUtil(rows, floorNumber, line, height, width);
     }
 
     /**
@@ -64,11 +64,11 @@ public class FloorService {
             text += "\n";
         }
 
-        return this.createUtil(text.split("\n"), width, height, width);
+        return this.createUtil(text.split("\n"), 0, width, height, width);
     }
 
-    private Floor createUtil(String[] rows, int line, int height, int width) {
-        Floor floor = new Floor(height, width);
+    private Floor createUtil(String[] rows, int floorNumber, int line, int height, int width) {
+        Floor floor = new Floor(floorNumber, height, width);
         ObjectType[][] elements = new ObjectType[height][width];
         String[][] elementColors = new String[height][width];
         for (int i = 0; i < height; i++) {
