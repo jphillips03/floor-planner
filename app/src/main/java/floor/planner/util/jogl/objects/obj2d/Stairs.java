@@ -1,4 +1,4 @@
-package floor.planner.models.twodelements;
+package floor.planner.util.jogl.objects.obj2d;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,8 +7,7 @@ import java.util.List;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
-import floor.planner.models.DrawableElement;
-import floor.planner.models.Point2D;
+import floor.planner.util.math.Point2D;
 
 public class Stairs extends DrawableElement {
     private static final List<Orientation> eastWest = Arrays.asList(Orientation.EAST_WEST, Orientation.WEST_EAST);

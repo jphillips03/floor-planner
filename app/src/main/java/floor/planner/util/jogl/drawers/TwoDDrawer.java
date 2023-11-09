@@ -5,7 +5,7 @@ import java.util.List;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 
-import floor.planner.models.Point2D;
+import floor.planner.util.math.Point2D;
 
 /**
  * The TwoDDrawer class defines functions useful for rendering 2D elements.

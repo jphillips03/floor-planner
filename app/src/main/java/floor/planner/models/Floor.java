@@ -8,12 +8,14 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.Orientation;
-import floor.planner.models.twodelements.Pole;
-import floor.planner.models.twodelements.Stairs;
-import floor.planner.models.twodelements.Wall;
-import floor.planner.models.twodelements.Window;
+import floor.planner.util.jogl.objects.obj2d.DrawableElement;
+import floor.planner.util.jogl.objects.obj2d.Pole;
+import floor.planner.util.jogl.objects.obj2d.Stairs;
+import floor.planner.util.jogl.objects.obj2d.Wall;
+import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.math.Matrix;
+import floor.planner.util.math.Point2D;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);

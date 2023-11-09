@@ -1,4 +1,4 @@
-package floor.planner.models;
+package floor.planner.util.math;
 
 public class Point2D {
     

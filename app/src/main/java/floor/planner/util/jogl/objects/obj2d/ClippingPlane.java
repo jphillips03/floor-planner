@@ -1,4 +1,4 @@
-package floor.planner.models;
+package floor.planner.util.jogl.objects.obj2d;
 
 public class ClippingPlane {
     private float left;

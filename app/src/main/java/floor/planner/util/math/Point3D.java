@@ -1,7 +1,5 @@
 package floor.planner.util.math;
 
-import floor.planner.models.Point2D;
-
 public class Point3D extends Point2D {
     private float z;
 

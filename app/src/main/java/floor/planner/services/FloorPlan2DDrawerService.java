@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import com.jogamp.opengl.GL2;
 
-import floor.planner.models.DrawableElement;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
-import floor.planner.models.Point2D;
 import floor.planner.util.jogl.drawers.TwoDDrawer;
+import floor.planner.util.jogl.objects.obj2d.DrawableElement;
+import floor.planner.util.math.Point2D;
 
 public class FloorPlan2DDrawerService {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlan2DDrawerService.class);

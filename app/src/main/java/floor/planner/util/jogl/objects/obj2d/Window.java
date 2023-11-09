@@ -1,4 +1,4 @@
-package floor.planner.models.twodelements;
+package floor.planner.util.jogl.objects.obj2d;
 
 import java.util.Arrays;
 import java.util.List;
@@ -6,8 +6,7 @@ import java.util.List;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
-import floor.planner.models.DrawableElement;
-import floor.planner.models.Point2D;
+import floor.planner.util.math.Point2D;
 
 /**
  * A window consists of 2 triangles facing away from each other and a wall

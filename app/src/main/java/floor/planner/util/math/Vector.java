@@ -3,8 +3,6 @@ package floor.planner.util.math;
 import java.nio.FloatBuffer;
 import java.util.List;
 
-import floor.planner.models.Point2D;
-
 public class Vector {
     private float[] values;
 

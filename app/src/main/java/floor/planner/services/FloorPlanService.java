@@ -4,9 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.AspectRatio;
-import floor.planner.models.ClippingPlane;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
+import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
 
 public class FloorPlanService {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlanService.class);

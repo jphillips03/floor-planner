@@ -1,12 +1,11 @@
-package floor.planner.models.twodelements;
+package floor.planner.util.jogl.objects.obj2d;
 
 import java.util.Arrays;
 
 import floor.planner.constants.EastWestWallOffset2D;
 import floor.planner.constants.NorthSouthWallOffset2D;
 import floor.planner.constants.Orientation;
-import floor.planner.models.DrawableElement;
-import floor.planner.models.Point2D;
+import floor.planner.util.math.Point2D;
 
 public class Wall extends DrawableElement {
     public Wall(Point2D point, Orientation orientation) {
