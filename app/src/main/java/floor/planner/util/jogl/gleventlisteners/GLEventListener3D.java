@@ -53,6 +53,7 @@ public class GLEventListener3D implements GLEventListener {
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
+        gl.glPushMatrix();
         final float h = width / height;
         glu.gluPerspective(45, h, 0.1, 100.0);
 
@@ -83,6 +84,7 @@ public class GLEventListener3D implements GLEventListener {
         gl.glScalef(floorPlan.getZoom(), floorPlan.getZoom(), floorPlan.getZoom());
 
         this.drawer.draw(gl, this.glu, floorPlan);
+        gl.glPopMatrix();
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
