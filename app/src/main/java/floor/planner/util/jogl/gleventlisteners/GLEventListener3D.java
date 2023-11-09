@@ -76,6 +76,12 @@ public class GLEventListener3D implements GLEventListener {
             1,
             0
         );
+
+        gl.glRotatef(floorPlan.getRotateX(), 1, 0, 0);
+        gl.glRotatef(floorPlan.getRotateZ(), 0, 0, 1);
+        gl.glTranslatef(0, 0, floorPlan.getUp());
+        gl.glScalef(floorPlan.getZoom(), floorPlan.getZoom(), floorPlan.getZoom());
+
         this.drawer.draw(gl, this.glu, floorPlan);
     }
 
