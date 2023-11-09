@@ -10,10 +10,8 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
-import floor.planner.constants.AspectRatio;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.drawers.Drawer3D;
-import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
 
 public class GLEventListener3D implements GLEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GLEventListener3D.class);
