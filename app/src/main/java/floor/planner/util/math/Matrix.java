@@ -82,6 +82,26 @@ public class Matrix {
         return cof;
     }
 
+    public static float[][] scaleX(float[][] matrix, float delta) {
+        return scale(matrix, delta, 0);
+    }
+
+    public static float[][] scaleY(float[][] matrix, float delta) {
+        return scale(matrix, delta, 1);
+    }
+
+    public static float[][] scaleZ(float[][] matrix, float delta) {
+        return scale(matrix, delta, 2);
+    }
+
+    private static float[][] scale(float[][] matrix, float delta, int coord) {
+        float[][] copy = copy(matrix);
+        for (int i = 0; i < copy.length; i++) {
+            copy[i][coord] *= delta;
+        }
+        return copy;
+    } 
+
     /**
      * Returns a copy of the given matrix moved in the X direction by the
      * given delta.

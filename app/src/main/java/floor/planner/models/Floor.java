@@ -15,6 +15,7 @@ import floor.planner.util.jogl.objects.obj2d.Wall;
 import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
+import floor.planner.util.jogl.objects.obj3d.FloorTile;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
 
@@ -111,8 +112,7 @@ public class Floor {
             vertices = Matrix.translateY(vertices, i);
             for (int j = 0; j < this.width; j++) {
                 if (!this.elementsMatrix[i][j].equals(ObjectType.HOLE)) {
-                    //floorTileVertices.add();
-                    this.elements3D.add(new Cube(Matrix.translateX(vertices, j)));
+                    this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                 }
             }
         }

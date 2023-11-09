@@ -31,6 +31,13 @@ public class Cube extends DrawableElement3D {
         this.vertices = vertices;
     }
 
+    public float[][] getVertices() {
+        return this.vertices;
+    }
+    public void setVertices(float[][] vertices) {
+        this.vertices = vertices;
+    }
+
     public void draw(GL2 gl) {
         int[][] verticesOrder = Cube.VERTICES_ORDER;
         for (int i = 0; i < verticesOrder.length; i++) {
