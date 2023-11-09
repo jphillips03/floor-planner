@@ -101,39 +101,35 @@ public class Floor {
     public void setElementsMatrix(ObjectType[][] val) {
         this.elementsMatrix = val;
         this.initElements();
-        this.initFloorTileVertices();
-    }
-
-    private void initFloorTileVertices() {
-        this.floorTileVertices = new ArrayList<float[][]>();
-        for (int i = 0; i < this.height; i++) {
-            // int r = this.height - i;
-            float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
-            vertices = Matrix.translateY(vertices, i);
-            for (int j = 0; j < this.width; j++) {
-                if (!this.elementsMatrix[i][j].equals(ObjectType.HOLE)) {
-                    this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                }
-            }
-        }
     }
 
     private void initElements() {
         this.elements = new ArrayList<DrawableElement2D>();
+        this.elements3D = new ArrayList<DrawableElement3D>();
         for (int i = 0; i < this.height; i++) {
+            int r = this.height - i;
+            float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
+            vertices = Matrix.translateY(vertices, i);
             for (int j = 0; j < this.width; j++) {
-                int r = this.height - i;
-
                 switch (this.elementsMatrix[i][j]) {
                     case EAST_WEST_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case NORTH_SOUTH_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case CORNER_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case WINDOW:
                         if (
@@ -159,24 +155,45 @@ public class Floor {
                                 )
                             );
                         }
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case COLUMN:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.COLUMN));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case EAST_WEST_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.EAST_WEST));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case WEST_EAST_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.WEST_EAST));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case NORTH_SOUTH_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.NORTH_SOUTH));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case SOUTH_NORTH_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case POLE:
                         this.elements.add(new Pole(new Point2D(j, r), null));
+
+                        // add 3D elements
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     default:
                         logger.warn("Unknown architectural object found at " + i + " " + j);
