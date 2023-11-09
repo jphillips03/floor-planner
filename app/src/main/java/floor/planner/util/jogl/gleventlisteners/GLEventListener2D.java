@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jogamp.newt.opengl.GLWindow;
-import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
@@ -12,17 +11,18 @@ import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.FloorPlan;
-import floor.planner.services.FloorPlan2DDrawerService;
+import floor.planner.util.jogl.drawers.Drawer2D;
 import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
 
 public class GLEventListener2D implements GLEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GLEventListener2D.class);
 
+    private Drawer2D drawer;
     private GLU glu;
     private FloorPlan floorPlan;
-    private FloorPlan2DDrawerService drawerService = new FloorPlan2DDrawerService();
 
     public GLEventListener2D(FloorPlan floorPlan, GLWindow glWindow) {
+        this.drawer = new Drawer2D();
         this.floorPlan = floorPlan;
     }
 
@@ -66,7 +66,7 @@ public class GLEventListener2D implements GLEventListener {
     public void display(final GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
-        this.drawerService.drawFloor(gl, floorPlan, floorPlan.getCurrentFloor());
+        this.drawer.draw(gl, floorPlan, floorPlan.getCurrentFloor());
     }
 
     public void dispose(final GLAutoDrawable drawable) {}

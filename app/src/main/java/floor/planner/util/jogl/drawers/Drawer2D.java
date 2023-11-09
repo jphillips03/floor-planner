@@ -1,23 +1,20 @@
-package floor.planner.services;
+package floor.planner.util.jogl.drawers;
 
-import java.util.Arrays;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
-import floor.planner.util.jogl.drawers.TwoDDrawer;
 import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
 import floor.planner.util.math.Point2D;
 
-public class FloorPlan2DDrawerService {
-    private static final Logger logger = LoggerFactory.getLogger(FloorPlan2DDrawerService.class);
-    private TwoDDrawer drawer = new TwoDDrawer();
+import java.util.Arrays;
+import java.util.List;
 
-    public void drawFloor(GL2 gl, FloorPlan floorPlan, int floorNum) {
+public class Drawer2D {
+    
+    public void draw(GL2 gl, FloorPlan floorPlan, int floorNum) {
         Floor floor = floorPlan.getFloor(floorNum);
         // draw each of the elements on the floor
         for (DrawableElement2D element : floor.getElements()) {
@@ -30,7 +27,7 @@ public class FloorPlan2DDrawerService {
         for (int i = 0; i < floorPlan.getHeight(); i++) {
             for (int j = 0; j < floorPlan.getWidth(); j++) {
                 int r = floorPlan.getHeight() - i;
-                this.drawer.drawEmptyTile(gl, Arrays.asList(
+                this.drawEmptyTile(gl, Arrays.asList(
                     new Point2D(j, r),
                     new Point2D(j + 1, r),
                     new Point2D(j + 1, r - 1),
@@ -39,5 +36,15 @@ public class FloorPlan2DDrawerService {
                 ));
             }
         }
+    }
+
+    public void drawEmptyTile(GL2 gl, List<Point2D> points) {
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+        gl.glBegin(GL.GL_LINE_STRIP);
+        for (Point2D point : points) {
+            gl.glVertex2d(point.getX(), point.getY());
+        }
+        gl.glEnd();
+        gl.glFlush();
     }
 }
