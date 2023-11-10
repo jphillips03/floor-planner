@@ -5,6 +5,7 @@ import com.jogamp.opengl.GL2;
 import floor.planner.util.jogl.objects.Color;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class Cube extends DrawableElement3D {
     /**
@@ -26,6 +27,12 @@ public class Cube extends DrawableElement3D {
         {4, 5, 6, 7},
         {5, 4, 0, 1}
     };
+    public static List<Integer> TOP_FACE = Arrays.asList(0, 1, 2, 3);
+    public static List<Integer> BOTTOM_FACE = Arrays.asList(4, 5, 6, 7);
+    public static List<Integer> FRONT_FACE = Arrays.asList(0, 3, 4, 7);
+    public static List<Integer> BACK_FACE = Arrays.asList(1, 2, 5, 6);
+    public static List<Integer> RIGHT_FACE = Arrays.asList(2, 3, 6, 7);
+    public static List<Integer> LEFT_FACE = Arrays.asList(0, 1, 4, 5);
 
     private float[][] vertices;
 

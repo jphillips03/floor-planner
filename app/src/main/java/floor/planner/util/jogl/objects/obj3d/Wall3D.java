@@ -39,11 +39,11 @@ public class Wall3D extends Cube {
             vertices = Matrix.scaleX(vertices, 0.05f);
             vertices = Matrix.translateX(vertices, this.col + 0.5f);
         } else if (this.orientation.equals(Orientation.COLUMN)) {
-            vertices = Matrix.translatePartialY(vertices, 0.45f, Arrays.asList(0, 3, 4, 7));
-            vertices = Matrix.translatePartialY(vertices, -0.45f, Arrays.asList(1, 2, 5, 6));
+            vertices = Matrix.translatePartialY(vertices, 0.45f, Cube.FRONT_FACE);
+            vertices = Matrix.translatePartialY(vertices, -0.45f, Cube.BACK_FACE);
 
-            vertices = Matrix.translatePartialX(vertices, 0.45f, Arrays.asList(0, 1, 4, 5));
-            vertices = Matrix.translatePartialX(vertices, -0.45f, Arrays.asList(2, 3, 6, 7));
+            vertices = Matrix.translatePartialX(vertices, 0.45f, Cube.LEFT_FACE);
+            vertices = Matrix.translatePartialX(vertices, -0.45f, Cube.RIGHT_FACE);
         }
 
         // shorten z plane of wall and move it up above floor tile to prevent
