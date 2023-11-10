@@ -1,5 +1,7 @@
 package floor.planner.util.math;
 
+import java.util.List;
+
 /**
  * Matrix class defines convenience methods for matrices.
  * 
@@ -155,6 +157,43 @@ public class Matrix {
         float[][] copy = copy(matrix);
         for (int i = 0; i < copy.length; i++) {
             copy[i][coord] += delta;
+        }
+        return copy;
+    }
+
+    public static float[][] translatePartialX(
+        float[][] matrix,
+        float delta,
+        List<Integer> indexes
+    ) {
+        return translatePartial(matrix, delta, indexes, 0);
+    }
+
+    public static float[][] translatePartialY(
+        float[][] matrix,
+        float delta,
+        List<Integer> indexes
+    ) {
+        return translatePartial(matrix, delta, indexes, 1);
+    }
+
+    public static float[][] translatePartialZ(
+        float[][] matrix,
+        float delta,
+        List<Integer> indexes
+    ) {
+        return translatePartial(matrix, delta, indexes, 2);
+    }
+
+    private static float[][] translatePartial(
+        float[][] matrix,
+        float delta,
+        List<Integer> indexes,
+        int coord
+    ) {
+        float[][] copy = copy(matrix);
+        for (int i = 0; i < indexes.size(); i++) {
+            copy[indexes.get(i)][coord] += delta;
         }
         return copy;
     }

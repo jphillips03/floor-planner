@@ -16,6 +16,7 @@ import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.jogl.objects.obj3d.FloorTile;
+import floor.planner.util.jogl.objects.obj3d.Wall3D;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
 
@@ -109,7 +110,7 @@ public class Floor {
         for (int i = 0; i < this.height; i++) {
             int r = this.height - i;
             float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, this.floorNumber * 4);
-            vertices = Matrix.translateY(vertices, i);
+            vertices = Matrix.translateY(vertices, r);
             for (int j = 0; j < this.width; j++) {
                 switch (this.elementsMatrix[i][j]) {
                     case EAST_WEST_WALL:
@@ -117,12 +118,14 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST, j, r));
                         break;
                     case NORTH_SOUTH_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH, j, r));
                         break;
                     case CORNER_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
@@ -130,6 +133,8 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST, j, r));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH, j, r));
                         break;
                     case WINDOW:
                         if (
@@ -164,6 +169,7 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.COLUMN, j, r));
                         break;
                     case EAST_WEST_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.EAST_WEST));
