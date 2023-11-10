@@ -67,19 +67,19 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLoadIdentity();
 
         glu.gluLookAt(
-            this.floorPlan.getCameraPosition().getX(),
-            this.floorPlan.getCameraPosition().getY(),
-            this.floorPlan.getCameraPosition().getZ(),
-            this.floorPlan.getWidth() / 2,
-            this.floorPlan.getHeight() / 2,
-            0,
+            this.floorPlan.getCamera().getPosition().getX(),
+            this.floorPlan.getCamera().getPosition().getY(),
+            this.floorPlan.getCamera().getPosition().getZ(),
+            this.floorPlan.getCamera().getCenter().getX(),
+            this.floorPlan.getCamera().getCenter().getY(),
+            this.floorPlan.getCamera().getCenter().getZ(),
             0,
             1,
             0
         );
 
-        gl.glRotatef(floorPlan.getRotateX(), 1, 0, 0);
-        gl.glRotatef(floorPlan.getRotateZ(), 0, 0, 1);
+        gl.glRotatef(this.floorPlan.getCamera().getRotateX(), 1, 0, 0);
+        gl.glRotatef(this.floorPlan.getCamera().getRotateZ(), 0, 0, 1);
         gl.glTranslatef(0, 0, floorPlan.getUp());
         gl.glScalef(floorPlan.getZoom(), floorPlan.getZoom(), floorPlan.getZoom());
 

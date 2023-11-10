@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.newt.event.KeyEvent;
 import com.jogamp.newt.event.KeyListener;
 
+import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.math.Point3D;
 
@@ -19,7 +20,7 @@ public class KeyListenerMove3D implements KeyListener {
     }
 
     public void keyPressed(KeyEvent keyEvent) {
-        Point3D cameraPosition = this.currentFloorPlan.getCameraPosition();
+        Camera camera = this.currentFloorPlan.getCamera();
         // Handle i key pressed
         if(keyEvent.getKeyCode() == 73) {
             this.currentFloorPlan.setZoom(this.currentFloorPlan.getZoom() + 0.25f);
@@ -38,17 +39,17 @@ public class KeyListenerMove3D implements KeyListener {
         }
         // Handle Left key pressed
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
-            this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() + 5f);
+            camera.rotateZ(5f);
+            //this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() + 5f);
         }
         // Handle Right key pressed
         if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
-            this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() - 5f);
+            camera.rotateZ(-5f);
+            //this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() - 5f);
         }
         if(keyEvent.getKeyChar() == 'x') {
-            this.currentFloorPlan.setRotateX(this.currentFloorPlan.getRotateX() + 5f);
+            camera.rotateX(5f);
         }
-
-        this.currentFloorPlan.setCameraPosition(cameraPosition);
     }
     public void keyReleased(KeyEvent arg0) {}
 }

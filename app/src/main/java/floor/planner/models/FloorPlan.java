@@ -12,7 +12,7 @@ import floor.planner.util.math.Point3D;
 public class FloorPlan {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlan.class);
 
-    private Point3D cameraPosition;
+    private Camera camera;
     /** The clipping plane for the 2D rendering. */
     private ClippingPlane clippingPlane;
     /** The current floor to render in 2D (defaults to first floor i.e. 0). */
@@ -32,10 +32,6 @@ public class FloorPlan {
 	private float zoom = 1;
 	/** The amount to translate up on the Y axis in the 3D view. */
 	private float up = 0;
-	/** The amount to rotate the floor plan along the Z axis. */
-	private float rotateZ = 0;
-	/** The amount to rotate the floor plan along the X axis. */
-	private float rotateX = -50;
     /** The position of the light in the 3D view. */
 	private float[] lightPosition = {1.0f,0.0f,8.0f,0.0f};
 	/** The diffuse lighting in the 3D view. */
@@ -59,20 +55,6 @@ public class FloorPlan {
     }
     public void setUp(float up) {
         this.up = up;
-    }
-
-    public float getRotateZ() {
-        return this.rotateZ;
-    }
-    public void setRotateZ(float z) {
-        this.rotateZ = z;
-    }
-
-    public float getRotateX() {
-        return this.rotateX;
-    }
-    public void setRotateX(float x) {
-        this.rotateX = x;
     }
 
     public float[] getLightPosition() {
@@ -106,14 +88,10 @@ public class FloorPlan {
      */
     public FloorPlan() {
         floors = new ArrayList<Floor>();
-        this.cameraPosition = new Point3D(1, 1, 8);
     }
 
-    public Point3D getCameraPosition() {
-        return this.cameraPosition;
-    }
-    public void setCameraPosition(Point3D pos) {
-        this.cameraPosition = pos;
+    public Camera getCamera() {
+        return this.camera;
     }
 
     public ClippingPlane getClippingPlane() {
@@ -208,6 +186,7 @@ public class FloorPlan {
         this.height = height;
         this.width = width;
         this.numFloors = numFloors;
+        this.camera = new Camera(width, height);
     }
 
     public boolean getRender2D() {
