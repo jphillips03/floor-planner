@@ -14,12 +14,21 @@ public class Color {
     public float getRed() {
         return this.red;
     }
+    public void setRed(float val) {
+        this.red = val;
+    }
 
     public float getGreen() {
         return this.green;
     }
+    public void setGreen(float val) {
+        this.green = val;
+    }
 
     public float getBlue() {
         return this.blue;
+    }
+    public void setBlue(float val) {
+        this.blue = val;
     }
 }
