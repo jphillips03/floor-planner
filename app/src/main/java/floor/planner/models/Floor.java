@@ -16,6 +16,7 @@ import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.jogl.objects.obj3d.FloorTile;
+import floor.planner.util.jogl.objects.obj3d.Stairs3D;
 import floor.planner.util.jogl.objects.obj3d.Wall3D;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
@@ -176,24 +177,28 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
                         break;
                     case WEST_EAST_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.WEST_EAST));
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.WEST_EAST));
                         break;
                     case NORTH_SOUTH_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.NORTH_SOUTH));
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
                         break;
                     case SOUTH_NORTH_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH));
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.SOUTH_NORTH));
                         break;
                     case POLE:
                         this.elements.add(new Pole(new Point2D(j, r), null));
