@@ -12,15 +12,11 @@ import floor.planner.util.math.Matrix;
 public class Wall3D extends Cube {
     private static final Logger logger = LoggerFactory.getLogger(Wall3D.class);
     private Orientation orientation;
-    private int col;
-    private int row;
 
-    public Wall3D(float[][] vertices, Orientation orientation, int col, int row) {
+    public Wall3D(float[][] vertices, Orientation orientation) {
         super(vertices);
         this.orientation = orientation;
         this.color = new Color(0, 0, 1);
-        this.col = col;
-        this.row = row;
         this.scaleCube();
     }
 

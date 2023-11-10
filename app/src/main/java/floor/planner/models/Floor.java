@@ -118,14 +118,14 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST, j, r));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
                         break;
                     case NORTH_SOUTH_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH, j, r));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
                         break;
                     case CORNER_WALL:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
@@ -133,8 +133,8 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST, j, r));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH, j, r));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
                         break;
                     case WINDOW:
                         if (
@@ -169,7 +169,7 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.COLUMN, j, r));
+                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.COLUMN));
                         break;
                     case EAST_WEST_STAIRS:
                         this.elements.add(new Stairs(new Point2D(j, r), Orientation.EAST_WEST));
