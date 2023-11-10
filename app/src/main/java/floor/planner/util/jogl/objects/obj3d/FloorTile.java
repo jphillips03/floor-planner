@@ -15,7 +15,7 @@ public class FloorTile extends Cube {
      */
     private void scaleCube() {
         float[][] vertices = this.getVertices();
-        vertices = Matrix.scaleZ(vertices, 0.05f);
+        vertices = Matrix.translatePartialZ(vertices, -0.95f, TOP_FACE);
         this.setVertices(vertices);
     }
 }
