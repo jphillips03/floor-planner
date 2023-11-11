@@ -8,7 +8,7 @@ public class Light {
 	/** The specular lighting in the 3D view. */
 	private float[] specular = {1f, 1f, 1f, 1f};
 	/** The ambient lighting in the 3D view. */
-	private float[] ambient = {0f, 0f, 0f, 1f};
+	private float[] ambient = { 1f, 0f, 0f, 1.0f };
 
     public Light(int width, int height, int numFloors) {
         float[] position = { (float) width / 2f, (float) height / 2f, numFloors * 2, 0f };

@@ -37,6 +37,13 @@ public class GLEventListener3D implements GLEventListener {
         gl.glShadeModel(GL2.GL_SMOOTH);
         gl.glLoadIdentity();
 
+        // Set up lighting
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, floorPlan.getLight().getAmbient(), 0); // Set the ambient lighting for LIGHT0
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, floorPlan.getLight().getDiffuse(), 0); // Set the diffuse lighting for LIGHT0
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
+        gl.glEnable(GL2.GL_LIGHT0);   // Enable LIGHT0
+        gl.glEnable(GL2.GL_LIGHTING); // Enable Lighting
+
         this.glu = new GLU();
     }
 
@@ -68,6 +75,8 @@ public class GLEventListener3D implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
+        gl.glColorMask(true, true, true, true);
+
         glu.gluLookAt(
             this.floorPlan.getWidth(),
             this.floorPlan.getHeight(),
@@ -90,6 +99,8 @@ public class GLEventListener3D implements GLEventListener {
         // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
         // instead.
         gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
+
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getDiffuse(), 0);
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();
