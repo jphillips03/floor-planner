@@ -63,7 +63,6 @@ public class GLEventListener3D implements GLEventListener {
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        gl.glPushMatrix();
         final float h = width / height;
         glu.gluPerspective(50, h, 0.1, 100.0);
 
@@ -73,16 +72,17 @@ public class GLEventListener3D implements GLEventListener {
 
     public void display(final GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
+        gl.glPushMatrix();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
         glu.gluLookAt(
-            this.floorPlan.getWidth(),
-            this.floorPlan.getHeight(),
-            this.floorPlan.getFloorNumbers() + 1,
+            this.floorPlan.getWidth() + 1,
             0,
-            0,
-            0,
+            this.floorPlan.getFloorNumbers(),
+            this.floorPlan.getWidth() / 2,
+            this.floorPlan.getHeight() / 2,
+            1,
             0,
             0,
             1
@@ -98,11 +98,12 @@ public class GLEventListener3D implements GLEventListener {
         // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
         // instead.
         gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
+        // gl.glPopMatrix();
 
         //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, floorPlan.getLight().getDiffuse(), 0); // Set the diffuse lighting for LIGHT0
-        gl.glPushMatrix();
+        //gl.glPushMatrix();
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
-        gl.glPopMatrix();
+        //gl.glPopMatrix();
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();
