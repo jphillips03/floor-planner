@@ -10,6 +10,8 @@ import floor.planner.util.math.Vector;
 
 public abstract class DrawableElement3D extends DrawableElement {
     public float[] materialColor = { 0.5f, 0.5f, 0.5f, 1.0f };
+    public float[] specularColor = { 1f, 1f, 1f, 1f };
+    public float[] shininess = { 5.0f }; // this is low apparently...
     public Color color;
 
     public void drawPolygon(GL2 gl, List<float[]> points) {
@@ -23,6 +25,8 @@ public abstract class DrawableElement3D extends DrawableElement {
         );
         gl.glNormal3f(normal[0], normal[1], normal[2]);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
+        gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
+        gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
         for (float[] point : points) {
             gl.glVertex3f(point[0], point[1], point[2]);
         }
