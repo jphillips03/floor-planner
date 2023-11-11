@@ -23,10 +23,9 @@ public class FloorPlan {
     private int height;
     /** The number of floors. */
     private int numFloors = 0;
-    /** The floor plan text */
-    private String floorPlanText;
     /** The floors in the floor plan. */
     private ArrayList<Floor> floors;
+    /** Boolean to control whether floor plan should be rendered in 2 or 3D. */
     private boolean render2D = true;
     /** The model view matrix. */
 	private float[][] modelView;
