@@ -4,9 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.jogamp.newt.opengl.GLWindow;
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
+import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
@@ -67,21 +69,27 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLoadIdentity();
 
         glu.gluLookAt(
-            this.floorPlan.getCamera().getPosition().getX(),
-            this.floorPlan.getCamera().getPosition().getY(),
-            this.floorPlan.getCamera().getPosition().getZ(),
-            this.floorPlan.getCamera().getCenter().getX(),
-            this.floorPlan.getCamera().getCenter().getY(),
-            this.floorPlan.getCamera().getCenter().getZ(),
+            this.floorPlan.getWidth() * 2,
+            this.floorPlan.getHeight() * 2,
+            0,
+            0,
+            0,
+            0,
             0,
             1,
             0
         );
 
-        gl.glRotatef(this.floorPlan.getCamera().getRotateX(), 1, 0, 0);
-        gl.glRotatef(this.floorPlan.getCamera().getRotateZ(), 0, 0, 1);
-        gl.glTranslatef(0, 0, floorPlan.getUp());
-        gl.glScalef(floorPlan.getZoom(), floorPlan.getZoom(), floorPlan.getZoom());
+        // Rotate up and down to look up and down
+        gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 1.0f, 0, 0);
+
+        // Player at headingY. Rotate the scene by -headingY instead (add 360 to get a
+        // positive angle)
+        gl.glRotatef(360.0f - floorPlan.getCamera().getHeadingY(), 0, 1.0f, 0);
+
+        // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
+        // instead.
+        gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();

@@ -8,7 +8,6 @@ import com.jogamp.newt.event.KeyListener;
 
 import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
-import floor.planner.util.math.Point3D;
 
 public class KeyListenerMove3D implements KeyListener {
     private static final Logger logger = LoggerFactory.getLogger(KeyListenerMove3D.class);
@@ -21,34 +20,29 @@ public class KeyListenerMove3D implements KeyListener {
 
     public void keyPressed(KeyEvent keyEvent) {
         Camera camera = this.currentFloorPlan.getCamera();
-        // Handle i key pressed
-        if(keyEvent.getKeyCode() == 73) {
-            this.currentFloorPlan.setZoom(this.currentFloorPlan.getZoom() + 0.25f);
+
+        // look up/down
+        if(keyEvent.getKeyCode() == KeyEvent.VK_PAGE_UP) {
+            camera.lookUp();
         }
-        // Handle o key pressed
-        if(keyEvent.getKeyCode() == 79) {
-            this.currentFloorPlan.setZoom(this.currentFloorPlan.getZoom() - 0.25f);
+        if(keyEvent.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
+            camera.lookDown();
         }
-        // Handle Up key pressed
+
+        // move in/out
         if(keyEvent.getKeyCode() == KeyEvent.VK_UP) {
-            this.currentFloorPlan.setZoom(this.currentFloorPlan.getZoom() + 0.25f);
+            camera.moveIn();
         }
-        // Handle Down key pressed
         if(keyEvent.getKeyCode() == KeyEvent.VK_DOWN) {
-            this.currentFloorPlan.setZoom(this.currentFloorPlan.getZoom() - 0.25f);
+            camera.moveOut();
         }
-        // Handle Left key pressed
+
+        // turn left/right
         if(keyEvent.getKeyCode() == KeyEvent.VK_LEFT) {
-            camera.rotateZ(5f);
-            //this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() + 5f);
+            camera.turnLeft();
         }
-        // Handle Right key pressed
         if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
-            camera.rotateZ(-5f);
-            //this.currentFloorPlan.setRotateZ(this.currentFloorPlan.getRotateZ() - 5f);
-        }
-        if(keyEvent.getKeyChar() == 'x') {
-            camera.rotateX(5f);
+            camera.turnRight();
         }
     }
     public void keyReleased(KeyEvent arg0) {}

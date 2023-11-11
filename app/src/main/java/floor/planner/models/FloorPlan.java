@@ -17,6 +17,7 @@ public class FloorPlan {
     private ClippingPlane clippingPlane;
     /** The current floor to render in 2D (defaults to first floor i.e. 0). */
     private int currentFloor = 0;
+    private Light light;
     /** The width of the floor plan. */
     private int width;
     /** The height of the floor plan. */
@@ -28,50 +29,8 @@ public class FloorPlan {
     /** The floors in the floor plan. */
     private ArrayList<Floor> floors;
     private boolean render2D = true;
-    /** The amount to zoom in on the image in the 3D view. */
-	private float zoom = 1;
-	/** The amount to translate up on the Y axis in the 3D view. */
-	private float up = 0;
-    /** The position of the light in the 3D view. */
-	private float[] lightPosition = {1.0f,0.0f,8.0f,0.0f};
-	/** The diffuse lighting in the 3D view. */
-	private float[] diffuse = {0.6f,0.6f,0.6f,1.0f};
-	/** The specular lighting in the 3D view. */
-	private float[] specular = {0.1f,0.1f,0.1f,1.0f};
-	/** The ambient lighting in the 3D view. */
-	private float[] ambient = {0.2f,0.2f,0.2f,0.1f};
     /** The model view matrix. */
 	private float[][] modelView;
-
-    public float getZoom() {
-        return this.zoom;
-    }
-    public void setZoom(float val) {
-        this.zoom = val;
-    }
-
-    public float getUp() {
-        return this.up;
-    }
-    public void setUp(float up) {
-        this.up = up;
-    }
-
-    public float[] getLightPosition() {
-        return this.lightPosition;
-    }
-
-    public float[] getAmbient() {
-        return this.ambient;
-    }
-
-    public float[] getDiffuse() {
-        return this.diffuse;
-    }
-
-    public float[] getSpecular() {
-        return this.specular;
-    }
 
     public float[][] getModelView() {
         return this.modelView;
@@ -116,6 +75,10 @@ public class FloorPlan {
      */
     public void setCurrentFloor(int val) {
         this.currentFloor = val;
+    }
+
+    public Light getLight() {
+        return this.light;
     }
 
     public List<Floor> getFloors() {
@@ -187,6 +150,7 @@ public class FloorPlan {
         this.width = width;
         this.numFloors = numFloors;
         this.camera = new Camera(width, height);
+        this.light = new Light(width, height, numFloors);
     }
 
     public boolean getRender2D() {
