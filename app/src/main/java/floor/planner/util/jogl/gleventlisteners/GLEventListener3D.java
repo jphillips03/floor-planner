@@ -86,6 +86,11 @@ public class GLEventListener3D implements GLEventListener {
             1
         );
 
+        // set light position before any rotations/transformations so it stays
+        // in a fixed position instead of moving with the camera; see below URL
+        // https://eng.libretexts.org/Bookshelves/Computer_Science/Applied_Programming/Book%3A_Introduction_to_Computer_Graphics_(Eck)/04%3A_OpenGL_1.1-_Light_and_Material/4.02%3A_Light_and_Material_in_OpenGL_1.1
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
+
         // Rotate up and down to look up and down
         gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 1.0f, 0, 0);
 
@@ -96,8 +101,6 @@ public class GLEventListener3D implements GLEventListener {
         // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
         // instead.
         gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
-
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();
