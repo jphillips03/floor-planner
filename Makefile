@@ -1,6 +1,7 @@
 gradle := ./gradlew
 
 build:
+	${gradle} clean
 	${gradle} build
 
 refresh-dependencies: 
