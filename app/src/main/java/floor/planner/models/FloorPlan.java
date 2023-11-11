@@ -148,7 +148,7 @@ public class FloorPlan {
         this.height = height;
         this.width = width;
         this.numFloors = numFloors;
-        this.camera = new Camera(width, height);
+        this.camera = new Camera(width, height, numFloors);
         this.light = new Light(width, height, numFloors);
     }
 

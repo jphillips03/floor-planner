@@ -7,6 +7,7 @@ package floor.planner.models;
 public class Camera {
     private int width;
     private int height;
+    private int numFloors;
 
     // x and z position of the player, y is 0
     private float posX = 0;
@@ -18,9 +19,10 @@ public class Camera {
     private float turnIncrement = 1.5f; // each turn in degree
     private float lookUpIncrement = 1.0f;
 
-    public Camera(int width, int height) {
+    public Camera(int width, int height, int numFloors) {
         this.width = width;
         this.height = height;
+        this.numFloors = numFloors;
         this.init();
     }
 
@@ -49,6 +51,8 @@ public class Camera {
         //new Point3D(0, 0, 0);
         //this.center = new Point3D((float) width / 2f, (float) height / 2f, 0);
         //this.up = new Point3D(0f, 1f, 0f);
+        this.posX = this.width / 2;
+        this.posZ = this.numFloors / 2;
     }
 
     public void lookUp() {

@@ -76,7 +76,7 @@ public class GLEventListener3D implements GLEventListener {
         glu.gluLookAt(
             this.floorPlan.getWidth() + 1,
             0,
-            this.floorPlan.getFloorNumbers(),
+            this.floorPlan.getFloorNumbers() / 2,
             this.floorPlan.getWidth() / 2,
             this.floorPlan.getHeight() / 2,
             1,
