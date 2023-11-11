@@ -75,8 +75,6 @@ public class GLEventListener3D implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
-        gl.glColorMask(true, true, true, true);
-
         glu.gluLookAt(
             this.floorPlan.getWidth(),
             this.floorPlan.getHeight(),
