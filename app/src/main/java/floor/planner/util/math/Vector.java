@@ -24,6 +24,45 @@ public class Vector {
         this.values = vals;
     }
 
+    /**
+	 * Computes the normal vector to a surface represented by 3 arrays. Arrays
+	 * representing the surface are converted to 2 perpendicular arrays. Then 
+	 * the cross product of those arrays can be computed.
+	 * @param v1 The first array representing the surface.
+	 * @param v2 The second array representing the surface.
+	 * @param v3 The third array representing the surface.
+	 * @return The normal to the surface.
+	 */
+	public static float[] normal(float[] v1, float[] v2, float[] v3, float[] v4) {
+		float[] normal = new float[3];
+		normal[0] = foil(v1[1],v2[1],v1[2],v2[2]) + foil(v2[1],v3[1],v2[2],v3[2]) +
+			foil(v3[1],v4[1],v3[2],v4[2]) + foil(v4[1],v1[1],v4[2],v1[2]);
+		normal[1] = foil(v1[2],v2[2],v1[0],v2[0]) + foil(v2[2],v3[2],v2[0],v3[0]) +
+			foil(v3[2],v4[2],v3[0],v4[0]) + foil(v4[2],v1[2],v4[0],v1[0]);
+		normal[2] = foil(v1[0],v2[0],v1[1],v2[1]) + foil(v2[0],v3[0],v2[1],v3[1]) +
+			foil(v3[0],v4[0],v3[1],v4[1]) + foil(v4[0],v1[0],v4[1],v1[1]);
+		return normalize(normal);
+	}
+
+    /**
+	 * 
+	 */
+	private static float foil(float x1, float x2, float y1, float y2) {
+		return (x1-x2)*(y1+y2);
+	}
+	
+	/**
+	 * Normalizes a vector to be a unit length vector.
+	 * @param v The vector to normalize.
+	 * @return A unit length vector.
+	 */
+	private static float[] normalize(float[] v) {
+		for(int i = 0; i < v.length; i++) {
+			if(v[i] != 0) v[i] /= v[i];
+		}
+		return v;
+	}
+
     public static Vector normal(List<Vector> vectors) {
         Vector normal = new Vector(new float[]{
             normalUtil(vectors, 1, 2),

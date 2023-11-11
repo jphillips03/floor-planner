@@ -3,6 +3,7 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.math.Vector;
 
 import java.util.Arrays;
 import java.util.List;
@@ -54,6 +55,13 @@ public class Cube extends DrawableElement3D {
         int[][] verticesOrder = Cube.VERTICES_ORDER;
         for (int i = 0; i < verticesOrder.length; i++) {
             int[] order = verticesOrder[i];
+            float[] normal = Vector.normal(
+                vertices[order[0]],
+                vertices[order[1]],
+                vertices[order[2]],
+                vertices[order[3]]
+            );
+            gl.glNormal3f(normal[0], normal[1], normal[2]);
             this.drawPolygon(
                 gl,
                 Arrays.asList(
