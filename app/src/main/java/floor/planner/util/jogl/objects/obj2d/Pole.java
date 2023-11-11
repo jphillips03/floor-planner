@@ -27,6 +27,5 @@ public class Pole extends DrawableElement2D {
             );
 		}
         gl.glEnd();
-        gl.glFlush();
     }
 }

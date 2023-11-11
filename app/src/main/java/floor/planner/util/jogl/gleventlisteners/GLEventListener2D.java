@@ -37,6 +37,9 @@ public class GLEventListener2D implements GLEventListener {
         gl.glLoadIdentity();
 
         this.glu = new GLU();
+        // Disble 3D lighting
+        gl.glDisable(GL2.GL_LIGHT0);
+        gl.glDisable(GL2.GL_LIGHTING);
     }
 
     public void reshape(
@@ -69,6 +72,7 @@ public class GLEventListener2D implements GLEventListener {
         final GL2 gl = drawable.getGL().getGL2();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         this.drawer.draw(gl, floorPlan, floorPlan.getCurrentFloor());
+        gl.glFlush();
     }
 
     public void dispose(final GLAutoDrawable drawable) {}

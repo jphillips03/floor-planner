@@ -51,7 +51,6 @@ public abstract class DrawableElement2D extends DrawableElement {
             gl.glVertex2d(p.getX(), p.getY());
         }
         gl.glEnd();
-        gl.glFlush();
     }
 
     /**

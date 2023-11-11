@@ -43,6 +43,5 @@ public class Drawer2D {
             gl.glVertex2d(point.getX(), point.getY());
         }
         gl.glEnd();
-        gl.glFlush();
     }
 }

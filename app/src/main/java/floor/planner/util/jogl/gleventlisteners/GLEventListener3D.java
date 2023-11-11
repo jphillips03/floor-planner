@@ -104,6 +104,7 @@ public class GLEventListener3D implements GLEventListener {
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();
+        gl.glFlush();
     }
 
     public void dispose(final GLAutoDrawable drawable) {}
