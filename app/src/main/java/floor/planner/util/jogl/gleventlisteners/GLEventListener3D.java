@@ -57,7 +57,7 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLoadIdentity();
         gl.glPushMatrix();
         final float h = width / height;
-        glu.gluPerspective(45, h, 0.1, 100.0);
+        glu.gluPerspective(50, h, 0.1, 100.0);
 
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
@@ -69,15 +69,15 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLoadIdentity();
 
         glu.gluLookAt(
-            this.floorPlan.getWidth() * 2,
-            this.floorPlan.getHeight() * 2,
+            this.floorPlan.getWidth(),
+            this.floorPlan.getHeight(),
+            this.floorPlan.getFloorNumbers() + 1,
             0,
             0,
             0,
             0,
             0,
-            1,
-            0
+            1
         );
 
         // Rotate up and down to look up and down
