@@ -40,6 +40,7 @@ public class GLEventListener3D implements GLEventListener {
         // Set up lighting
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_AMBIENT, floorPlan.getLight().getAmbient(), 0); // Set the ambient lighting for LIGHT0
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, floorPlan.getLight().getDiffuse(), 0); // Set the diffuse lighting for LIGHT0
+        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, floorPlan.getLight().getSpecular(), 0);
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
         gl.glEnable(GL2.GL_LIGHT0);   // Enable LIGHT0
         gl.glEnable(GL2.GL_LIGHTING); // Enable Lighting
@@ -98,7 +99,10 @@ public class GLEventListener3D implements GLEventListener {
         // instead.
         gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
 
-        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getDiffuse(), 0);
+        //gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, floorPlan.getLight().getDiffuse(), 0); // Set the diffuse lighting for LIGHT0
+        gl.glPushMatrix();
+        gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
+        gl.glPopMatrix();
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();

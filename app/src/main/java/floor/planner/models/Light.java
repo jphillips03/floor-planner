@@ -4,14 +4,14 @@ public class Light {
     /** The position of the light in the 3D view. */
 	private float[] position; // = {1f, 0f, 8f, 0f};
 	/** The diffuse lighting in the 3D view. */
-	private float[] diffuse = {1f, 1f, 1f, 1f};
+	private float[] diffuse = { 1f, 1f, 1f, 1f };
 	/** The specular lighting in the 3D view. */
-	private float[] specular = {1f, 1f, 1f, 1f};
+	private float[] specular =  { 1f, 1f, 1f, 1f };
 	/** The ambient lighting in the 3D view. */
-	private float[] ambient = { 1f, 0f, 0f, 1.0f };
+	private float[] ambient =  { 1f, 0.7f, 0.7f, 1f };
 
     public Light(int width, int height, int numFloors) {
-        float[] position = { (float) width / 2f, (float) height / 2f, numFloors * 2, 0f };
+        float[] position = { (float) width / 2, (float) height / 2, numFloors + 10, 1f };
         this.position = position;
     }
 
