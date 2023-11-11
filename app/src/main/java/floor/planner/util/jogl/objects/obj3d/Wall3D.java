@@ -18,6 +18,7 @@ public class Wall3D extends Cube {
         this.orientation = orientation;
         this.color = new Color(0, 0, 1);
         this.scaleCube();
+        this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
     }
 
     /**

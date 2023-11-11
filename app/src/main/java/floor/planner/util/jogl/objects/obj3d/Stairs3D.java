@@ -26,6 +26,7 @@ public class Stairs3D extends Cube {
         super(vertices);
         this.orientation = orientation;
         this.color = new Color(0, 0, 1);
+        this.materialColor = new float[]{ 0.7f, 0f, 0f, 1f };
         this.initStairs();
     }
 
@@ -44,6 +45,7 @@ public class Stairs3D extends Cube {
 
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
+                cube.materialColor = this.materialColor;
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.WEST_EAST)) {
@@ -55,6 +57,7 @@ public class Stairs3D extends Cube {
 
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
+                cube.materialColor = this.materialColor;
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.NORTH_SOUTH)) {
@@ -66,6 +69,7 @@ public class Stairs3D extends Cube {
 
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
+                cube.materialColor = this.materialColor;
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.SOUTH_NORTH)) {
@@ -77,6 +81,7 @@ public class Stairs3D extends Cube {
 
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
+                cube.materialColor = this.materialColor;
                 this.stairs.add(cube);
             }
         }
