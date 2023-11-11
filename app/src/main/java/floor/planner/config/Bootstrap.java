@@ -13,7 +13,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -51,7 +50,7 @@ public class Bootstrap extends Application {
 
             // load 2D menu controller
             loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("menu2d.fxml"));
-            BorderPane menu = loader.load();
+            loader.load(); // we don't need the BorderPane here, just load...
             this.menu2d = (Menu2DController) loader.getController();
             this.menu2d.getBorderPane();
             this.main.setMenu2DController(this.menu2d);

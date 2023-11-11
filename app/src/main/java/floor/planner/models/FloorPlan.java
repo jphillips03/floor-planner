@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
-import floor.planner.util.math.Point3D;
 
 public class FloorPlan {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlan.class);

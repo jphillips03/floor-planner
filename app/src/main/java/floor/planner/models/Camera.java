@@ -1,7 +1,5 @@
 package floor.planner.models;
 
-import floor.planner.util.math.Point3D;
-
 /**
  * The Camera class defines properties and methods needed for positioning and
  * moving the camera in floor plan in 3D.
