@@ -94,15 +94,15 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
 
         // Rotate up and down to look up and down
-        gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 1.0f, 0, 0);
+        gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 0f, 1f, 0f);
 
         // Player at headingY. Rotate the scene by -headingY instead (add 360 to get a
         // positive angle)
-        gl.glRotatef(360.0f - floorPlan.getCamera().getHeadingY(), 0, 1.0f, 0);
+        gl.glRotatef(360.0f - floorPlan.getCamera().getHeadingZ(), 0, 0f, 1f);
 
         // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
         // instead.
-        gl.glTranslatef(-floorPlan.getCamera().getPosX(), 0, floorPlan.getCamera().getPosZ());
+        gl.glTranslatef(-floorPlan.getCamera().getPosX(), -floorPlan.getCamera().getPosY(), 0);
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();

@@ -11,8 +11,8 @@ public class Camera {
 
     // x and z position of the player, y is 0
     private float posX = 0;
-    private float posZ = 0;
-    private float headingY = 0; // heading of player, about y-axis
+    private float posY = 0;
+    private float headingZ = 0; // heading of player, about y-axis
     private float lookUpAngle = 0.0f;
 
     private float moveIncrement = 0.05f;
@@ -30,16 +30,16 @@ public class Camera {
         return this.lookUpAngle;
     }
 
-    public float getHeadingY() {
-        return this.headingY;
+    public float getHeadingZ() {
+        return this.headingZ;
     }
 
     public float getPosX() {
         return this.posX;
     }
 
-    public float getPosZ() {
-        return this.posZ;
+    public float getPosY() {
+        return this.posY;
     }
 
     public void reset() {
@@ -52,7 +52,7 @@ public class Camera {
         //this.center = new Point3D((float) width / 2f, (float) height / 2f, 0);
         //this.up = new Point3D(0f, 1f, 0f);
         this.posX = this.width / 2;
-        this.posZ = this.numFloors / 2;
+        this.posY = this.height / 2;
     }
 
     public void lookUp() {
@@ -81,7 +81,7 @@ public class Camera {
     private void move(int increment) {
         // Player move in, posX and posZ become smaller
         this.posX += increment * (float)Math.sin(Math.toRadians(this.posX)) * moveIncrement;
-        this.posZ += increment * (float)Math.cos(Math.toRadians(this.posZ)) * moveIncrement;
+        this.posY += increment * (float)Math.cos(Math.toRadians(this.posY)) * moveIncrement;
     }
 
     public void turnLeft() {
@@ -93,6 +93,6 @@ public class Camera {
     }
 
     private void turn(float increment) {
-        this.headingY += increment;
+        this.headingZ += increment;
     }
 }
