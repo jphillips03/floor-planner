@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
 <BorderPane
@@ -14,18 +16,28 @@
     <fx:define>
         <ContextMenu fx:id="contextMenu">
             <items>
+                <Menu text="Wall">
+                    <items>
+                        <MenuItem text="East-West ('-')"/>
+                        <MenuItem text="North-Sourth ('|')"/>
+                        <MenuItem text="Corner ('+')"/>
+                    </items>
+                </Menu>
+                <Menu text="Stairs">
+                    <MenuItem text="East-West ('&gt;')"/>
+                    <MenuItem text="West-East ('&lt;')"/>
+                    <MenuItem text="North-South ('v')"/>
+                    <MenuItem text="South-North ('^')"/>
+                </Menu>
                 <MenuItem text="Floor Tile"/>
-                <MenuItem text="East-West Wall ('-')"/>
-                <MenuItem text="North-Sourth Wall ('|')"/>
-                <MenuItem text="Corner Wall ('+')"/>
                 <MenuItem text="Window ('#')"/>
                 <MenuItem text="Column ('x')"/>
                 <MenuItem text="Pole ('.')"/>
-                <MenuItem text="East-West Stairs ('&gt;')"/>
-                <MenuItem text="West-East Stairs ('&lt;')"/>
-                <MenuItem text="North-South Stairs ('v')"/>
-                <MenuItem text="South-North Stairs ('^')"/>
                 <MenuItem text="Hole ('o')"/>
+                <SeparatorMenuItem />
+                <Menu text="Material Properties">
+                    <items/>
+                </Menu>
             </items>
         </ContextMenu>
     </fx:define>
