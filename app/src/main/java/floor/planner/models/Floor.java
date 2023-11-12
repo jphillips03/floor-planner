@@ -208,6 +208,13 @@ public class Floor {
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         this.elements3D.add(new Cylinder(j, r));
                         break;
+                    case HOLE:
+                        // nothing should be rendered
+                        break;
+                    case EMPTY_SPACE:
+                        // only a floor tile should be rendered in 3D
+                        this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        break;
                     default:
                         logger.warn("Unknown architectural object found at " + i + " " + j);
                         break;
