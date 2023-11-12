@@ -14,6 +14,7 @@ import floor.planner.util.jogl.objects.obj2d.Stairs;
 import floor.planner.util.jogl.objects.obj2d.Wall;
 import floor.planner.util.jogl.objects.obj2d.Window;
 import floor.planner.util.jogl.objects.obj3d.Cube;
+import floor.planner.util.jogl.objects.obj3d.Cylinder;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.jogl.objects.obj3d.FloorTile;
 import floor.planner.util.jogl.objects.obj3d.Stairs3D;
@@ -205,6 +206,7 @@ public class Floor {
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Cylinder(j, r));
                         break;
                     default:
                         logger.warn("Unknown architectural object found at " + i + " " + j);
