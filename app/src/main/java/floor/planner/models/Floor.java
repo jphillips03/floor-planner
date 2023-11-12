@@ -134,9 +134,30 @@ public class Floor {
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
 
                         // add 3D elements
+                        // shrink appropriate faces so no part of all extends beyond corner
+                        float[][] eastWestVertices = Matrix.translateX(vertices, j);
+                        float[][] northSouthVertices = Matrix.translateX(vertices, j);
+                        if (belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL) && rightEquals(i, j, ObjectType.EAST_WEST_WALL)) {
+                            // north east corner
+                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
+                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
+                        } else if (leftEquals(i, j, ObjectType.EAST_WEST_WALL) && belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
+                            // north west corner
+                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
+                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
+                        } else if (rightEquals(i, j, ObjectType.EAST_WEST_WALL) && aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
+                            // south east corner
+                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
+                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
+                        } else {
+                            // south west corner
+                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
+                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
+                        }
+                        
+                        this.elements3D.add(new Wall3D(eastWestVertices, Orientation.EAST_WEST));
+                        this.elements3D.add(new Wall3D(northSouthVertices, Orientation.NORTH_SOUTH));
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
-                        this.elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
                         break;
                     case WINDOW:
                         if (
