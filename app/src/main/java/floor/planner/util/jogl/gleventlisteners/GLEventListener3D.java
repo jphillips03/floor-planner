@@ -12,6 +12,7 @@ import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.drawers.Drawer3D;
+import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
 
 public class GLEventListener3D implements GLEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GLEventListener3D.class);
@@ -74,13 +75,14 @@ public class GLEventListener3D implements GLEventListener {
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
 
+        ClippingPlane plane = this.floorPlan.getClippingPlane();
         glu.gluLookAt(
-            this.floorPlan.getWidth() + 1,
-            0,
-            this.floorPlan.getFloorNumbers() / 2,
+            plane.getWidth() / 2,
+            -this.floorPlan.getHeight() / 2,
+            this.floorPlan.getFloorNumbers() + 1,
             this.floorPlan.getWidth() / 2,
             this.floorPlan.getHeight() / 2,
-            1,
+            0f,
             0,
             0,
             1
