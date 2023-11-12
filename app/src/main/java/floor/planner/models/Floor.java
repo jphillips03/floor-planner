@@ -19,6 +19,7 @@ import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.jogl.objects.obj3d.FloorTile;
 import floor.planner.util.jogl.objects.obj3d.Stairs3D;
 import floor.planner.util.jogl.objects.obj3d.Wall3D;
+import floor.planner.util.jogl.objects.obj3d.Window3D;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
 
@@ -160,32 +161,29 @@ public class Floor {
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
                         break;
                     case WINDOW:
+                        Orientation orientation = Orientation.EAST_WEST;
                         if (
                             this.leftEquals(i, j, ObjectType.EAST_WEST_WALL) &&
                             this.rightEquals(i, j, ObjectType.EAST_WEST_WALL)
                         ) {
-                            this.elements.add(
-                                new Window(
-                                    new Point2D(j, r),
-                                    Orientation.EAST_WEST,
-                                    new Wall(new Point2D(j, r), Orientation.EAST_WEST)
-                                )
-                            );
+                            orientation = Orientation.EAST_WEST;
                         } else if (
                             this.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL) &&
                             this.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)
                         ) {
-                            this.elements.add(
-                                new Window(
-                                    new Point2D(j, r),
-                                    Orientation.NORTH_SOUTH,
-                                    new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH)
-                                )
-                            );
+                            orientation = Orientation.NORTH_SOUTH;
                         }
+                        this.elements.add(
+                            new Window(
+                                new Point2D(j, r),
+                                orientation,
+                                new Wall(new Point2D(j, r), orientation)
+                            )
+                        );
 
                         // add 3D elements
                         this.elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
+                        this.elements3D.add(new Window3D(Matrix.translateX(vertices, j), orientation));
                         break;
                     case COLUMN:
                         this.elements.add(new Wall(new Point2D(j, r), Orientation.COLUMN));
