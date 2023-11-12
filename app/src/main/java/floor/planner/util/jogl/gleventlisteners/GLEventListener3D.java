@@ -64,25 +64,23 @@ public class GLEventListener3D implements GLEventListener {
         gl.glLoadIdentity();
         final float h = width / height;
         glu.gluPerspective(50, h, 0.1, 100.0);
-
-        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
-        gl.glLoadIdentity();
     }
 
     public void display(final GLAutoDrawable drawable) {
         final GL2 gl = drawable.getGL().getGL2();
         gl.glPushMatrix();
         gl.glClear(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_DEPTH_BUFFER_BIT);
+        
+        gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
-
         ClippingPlane plane = this.floorPlan.getClippingPlane();
         glu.gluLookAt(
             plane.getWidth() / 2,
             -this.floorPlan.getHeight() / 2,
             this.floorPlan.getFloorNumbers() + 1,
-            this.floorPlan.getWidth() / 2,
-            this.floorPlan.getHeight() / 2,
-            0f,
+            0,
+            0,
+            0,
             0,
             0,
             1
