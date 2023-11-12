@@ -39,5 +39,10 @@
             </menus>
         </MenuBar>
         <StackPane fx:id="openGLPane" VBox.vgrow="ALWAYS" />
+        <MenuBar fx:id="bottomMenuBar">
+            <menus>
+                <Menu fx:id="rayTrace" mnemonicParsing="false" text="Ray Trace"></Menu>
+            </menus>
+        </MenuBar>
     </children>
 </VBox>
