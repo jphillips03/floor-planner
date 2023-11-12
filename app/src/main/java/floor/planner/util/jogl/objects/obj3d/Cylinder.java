@@ -7,7 +7,7 @@ import floor.planner.util.jogl.objects.Color;
 public class Cylinder extends DrawableElement3D {
     private static float angleStepsize = 0.1f;
     private static float height = 1f;
-    private static float radius = 0.05f;
+    private static float radius = 0.125f;
 
     private float x;
     private float y;
