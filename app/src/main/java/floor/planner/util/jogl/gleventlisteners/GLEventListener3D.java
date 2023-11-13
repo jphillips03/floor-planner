@@ -10,6 +10,7 @@ import com.jogamp.opengl.GLEventListener;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
+import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.drawers.Drawer3D;
 import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
@@ -73,14 +74,14 @@ public class GLEventListener3D implements GLEventListener {
         
         gl.glMatrixMode(GLMatrixFunc.GL_MODELVIEW);
         gl.glLoadIdentity();
-        ClippingPlane plane = this.floorPlan.getClippingPlane();
+        Camera camera = this.floorPlan.getCamera();
         glu.gluLookAt(
-            plane.getWidth() / 2,
-            -this.floorPlan.getHeight() / 2,
-            this.floorPlan.getFloorNumbers() + 1,
-            0,
-            0,
-            0,
+            camera.getPosX(),
+            camera.getPosY(),
+            camera.getPosZ(),
+            camera.getLookAtX(),
+            camera.getLookAtY(),
+            camera.getLookAtZ(),
             0,
             0,
             1
@@ -91,16 +92,19 @@ public class GLEventListener3D implements GLEventListener {
         // https://eng.libretexts.org/Bookshelves/Computer_Science/Applied_Programming/Book%3A_Introduction_to_Computer_Graphics_(Eck)/04%3A_OpenGL_1.1-_Light_and_Material/4.02%3A_Light_and_Material_in_OpenGL_1.1
         gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, floorPlan.getLight().getPosition(), 0); // Set the position for LIGHT0
 
-        // Rotate up and down to look up and down
-        gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 0f, 1f, 0f);
-
-        // Player at headingY. Rotate the scene by -headingY instead (add 360 to get a
-        // positive angle)
-        gl.glRotatef(360.0f - floorPlan.getCamera().getHeadingZ(), 0, 0f, 1f);
-
-        // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
-        // instead.
-        gl.glTranslatef(-floorPlan.getCamera().getPosX(), -floorPlan.getCamera().getPosY(), 0);
+        // Original code used to "move" around in the scene, kept in case I
+        // want to go back to that instead of relying on gluLookAt, which I'm
+        // not sure is the correct way to actually move (although it makes the
+        // most sense to me since in the real world you move the camera, and 
+        // not the world around it...)
+        // // Rotate up and down to look up and down
+        // gl.glRotatef(floorPlan.getCamera().getLookUpAngle(), 0f, 1f, 0f);
+        // // Player at headingY. Rotate the scene by -headingY instead (add 360 to get a
+        // // positive angle)
+        // gl.glRotatef(360.0f - floorPlan.getCamera().getHeadingZ(), 0, 0f, 1f);
+        // // Player is at (posX, 0, posZ). Translate the scene to (-posX, 0, -posZ)
+        // // instead.
+        // gl.glTranslatef(-floorPlan.getCamera().getPosX(), -floorPlan.getCamera().getPosY(), 0);
 
         this.drawer.draw(gl, this.glu, floorPlan);
         gl.glPopMatrix();

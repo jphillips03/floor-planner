@@ -12,6 +12,10 @@ public class Camera {
     // x and z position of the player, y is 0
     private float posX = 0;
     private float posY = 0;
+    private float posZ = 0;
+    private float lookAtX = 0;
+    private float lookAtY = 0;
+    private float lookAtZ = 0;
     private float headingZ = 0; // heading of player, about y-axis
     private float lookUpAngle = 0.0f;
 
@@ -42,33 +46,52 @@ public class Camera {
         return this.posY;
     }
 
+    public float getPosZ() {
+        return this.posZ;
+    }
+
+    public float getLookAtX() {
+        return this.lookAtX;
+    }
+
+    public float getLookAtY() {
+        return this.lookAtY;
+    }
+
+    public float getLookAtZ() {
+        return this.lookAtZ;
+    }
+
     public void reset() {
         this.init();
     }
 
     private void init() {
-        //this.position = new Point3D((float) width / 2f, (float) height / 2f, 0);
-        //new Point3D(0, 0, 0);
-        //this.center = new Point3D((float) width / 2f, (float) height / 2f, 0);
-        //this.up = new Point3D(0f, 1f, 0f);
         this.posX = this.width / 2;
-        this.posY = this.height / 2;
+        this.posY = -this.height / 2;
+        this.posZ = this.numFloors + 1;
+
+        this.lookAtX = this.posX;
+        this.lookAtY = -this.posY;
+        this.lookAtZ = 0;
     }
 
     public void lookUp() {
         this.lookUpAngle -= this.lookUpIncrement;
+        this.lookAtZ++;
     }
 
     public void lookDown() {
         this.lookUpAngle += this.lookUpIncrement;
+        this.lookAtZ--;
     }
 
     public void moveIn() {
-        this.move(-1);
+        this.move(1);
     }
 
     public void moveOut() {
-        this.move(1);
+        this.move(-1);
     }
 
     /**
@@ -82,14 +105,19 @@ public class Camera {
         // Player move in, posX and posZ become smaller
         this.posX += increment * (float)Math.sin(Math.toRadians(this.posX)) * moveIncrement;
         this.posY += increment * (float)Math.cos(Math.toRadians(this.posY)) * moveIncrement;
+
+        this.lookAtX += increment * (float)Math.sin(Math.toRadians(this.lookAtX)) * moveIncrement;
+        this.lookAtY += increment * (float)Math.cos(Math.toRadians(this.lookAtY)) * moveIncrement;
     }
 
     public void turnLeft() {
         this.turn(this.turnIncrement);
+        this.lookAtX -= (float)Math.sin(Math.toRadians(this.lookAtX)) * turnIncrement;
     }
 
     public void turnRight() {
         this.turn(-this.turnIncrement);
+        this.lookAtX += (float)Math.sin(Math.toRadians(this.lookAtX)) * turnIncrement;
     }
 
     private void turn(float increment) {
