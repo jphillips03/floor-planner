@@ -1,10 +1,19 @@
 package floor.planner.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import floor.planner.util.math.Point3D;
+
 /**
  * The Camera class defines properties and methods needed for positioning and
  * moving the camera in floor plan in 3D.
  */
 public class Camera {
+    private static final Logger logger = LoggerFactory.getLogger(Camera.class);
     private int width;
     private int height;
     private int numFloors;
@@ -18,9 +27,10 @@ public class Camera {
     private float lookAtZ = 0;
     private float headingZ = 0; // heading of player, about y-axis
     private float lookUpAngle = 0.0f;
+    private float viewRadius = 1f;
 
     private float moveIncrement = 0.05f;
-    private float turnIncrement = 1.5f; // each turn in degree
+    private float turnIncrement = 0.05f; // each turn in degree
     private float lookUpIncrement = 1.0f;
 
     public Camera(int width, int height, int numFloors) {
@@ -72,7 +82,7 @@ public class Camera {
         this.posZ = this.numFloors + 1;
 
         this.lookAtX = this.posX;
-        this.lookAtY = -this.posY;
+        this.lookAtY = this.height / 2;
         this.lookAtZ = 0;
     }
 
@@ -106,18 +116,35 @@ public class Camera {
         this.posX += increment * (float)Math.sin(Math.toRadians(this.posX)) * moveIncrement;
         this.posY += increment * (float)Math.cos(Math.toRadians(this.posY)) * moveIncrement;
 
-        this.lookAtX += increment * (float)Math.sin(Math.toRadians(this.lookAtX)) * moveIncrement;
-        this.lookAtY += increment * (float)Math.cos(Math.toRadians(this.lookAtY)) * moveIncrement;
+        this.lookAtX = this.posX;
+        this.lookAtY = -this.posY;
+        //this.lookAtX += this.posX + this.viewRadius; //increment * (float)Math.sin(Math.toRadians(this.turnIncrement)) * this.viewRadius;
+        //this.lookAtY += this.posY + this.viewRadius; //increment * (float)Math.cos(Math.toRadians(this.turnIncrement)) * this.viewRadius;
     }
 
     public void turnLeft() {
         this.turn(this.turnIncrement);
-        this.lookAtX -= (float)Math.sin(Math.toRadians(this.lookAtX)) * turnIncrement;
+        //this.lookAtX -= (float)Math.sin(this.turnIncrement) * this.viewRadius;
+        //this.lookAtY -= (float)Math.cos(this.turnIncrement) * this.viewRadius;
+        //logger.info("" + lookAtX);
+
+        this.lookAtX -= turnIncrement;
+        this.lookAtY = findPointOnCircle(this.lookAtX, this.posX, this.posY);
     }
 
     public void turnRight() {
         this.turn(-this.turnIncrement);
-        this.lookAtX += (float)Math.sin(Math.toRadians(this.lookAtX)) * turnIncrement;
+        //this.lookAtX = (float)Math.sin(this.turnIncrement) * this.lookAtX + (float)Math.sin(this.turnIncrement) * this.lookAtY;
+        //this.lookAtY = (float)Math.sin(this.turnIncrement) * this.lookAtX + (float)Math.cos(this.turnIncrement) * this.lookAtY;
+        //logger.info("" + lookAtX);
+
+        this.lookAtX += turnIncrement;
+        this.lookAtY = findPointOnCircle(this.lookAtX, this.posX, this.posY);
+    }
+
+    private float findPointOnCircle(float x, float h, float k) {
+        float res = this.viewRadius * this.viewRadius - (x - h) * (x - h);
+        return (float)Math.sqrt((double) res) + k;
     }
 
     private void turn(float increment) {
