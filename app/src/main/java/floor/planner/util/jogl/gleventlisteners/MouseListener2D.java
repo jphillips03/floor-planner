@@ -54,7 +54,9 @@ public class MouseListener2D implements MouseListener {
         int row = this.getIndexFromCoordinate(mouseY, planBottom, planTop, tileHeight);
         logger.info("Floor Plan Row x Col: " + row + " x " + col);
 
-        this.menu2D.initialize((double) mouseX / 2, (double) mouseY / 2);
+        if (col >= 0 && row >= 0) {
+            this.menu2D.initialize((double) mouseX, (double) mouseY, col, row);
+        }
     }
 
     private int getIndexFromCoordinate(int coord, float start, float end, float increment) {
