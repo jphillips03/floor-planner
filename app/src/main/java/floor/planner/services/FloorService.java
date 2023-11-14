@@ -341,4 +341,22 @@ public class FloorService {
             this.elements3D = elements3D;
         }
     }
+
+    public void setElement(Floor floor, ObjectType newObjectType, int row, int col) {
+        floor.setElement(row, col, newObjectType);
+
+        int r = floor.getHeight() - row;
+        float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, floor.getFloorNumber() * 4);
+        vertices = Matrix.translateY(vertices, r);
+        Elements elements = this.getDrawableElements(
+            floor,
+            newObjectType,
+            row,
+            col,
+            r,
+            vertices
+        );
+        floor.setElement2D(row, col, elements.elements2D);
+        floor.setElement3D(row, col, elements.elements3D);
+    }
 }

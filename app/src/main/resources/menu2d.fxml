@@ -18,22 +18,22 @@
             <items>
                 <Menu text="Wall">
                     <items>
-                        <MenuItem text="East-West ('-')"/>
-                        <MenuItem text="North-Sourth ('|')"/>
-                        <MenuItem text="Corner ('+')"/>
+                        <MenuItem text="East-West ('-')" onAction="#onMenuItemClick" userData="-" />
+                        <MenuItem text="North-Sourth ('|')" onAction="#onMenuItemClick" userData="|"/>
+                        <MenuItem text="Corner ('+')" onAction="#onMenuItemClick" userData="+"/>
                     </items>
                 </Menu>
                 <Menu text="Stairs">
-                    <MenuItem text="East-West ('&gt;')"/>
-                    <MenuItem text="West-East ('&lt;')"/>
-                    <MenuItem text="North-South ('v')"/>
-                    <MenuItem text="South-North ('^')"/>
+                    <MenuItem text="East-West ('&gt;')" onAction="#onMenuItemClick" userData="&gt;"/>
+                    <MenuItem text="West-East ('&lt;')" onAction="#onMenuItemClick" userData="&lt;"/>
+                    <MenuItem text="North-South ('v')" onAction="#onMenuItemClick" userData="v"/>
+                    <MenuItem text="South-North ('^')" onAction="#onMenuItemClick" userData="^"/>
                 </Menu>
-                <MenuItem text="Floor Tile"/>
-                <MenuItem text="Window ('#')"/>
-                <MenuItem text="Column ('x')"/>
-                <MenuItem text="Pole ('.')"/>
-                <MenuItem text="Hole ('o')"/>
+                <MenuItem text="Floor Tile" onAction="#onMenuItemClick" userData=" "/>
+                <MenuItem text="Window ('#')" onAction="#onMenuItemClick" userData="#"/>
+                <MenuItem text="Column ('x')" onAction="#onMenuItemClick" userData="x"/>
+                <MenuItem text="Pole ('.')" onAction="#onMenuItemClick" userData="."/>
+                <MenuItem text="Hole ('o')" onAction="#onMenuItemClick" userData="o"/>
                 <SeparatorMenuItem />
                 <Menu text="Material Properties">
                     <items/>

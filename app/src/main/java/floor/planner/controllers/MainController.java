@@ -143,6 +143,7 @@ public class MainController implements Initializable {
             String contents = FileUtil.read(selectedFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
+            this.menu2DController.setCurrentFloorPlan(currentFloorPlan);
             this.init2D();
         }
     }
