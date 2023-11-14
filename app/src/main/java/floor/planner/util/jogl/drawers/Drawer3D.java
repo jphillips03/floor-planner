@@ -15,8 +15,13 @@ public class Drawer3D {
 
     public void draw(GL2 gl, GLU glu, FloorPlan floorPlan) {
         for (Floor floor : floorPlan.getFloors()) {
-            for (DrawableElement3D element : floor.getElements3D()) {
-                element.draw(gl);
+            DrawableElement3D[][][] elements = floor.getElements3D();
+            for (int i = 0; i < floor.getHeight(); i++) {
+                for (int j = 0; j < floor.getWidth(); j++) {
+                    for (DrawableElement3D element : elements[i][j]) {
+                        element.draw(gl);
+                    }
+                }
             }
         }
     }

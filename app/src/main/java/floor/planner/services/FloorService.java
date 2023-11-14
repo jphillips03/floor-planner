@@ -1,9 +1,6 @@
 package floor.planner.services;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,6 +83,36 @@ public class FloorService {
 
     private Floor createUtil(String[] rows, int floorNumber, int line, int height, int width) {
         Floor floor = new Floor(floorNumber, height, width);
+        
+        // init object matrix first so it can be used in logic when drawable
+        // elements initialized
+        ObjectType[][] elements = this.initElementsMatrix(
+            rows,
+            floor,
+            line,
+            height,
+            width
+        );
+        this.initDrawableElements(elements, floor, line, height, width);
+        return floor;
+    }
+
+    /**
+     * Initialize elements matrix by parsing chars in each row of floor.
+     * 
+     * @param rows
+     * @param floor
+     * @param line
+     * @param height
+     * @param width
+     */
+    private ObjectType[][] initElementsMatrix(
+        String[] rows,
+        Floor floor,
+        int line,
+        int height,
+        int width
+    ) {
         ObjectType[][] elements = new ObjectType[height][width];
         String[][] elementColors = new String[height][width];
         for (int i = 0; i < height; i++) {
@@ -97,146 +124,221 @@ public class FloorService {
         }
         floor.setElementsMatrix(elements);
         floor.setElementColors(elementColors);
-        this.initElements(floor);
-        return floor;
+        return elements;
     }
 
-    private void initElements(Floor floor) {
-        List<DrawableElement2D> elements = new ArrayList<DrawableElement2D>();
-        List<DrawableElement3D> elements3D = new ArrayList<DrawableElement3D>();
-        for (int i = 0; i < floor.getHeight(); i++) {
-            int r = floor.getHeight() - i;
+    private void initDrawableElements(
+        ObjectType[][] elements,
+        Floor floor,
+        int line,
+        int height,
+        int width
+    ) {
+        DrawableElement2D[][][] drawableElements2D = new DrawableElement2D[height][width][];
+        DrawableElement3D[][][] drawableElements3D = new DrawableElement3D[height][width][];
+        for (int i = 0; i < height; i++) {
+            int r = height - i;
             float[][] vertices = Matrix.translateZ(Cube.DEFAULT_VERTICES, floor.getFloorNumber() * 4);
             vertices = Matrix.translateY(vertices, r);
-            for (int j = 0; j < floor.getWidth(); j++) {
-                switch (floor.getElementsMatrix()[i][j]) {
-                    case EAST_WEST_WALL:
-                        elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
-                        break;
-                    case NORTH_SOUTH_WALL:
-                        elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
-                        break;
-                    case CORNER_WALL:
-                        elements.add(new Wall(new Point2D(j, r), Orientation.EAST_WEST));
-                        elements.add(new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH));
-
-                        // add 3D elements
-                        // shrink appropriate faces so no part of all extends beyond corner
-                        float[][] eastWestVertices = Matrix.translateX(vertices, j);
-                        float[][] northSouthVertices = Matrix.translateX(vertices, j);
-                        if (floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL) && floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL)) {
-                            // north east corner
-                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
-                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
-                        } else if (floor.leftEquals(i, j, ObjectType.EAST_WEST_WALL) && floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
-                            // north west corner
-                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
-                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
-                        } else if (floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL) && floor.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
-                            // south east corner
-                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
-                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
-                        } else {
-                            // south west corner
-                            eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
-                            northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
-                        }
-                        
-                        elements3D.add(new Wall3D(eastWestVertices, Orientation.EAST_WEST));
-                        elements3D.add(new Wall3D(northSouthVertices, Orientation.NORTH_SOUTH));
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        break;
-                    case WINDOW:
-                        Orientation orientation = Orientation.EAST_WEST;
-                        if (
-                            floor.leftEquals(i, j, ObjectType.EAST_WEST_WALL) &&
-                            floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL)
-                        ) {
-                            orientation = Orientation.EAST_WEST;
-                        } else if (
-                            floor.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL) &&
-                            floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)
-                        ) {
-                            orientation = Orientation.NORTH_SOUTH;
-                        }
-                        elements.add(
-                            new Window(
-                                new Point2D(j, r),
-                                orientation,
-                                new Wall(new Point2D(j, r), orientation)
-                            )
-                        );
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Window3D(Matrix.translateX(vertices, j), orientation));
-                        break;
-                    case COLUMN:
-                        elements.add(new Wall(new Point2D(j, r), Orientation.COLUMN));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Wall3D(Matrix.translateX(vertices, j), Orientation.COLUMN));
-                        break;
-                    case EAST_WEST_STAIRS:
-                        elements.add(new Stairs(new Point2D(j, r), Orientation.EAST_WEST));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST));
-                        break;
-                    case WEST_EAST_STAIRS:
-                        elements.add(new Stairs(new Point2D(j, r), Orientation.WEST_EAST));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.WEST_EAST));
-                        break;
-                    case NORTH_SOUTH_STAIRS:
-                        elements.add(new Stairs(new Point2D(j, r), Orientation.NORTH_SOUTH));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH));
-                        break;
-                    case SOUTH_NORTH_STAIRS:
-                        elements.add(new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Stairs3D(Matrix.translateX(vertices, j), Orientation.SOUTH_NORTH));
-                        break;
-                    case POLE:
-                        elements.add(new Pole(new Point2D(j, r), null));
-
-                        // add 3D elements
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        elements3D.add(new Cylinder(j, r));
-                        break;
-                    case HOLE:
-                        // nothing should be rendered
-                        break;
-                    case EMPTY_SPACE:
-                        // only a floor tile should be rendered in 3D
-                        elements3D.add(new FloorTile(Matrix.translateX(vertices, j)));
-                        break;
-                    default:
-                        logger.warn("Unknown architectural object found at " + i + " " + j);
-                        break;
-                }
+            for (int j = 0; j < width; j++) {
+                Elements drawabElements = this.getDrawableElements(
+                    floor,
+                    elements[i][j],
+                    i,
+                    j,
+                    r,
+                    vertices
+                );
+                drawableElements2D[i][j] = drawabElements.elements2D;
+                drawableElements3D[i][j] = drawabElements.elements3D;
             }
         }
+        floor.setElements(drawableElements2D);
+        floor.setElements3D(drawableElements3D);
+    }
 
-        // update the elements for the floor
-        floor.setElements(elements);
-        floor.setElements3D(elements3D);
+    private Elements getDrawableElements(
+        Floor floor,
+        ObjectType objectType,
+        int i,
+        int j,
+        int r,
+        float[][] vertices
+    ) {
+        DrawableElement2D[] elements2D;
+        DrawableElement3D[] elements3D;
+        switch (objectType) {
+            case EAST_WEST_WALL:
+                elements2D = new DrawableElement2D[] {
+                    new Wall(new Point2D(j, r), Orientation.EAST_WEST)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Wall3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST)
+                };
+                break;
+            case NORTH_SOUTH_WALL:
+                elements2D = new DrawableElement2D[] {
+                    new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Wall3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH)
+                };
+                break;
+            case CORNER_WALL:
+                elements2D = new DrawableElement2D[] {
+                    new Wall(new Point2D(j, r), Orientation.EAST_WEST),
+                    new Wall(new Point2D(j, r), Orientation.NORTH_SOUTH)
+                };
+
+                // add 3D elements
+                // shrink appropriate faces so no part of all extends beyond corner
+                float[][] eastWestVertices = Matrix.translateX(vertices, j);
+                float[][] northSouthVertices = Matrix.translateX(vertices, j);
+                if (floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL) && floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL)) {
+                    // north east corner
+                    eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
+                    northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
+                } else if (floor.leftEquals(i, j, ObjectType.EAST_WEST_WALL) && floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
+                    // north west corner
+                    eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
+                    northSouthVertices = Matrix.translatePartialY(northSouthVertices, -0.45f, Cube.BACK_FACE);
+                } else if (floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL) && floor.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL)) {
+                    // south east corner
+                    eastWestVertices = Matrix.translatePartialX(eastWestVertices, 0.45f, Cube.LEFT_FACE);
+                    northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
+                } else {
+                    // south west corner
+                    eastWestVertices = Matrix.translatePartialX(eastWestVertices, -0.45f, Cube.RIGHT_FACE);
+                    northSouthVertices = Matrix.translatePartialY(northSouthVertices, 0.45f, Cube.FRONT_FACE);
+                }
+                
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Wall3D(eastWestVertices, Orientation.EAST_WEST),
+                    new Wall3D(northSouthVertices, Orientation.NORTH_SOUTH)
+                };
+                break;
+            case WINDOW:
+                Orientation orientation = Orientation.EAST_WEST;
+                if (
+                    floor.leftEquals(i, j, ObjectType.EAST_WEST_WALL) &&
+                    floor.rightEquals(i, j, ObjectType.EAST_WEST_WALL)
+                ) {
+                    orientation = Orientation.EAST_WEST;
+                } else if (
+                    floor.aboveEquals(i, j, ObjectType.NORTH_SOUTH_WALL) &&
+                    floor.belowEquals(i, j, ObjectType.NORTH_SOUTH_WALL)
+                ) {
+                    orientation = Orientation.NORTH_SOUTH;
+                }
+                elements2D = new DrawableElement2D[]{
+                    new Window(
+                        new Point2D(j, r),
+                        orientation,
+                        new Wall(new Point2D(j, r), orientation)
+                    )
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Window3D(Matrix.translateX(vertices, j), orientation)
+                };
+                break;
+            case COLUMN:
+                elements2D = new DrawableElement2D[]{
+                    new Wall(new Point2D(j, r), Orientation.COLUMN)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Wall3D(Matrix.translateX(vertices, j), Orientation.COLUMN)
+                };
+                break;
+            case EAST_WEST_STAIRS:
+                elements2D = new DrawableElement2D[]{
+                    new Stairs(new Point2D(j, r), Orientation.EAST_WEST)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Stairs3D(Matrix.translateX(vertices, j), Orientation.EAST_WEST)
+                };
+                break;
+            case WEST_EAST_STAIRS:
+                elements2D = new DrawableElement2D[]{
+                    new Stairs(new Point2D(j, r), Orientation.WEST_EAST)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Stairs3D(Matrix.translateX(vertices, j), Orientation.WEST_EAST)
+                };
+                break;
+            case NORTH_SOUTH_STAIRS:
+                elements2D = new DrawableElement2D[]{
+                    new Stairs(new Point2D(j, r), Orientation.NORTH_SOUTH)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Stairs3D(Matrix.translateX(vertices, j), Orientation.NORTH_SOUTH)
+                };
+                break;
+            case SOUTH_NORTH_STAIRS:
+                elements2D = new DrawableElement2D[]{
+                    new Stairs(new Point2D(j, r), Orientation.SOUTH_NORTH)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Stairs3D(Matrix.translateX(vertices, j), Orientation.SOUTH_NORTH)
+                };
+                break;
+            case POLE:
+                elements2D = new DrawableElement2D[]{
+                    new Pole(new Point2D(j, r), null)
+                };
+
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Cylinder(j, r)
+                };
+                break;
+            case HOLE:
+                elements2D = new DrawableElement2D[]{};
+                elements3D = new DrawableElement3D[]{};
+                break;
+            case EMPTY_SPACE:
+                elements2D = new DrawableElement2D[]{};
+                // only a floor tile should be rendered in 3D
+                elements3D = new DrawableElement3D[] {
+                    new FloorTile(Matrix.translateX(vertices, j))
+                };
+                break;
+            default:
+                elements2D = new DrawableElement2D[]{};
+                elements3D = new DrawableElement3D[]{};
+                logger.warn("Unknown architectural object found at " + i + " " + j);
+                break;
+        }
+
+        return new Elements(elements2D, elements3D);
+    }
+
+    private class Elements {
+        public DrawableElement2D[] elements2D;
+        public DrawableElement3D[] elements3D;
+
+        public Elements(
+            DrawableElement2D[] elements2D,
+            DrawableElement3D[] elements3D
+        ) {
+            this.elements2D = elements2D;
+            this.elements3D = elements3D;
+        }
     }
 }

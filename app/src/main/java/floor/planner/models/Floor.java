@@ -1,6 +1,5 @@
 package floor.planner.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -18,8 +17,8 @@ public class Floor {
     private int width;
     /** The height of the floor. */
     private int height;
-    private List<DrawableElement2D> elements;
-    private List<DrawableElement3D> elements3D;
+    private DrawableElement2D[][][] elements;
+    private DrawableElement3D[][][] elements3D;
     /** The current matrix of elements that make up the floor. */
     private ObjectType[][] elementsMatrix;
     /** The colors in this floor. */
@@ -37,8 +36,8 @@ public class Floor {
         this.floorNumber = floorNumber;
         this.width = width;
         this.height = height;
-        this.elements = new ArrayList<DrawableElement2D>();
-        this.elements3D = new ArrayList<DrawableElement3D>();
+        this.elements = new DrawableElement2D[height][width][];
+        this.elements3D = new DrawableElement3D[height][width][];
         this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
     }
@@ -73,17 +72,17 @@ public class Floor {
         return this.width;
     }
 
-    public List<DrawableElement2D> getElements() {
+    public DrawableElement2D[][][] getElements() {
         return this.elements;
     }
-    public void setElements(List<DrawableElement2D> val) {
+    public void setElements(DrawableElement2D[][][] val) {
         this.elements = val;
     }
 
-    public List<DrawableElement3D> getElements3D() {
+    public DrawableElement3D[][][] getElements3D() {
         return this.elements3D;
     }
-    public void setElements3D(List<DrawableElement3D> val) {
+    public void setElements3D(DrawableElement3D[][][] val) {
         this.elements3D = val;
     }
 
@@ -125,6 +124,14 @@ public class Floor {
 
     public void setElement(int row, int col, ObjectType element) {
         this.elementsMatrix[row][col] = element;
+    }
+
+    public void setElement2D(int row, int col, DrawableElement2D[] elements) {
+        this.elements[row][col] = elements;
+    }
+
+    public void setElement3D(int row, int col, DrawableElement3D[] elements) {
+        this.elements3D[row][col] = elements;
     }
 
     public boolean aboveEquals(int row, int col, ObjectType element) {

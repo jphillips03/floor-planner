@@ -15,8 +15,13 @@ public class Drawer2D {
     public void draw(GL2 gl, FloorPlan floorPlan, int floorNum) {
         Floor floor = floorPlan.getFloor(floorNum);
         // draw each of the elements on the floor
-        for (DrawableElement2D element : floor.getElements()) {
-            element.draw(gl);
+        DrawableElement2D[][][] elements2D = floor.getElements();
+        for (int i = 0; i < floor.getHeight(); i++) {
+            for (int j = 0; j < floor.getWidth(); j++) {
+                for (DrawableElement2D element : elements2D[i][j]) {
+                    element.draw(gl);
+                }
+            }
         }
 
         // draw the grid last to make sure it sits on top of elements, so cells
