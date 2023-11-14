@@ -128,7 +128,7 @@ public class FloorPlan {
      * @return The entire floor plan as a string.
      */
     public String toString() {
-        String floor = "";
+        String floor = "" + this.width + " " + this.height + " " + this.numFloors + "\n";
         for(int i = 0; i < floors.size(); i++) {
             Floor f = floors.get(i);
             floor += f.toString();

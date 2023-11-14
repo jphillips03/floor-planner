@@ -1,11 +1,14 @@
 package floor.planner.services;
 
+import java.io.File;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.AspectRatio;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
+import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
 
 public class FloorPlanService {
@@ -56,5 +59,9 @@ public class FloorPlanService {
             );
             plan.getFloors().add(floor);
         }
+    }
+
+    public void save(File file, FloorPlan plan) {
+        FileUtil.save(file, plan.toString());
     }
 }

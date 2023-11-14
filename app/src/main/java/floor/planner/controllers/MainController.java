@@ -35,6 +35,7 @@ public class MainController implements Initializable {
     /** The logger for the class. */
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    private File currentFile;
     private FloorPlan currentFloorPlan;
     private GLWindow glWindow;
     private Scene scene;
@@ -138,9 +139,9 @@ public class MainController implements Initializable {
         fileChooser.getExtensionFilters().addAll(
             new ExtensionFilter("Text Files", "*.txt")
         );
-        File selectedFile = fileChooser.showOpenDialog(this.window);
-        if (selectedFile != null) {
-            String contents = FileUtil.read(selectedFile);
+        currentFile = fileChooser.showOpenDialog(this.window);
+        if (currentFile != null) {
+            String contents = FileUtil.read(currentFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
             this.menu2DController.setCurrentFloorPlan(currentFloorPlan);
@@ -153,6 +154,13 @@ public class MainController implements Initializable {
         this.glWindow.removeGLEventListener(this.eventListener3D);
         this.glWindow.removeKeyListener(this.keyListener3D);
         this.init2D();
+    }
+
+    @FXML
+    private void onMenuSave(ActionEvent event) {
+        if (this.currentFile != null) {
+            this.floorPlanService.save(currentFile, this.currentFloorPlan);
+        }
     }
 
     private void init2D() {

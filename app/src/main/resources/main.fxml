@@ -25,7 +25,7 @@
                         <MenuItem mnemonicParsing="false" onAction="#onMenuNewFile" text="New File" />
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Open File" />
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save As..." />
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save" />
+                        <MenuItem mnemonicParsing="false" onAction="#onMenuSave" text="Save" />
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Exit" />
                     </items>
                 </Menu>

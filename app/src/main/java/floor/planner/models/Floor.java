@@ -170,7 +170,7 @@ public class Floor {
                     floorText = floorText + "o";
                 }
                 else {
-                    floorText = floorText + this.elementsMatrix[i][j];
+                    floorText = floorText + this.elementsMatrix[i][j].value;
                 }
             }
             floorText = floorText + "\n";
