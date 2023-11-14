@@ -27,11 +27,16 @@ public class Camera {
     private float lookAtZ = 0;
     private float headingZ = 0; // heading of player, about y-axis
     private float lookUpAngle = 0.0f;
-    private float viewRadius = 1f;
+    private float viewRadius;
 
     private float moveIncrement = 0.05f;
     private float turnIncrement = 0.05f; // each turn in degree
     private float lookUpIncrement = 1.0f;
+
+    private int currentPoint = 0;
+    private int currentDegree = 90;
+    private float degreesBetweenPoints = 5f;
+    private List<Point3D> pointsOnLookAtCircle;
 
     public Camera(int width, int height, int numFloors) {
         this.width = width;
@@ -80,10 +85,31 @@ public class Camera {
         this.posX = this.width / 2;
         this.posY = -this.height / 2;
         this.posZ = this.numFloors + 1;
+        this.viewRadius = this.width / this.height * 2;
 
-        this.lookAtX = this.posX;
-        this.lookAtY = this.height / 2;
-        this.lookAtZ = 0;
+        this.initPointsOnCircle();
+        // set look at point to face +y axis (1/4 of way around circle)
+        this.currentPoint = this.pointsOnLookAtCircle.size() / 4;
+        this.currentDegree = 90;
+        this.setLookAt(this.currentPoint);
+    }
+
+    private void initPointsOnCircle() {
+        this.pointsOnLookAtCircle = new ArrayList<Point3D>();
+        // 0 is +x axis, 90 is +y axis, 180 is -x axis, and 270 is -y axis
+        for (float d = 0; d < 360; d += this.degreesBetweenPoints) {
+            float x = this.posX + (this.viewRadius * (float) Math.cos(Math.toRadians(d)));
+            float y = this.posY + (this.viewRadius * (float) Math.sin(Math.toRadians(d)));
+            Point3D p = new Point3D(x, y, this.posZ);
+            this.pointsOnLookAtCircle.add(p);
+        }
+    }
+
+    private void setLookAt(int i) {
+        Point3D lookAtPoint = this.pointsOnLookAtCircle.get(i);
+        this.lookAtX = lookAtPoint.getX();
+        this.lookAtY = lookAtPoint.getY();
+        this.lookAtZ = lookAtPoint.getZ();
     }
 
     public void lookUp() {
@@ -106,48 +132,65 @@ public class Camera {
 
     /**
      * Moves the camera in or out based on the given increment which should be
-     * -1 or 1. If increment is -1, then camera moves in to scene. Otherwise
-     * the increment should be 1 and the camera should move out.
+     * -1 or 1. If increment is -1, then camera moves out to scene. Otherwise
+     * the increment should be 1 and the camera should move in.
      *
-     * @param increment The direction to move 1 (out) or -1 (in).
+     * @param increment The direction to move 1 (in) or -1 (out).
      */
     private void move(int increment) {
-        // Player move in, posX and posZ become smaller
-        this.posX += increment * (float)Math.sin(Math.toRadians(this.posX)) * moveIncrement;
-        this.posY += increment * (float)Math.cos(Math.toRadians(this.posY)) * moveIncrement;
+        float t = moveIncrement / this.viewRadius;
+        
+        // determine point to move towards (either lookAt point or point on
+        // opposite end of circle depending on given increment)
+        float x2, y2;
+        if (increment > 0) {
+            // moving in so just use the lookAt point
+            x2 = this.lookAtX;
+            y2 = this.lookAtY;
+        } else {
+            // moving away so find the point opposite where we are looking and
+            // move toward that; see https://math.stackexchange.com/a/567081
+            x2 = 2 * this.posX - this.lookAtX;
+            y2 = 2 * this.posY - this.lookAtY;
+        }
 
-        this.lookAtX = this.posX;
-        this.lookAtY = -this.posY;
-        //this.lookAtX += this.posX + this.viewRadius; //increment * (float)Math.sin(Math.toRadians(this.turnIncrement)) * this.viewRadius;
-        //this.lookAtY += this.posY + this.viewRadius; //increment * (float)Math.cos(Math.toRadians(this.turnIncrement)) * this.viewRadius;
+        // move along the line of sight (line between pos and lookAt) towards
+        // (x2, y2) as defined above
+        this.posX = (1 - t) * this.posX + t * x2;
+        this.posY = (1 - t) * this.posY + t * y2;
+        this.initPointsOnCircle();
+        this.setLookAt(this.currentPoint);
     }
 
     public void turnLeft() {
-        this.turn(this.turnIncrement);
-        //this.lookAtX -= (float)Math.sin(this.turnIncrement) * this.viewRadius;
-        //this.lookAtY -= (float)Math.cos(this.turnIncrement) * this.viewRadius;
-        //logger.info("" + lookAtX);
-
-        this.lookAtX -= turnIncrement;
-        this.lookAtY = findPointOnCircle(this.lookAtX, this.posX, this.posY);
+        this.changeCurrentPoint(1);
+        this.setLookAt(this.currentPoint);
     }
 
     public void turnRight() {
-        this.turn(-this.turnIncrement);
-        //this.lookAtX = (float)Math.sin(this.turnIncrement) * this.lookAtX + (float)Math.sin(this.turnIncrement) * this.lookAtY;
-        //this.lookAtY = (float)Math.sin(this.turnIncrement) * this.lookAtX + (float)Math.cos(this.turnIncrement) * this.lookAtY;
-        //logger.info("" + lookAtX);
-
-        this.lookAtX += turnIncrement;
-        this.lookAtY = findPointOnCircle(this.lookAtX, this.posX, this.posY);
+        this.changeCurrentPoint(-1);
+        this.setLookAt(this.currentPoint);
     }
 
-    private float findPointOnCircle(float x, float h, float k) {
-        float res = this.viewRadius * this.viewRadius - (x - h) * (x - h);
-        return (float)Math.sqrt((double) res) + k;
-    }
+    private void changeCurrentPoint(int delta) {
+        if (delta < 0) {
+            if (this.currentPoint == 0) {
+                this.currentPoint = this.pointsOnLookAtCircle.size() - 1;
+                this.currentDegree = 0;
+            } else {
+                this.currentPoint--;
+                this.currentDegree--;
+            }
+        } else {
+            if (this.currentPoint == this.pointsOnLookAtCircle.size() - 1) {
+                this.currentPoint = 0;
+                this.currentDegree = 0;
+            } else {
+                this.currentPoint++;
+                this.currentDegree++;
+            }
+        }
 
-    private void turn(float increment) {
-        this.headingZ += increment;
+        logger.info("" + this.currentDegree);
     }
 }
