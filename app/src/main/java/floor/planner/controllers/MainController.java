@@ -115,6 +115,12 @@ public class MainController implements Initializable {
         }
     }
 
+    @FXML
+    private void onCenter3D(ActionEvent event) {
+        logger.info("Re-center image");
+        this.currentFloorPlan.getCamera().reset();
+    }
+
     /**
      * Handler for when user clicks "New File" MenuItem.
      *
