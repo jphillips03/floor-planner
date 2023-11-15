@@ -1,7 +1,5 @@
 package floor.planner.util.jogl.objects.obj3d;
 
-import java.util.Arrays;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

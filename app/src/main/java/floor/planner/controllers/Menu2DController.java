@@ -6,7 +6,6 @@ import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
