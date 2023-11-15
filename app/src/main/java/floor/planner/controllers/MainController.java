@@ -2,6 +2,7 @@ package floor.planner.controllers;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
@@ -15,6 +16,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.stage.Window;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -39,6 +41,7 @@ public class MainController implements Initializable {
     private FloorPlan currentFloorPlan;
     private GLWindow glWindow;
     private Scene scene;
+    private Stage stage;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
     private GLEventListener2D eventListener2D;
@@ -129,7 +132,14 @@ public class MainController implements Initializable {
     @FXML
     private void onMenuNewFile(ActionEvent event) {
         logger.info("Create New File");
-        this.initializeMenus(1);
+        NewDialogController newDialog = new NewDialogController(this.stage);
+        Optional<FloorPlan> floorPlan = newDialog.showAndWait();
+        if (floorPlan.isPresent()) {
+            this.currentFloorPlan = floorPlan.get();
+            this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
+            this.menu2DController.setCurrentFloorPlan(currentFloorPlan);
+            this.init2D();
+        }
     }
 
     /**
@@ -192,6 +202,10 @@ public class MainController implements Initializable {
 
     public void setMenu2DController(Menu2DController controller) {
         this.menu2DController = controller;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
     }
 
     public MenuBar getMenuBar() {

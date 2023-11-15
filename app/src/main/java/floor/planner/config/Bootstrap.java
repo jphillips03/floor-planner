@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.controllers.MainController;
 import floor.planner.controllers.Menu2DController;
+import floor.planner.controllers.NewDialogController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -81,6 +82,8 @@ public class Bootstrap extends Application {
         stage.setTitle("Floor Planner");
         stage.setScene(scene);
         stage.show();
+
+        this.main.setStage(stage);
 
         // setup listeners for screen resizing
         ChangeListener<Number> widthListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {

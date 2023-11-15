@@ -33,10 +33,13 @@
 
 .text-field
 {
-    -fx-text-fill: -fx-primarytext;
     -fx-font-size : 12pt;
-    -jfx-focus-color: -fx-secondary;
-    -fx-text-fill: derive(-fx-secondary, 20%);
+    -jfx-focus-color: -fx-primary;
+    -fx-text-fill: derive(-fx-primary, 20%);
+}
+
+.label {
+    -fx-text-fill: -fx-primarytext;
 }
 
 /*Login Screen Specific*/

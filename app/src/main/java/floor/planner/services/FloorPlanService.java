@@ -24,6 +24,16 @@ public class FloorPlanService {
         return plan;
     }
 
+    public FloorPlan create(int numFloors, int height, int width) {
+        FloorPlan plan = new FloorPlan(numFloors, height, width);
+        this.initClippingPlane(plan);
+        for (int i = 0; i < numFloors; i++) {
+            Floor floor = this.floorService.createEmptyFloor(height, width, i);
+            plan.getFloors().add(floor);
+        }
+        return plan;
+    }
+
     private void initClippingPlane(FloorPlan plan) {
         logger.info("Aspect Ratio: " + AspectRatio.X.value + ":" + AspectRatio.Y.value);
         ClippingPlane plane = new ClippingPlane(

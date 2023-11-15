@@ -47,6 +47,11 @@ public class FloorPlan {
         floors = new ArrayList<Floor>();
     }
 
+    public FloorPlan(int numFloors, int height, int width) {
+        this();
+        this.setDimensions(height, width, numFloors);
+    }
+
     public Camera getCamera() {
         return this.camera;
     }

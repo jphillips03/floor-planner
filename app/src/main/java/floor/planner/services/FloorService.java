@@ -69,16 +69,16 @@ public class FloorService {
      * @param width
      * @return
      */
-    public Floor createEmptyFloor(int height, int width) {
+    public Floor createEmptyFloor(int height, int width, int floorNum) {
         String text = "";
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                text += "o";
+                text += ObjectType.HOLE.value;
             }
             text += "\n";
         }
 
-        return this.createUtil(text.split("\n"), 0, width, height, width);
+        return this.createUtil(text.split("\n"), floorNum, 0, height, width);
     }
 
     private Floor createUtil(String[] rows, int floorNumber, int line, int height, int width) {
