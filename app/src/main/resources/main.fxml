@@ -44,7 +44,7 @@
         <ButtonBar style="-fx-padding: 10 10 10 10;">
             <buttons>
                 <Button ButtonBar.buttonData="LEFT" fx:id="center3D" mnemonicParsing="false" onAction="#onCenter3D" text="Re-Center"></Button>
-                <Button ButtonBar.buttonData="RIGHT" fx:id="rayTrace" mnemonicParsing="false" text="Ray Trace"></Button>
+                <Button ButtonBar.buttonData="RIGHT" fx:id="rayTrace" mnemonicParsing="false" onAction="#onRayTrace" text="Ray Trace"></Button>
             </buttons>
         </ButtonBar>
     </children>

@@ -4,7 +4,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,6 +31,7 @@ import floor.planner.util.jogl.event.KeyListenerMove3D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener3D;
 import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
+import floor.planner.util.jogl.raytracer.RayTraceTask;
 
 public class MainController implements Initializable {
     /** The logger for the class. */
@@ -194,6 +194,23 @@ public class MainController implements Initializable {
         this.keyListener3D = new KeyListenerMove3D(this.currentFloorPlan);
         this.glWindow.addKeyListener(this.keyListener3D);
         this.glWindow.requestFocus(); // so key events are registered and fire
+    }
+
+    @FXML
+    private void onRayTrace(ActionEvent event) {
+        double delta = 0.001525879f;
+        RayTraceTask task = new RayTraceTask(delta, 256, 256);
+        
+        ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);
+        progressBar.activateProgressBar(task);
+
+        task.setOnSucceeded(e -> {
+            progressBar.getDialogStage().close();
+        });
+
+        progressBar.getDialogStage().show();
+        Thread thread = new Thread(task);
+        thread.start();
     }
 
     public void setGLWindow(GLWindow window) {
