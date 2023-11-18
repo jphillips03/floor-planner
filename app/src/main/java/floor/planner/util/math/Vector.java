@@ -181,12 +181,6 @@ public class Vector {
         return v;
     }
 
-    public static Vector multiply(Vector v, float t) {
-        Vector res = copy(v);
-        res.multiply(t);
-        return res;
-    }
-
     public static float dot(Vector v1, Vector v2) {
         float res = 0;
         for (int i = 0; i < v1.values.length; i++) {

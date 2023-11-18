@@ -43,6 +43,6 @@ public class Ray {
      * @return Vector at position along ray at given t value.
      */
     public Vector at(float t) {
-        return Vector.add(this.origin, Vector.multiply(this.direction, t));
+        return Vector.add(this.origin, this.direction.multiply(t));
     }
 }
