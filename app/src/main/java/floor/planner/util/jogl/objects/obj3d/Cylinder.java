@@ -3,6 +3,7 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.math.Ray;
 
 public class Cylinder extends DrawableElement3D {
     private static float angleStepsize = 0.1f;
@@ -20,6 +21,7 @@ public class Cylinder extends DrawableElement3D {
         this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
     }
 
+    @Override
     public void draw(GL2 gl) {
         // Draw tube...
         gl.glBegin(GL2.GL_QUAD_STRIP);
@@ -57,5 +59,10 @@ public class Cylinder extends DrawableElement3D {
             }
             gl.glVertex3f(radius + this.x, this.y, height);
         gl.glEnd();
+    }
+
+    @Override
+    public float intersect(Ray r) {
+        return 0;
     }
 }

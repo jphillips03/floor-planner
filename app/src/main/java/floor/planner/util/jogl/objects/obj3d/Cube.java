@@ -3,6 +3,7 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
 import java.util.Arrays;
@@ -51,6 +52,7 @@ public class Cube extends DrawableElement3D {
         this.vertices = vertices;
     }
 
+    @Override
     public void draw(GL2 gl) {
         int[][] verticesOrder = Cube.VERTICES_ORDER;
         for (int i = 0; i < verticesOrder.length; i++) {
@@ -72,5 +74,10 @@ public class Cube extends DrawableElement3D {
                 )
             );
         }
+    }
+
+    @Override
+    public float intersect(Ray r) {
+        return 0;
     }
 }

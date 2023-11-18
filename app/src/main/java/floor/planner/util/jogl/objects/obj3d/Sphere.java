@@ -25,8 +25,10 @@ public class Sphere extends DrawableElement3D {
         return this.center;
     }
 
+    @Override
     public void draw(GL2 gl) {}
 
+    @Override
     public float intersect(Ray r) {
         Vector oc = Vector.subtract(r.getOrigin(), this.center);
         float a = Vector.dot(r.getDirection(), r.getDirection());
