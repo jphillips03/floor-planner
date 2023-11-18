@@ -21,14 +21,23 @@ public class Sphere extends DrawableElement3D {
         center = new Vector(new float[]{ x, y, z });
     }
 
+    public Vector getCenter() {
+        return this.center;
+    }
+
     public void draw(GL2 gl) {}
 
-    public boolean intersect(Ray r) {
+    public float intersect(Ray r) {
         Vector oc = Vector.subtract(r.getOrigin(), this.center);
         float a = Vector.dot(r.getDirection(), r.getDirection());
         float b = 2f * Vector.dot(oc, r.getDirection());
         float c = Vector.dot(oc, oc) - radius * radius;
         float discriminant = b * b - 4 * a * c;
-        return discriminant >= 0;
+
+        if (discriminant < 0) {
+            return -1f;
+        } else {
+            return (float)((-b - Math.sqrt((double) discriminant)) / (2f * a));
+        }
     }
 }

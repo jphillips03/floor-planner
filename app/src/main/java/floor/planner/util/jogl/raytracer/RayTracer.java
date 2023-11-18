@@ -95,8 +95,14 @@ public class RayTracer {
 
     public Color rayColor(Ray r) {
         Sphere s = new Sphere(0, 0, -1);
-        if (s.intersect(r)) {
-            return new Color(1, 0, 0);
+        float t = s.intersect(r);
+        if (t > 0f) {
+            Vector n = Vector.unit(Vector.subtract(r.at(t), s.getCenter()));
+            return new Color(
+                0.5f * (n.getX() + 1),
+                0.5f * (n.getY() + 1),
+                0.5f * (n.getZ() + 1)
+            );
         }
 
         Vector unitDirection = Vector.unit(r.getDirection());
@@ -104,7 +110,6 @@ public class RayTracer {
         Vector c1 = new Vector(new float[]{ 1f, 1f, 1f });
         Vector c2 = new Vector(new float[]{ 0.5f, 0.7f, 1f });
         Vector color = Vector.add(c1.multiply(1 - a), c2.multiply(a));
-        float[] colorValues = color.getValues();
-        return new Color(colorValues[0], colorValues[1], colorValues[2]);
+        return new Color(color.getValues());
     }
 }
