@@ -198,7 +198,9 @@ public class MainController implements Initializable {
 
     @FXML
     private void onRayTrace(ActionEvent event) {
-        // we do this height * width times plus 1 for rendering the file
+        // currently 2 * height * width steps to go through; height * width
+        // rays are sent through screen, and height * width colors written to
+        // image file
         int max = 2 * this.glWindow.getHeight() * this.glWindow.getWidth();
         RayTraceTask task = new RayTraceTask(this.glWindow.getHeight(), this.glWindow.getWidth(), max);
 
