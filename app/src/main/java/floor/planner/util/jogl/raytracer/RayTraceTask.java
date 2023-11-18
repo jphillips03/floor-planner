@@ -1,9 +1,5 @@
 package floor.planner.util.jogl.raytracer;
 
-import java.io.File;
-
-import floor.planner.util.FileUtil;
-import floor.planner.util.jogl.objects.Color;
 import javafx.concurrent.Task;
 
 /**
@@ -14,37 +10,32 @@ import javafx.concurrent.Task;
  * following stackoverflow response: https://stackoverflow.com/a/29628430.
  */
 public class RayTraceTask extends Task<Void> {
-    /** The amount to change progress by when it is incremented. */
-    private double delta;
+    public float workDone = 0f;
     private int height;
     private int width;
+    private float max;
 
-    public RayTraceTask(double delta, int height, int width) {
-        this.delta = delta;
+    public RayTraceTask(int height, int width, int max) {
         this.height = height;
         this.width = width;
+        this.max = max;
     }
 
     @Override
     public Void call() throws InterruptedException {
-        double progress = 0.0;
-
-        // generate a matrix of colors for the image; currently just a
-        // placeholder for the actual ray trace algorithm...
-        Color[][] image = new Color[this.height][this.width];
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
-                image[i][j] = new Color(j / 255f, i / 255f, 0);
-                updateProgress(progress += delta, 101f);
-                Thread.sleep(1);
-            }
-        }
-
-        // store the image as a PPM file
-        String imageStr = PPMImageFormatter.write(image);
-        File file = new File("image.ppm");
-        FileUtil.save(file, imageStr);
-        updateProgress(101f, 101f);
+        RayTracer rayTracer = new RayTracer(height, width);
+        rayTracer.render(this);
         return null;
+    }
+
+    /**
+     * Exposes the updateProgress function so we can call it from outside the
+     * class.
+     *
+     * @param workDone
+     * @param max
+     */
+    public void updateProgress(float workDone) {
+        updateProgress((double) workDone, (double) this.max);
     }
 }

@@ -1,9 +1,15 @@
 package floor.planner.util.math;
 
+import java.io.*;
 import java.nio.FloatBuffer;
+import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class Vector {
+    private static final Logger logger = LoggerFactory.getLogger(Vector.class);
     private float[] values;
 
     public Vector() {}
@@ -20,8 +26,55 @@ public class Vector {
         return this.values;
     }
 
+    public float getX() {
+        return this.values[0];
+    }
+
+    public float getY() {
+        return this.values[1];
+    }
+
+    public float getZ() {
+        return this.values[2];
+    }
+
     public void setValues(float[] vals) {
         this.values = vals;
+    }
+
+    public Vector add(float[] vals) {
+        Vector res = copy(this);
+        for (int i = 0; i < this.values.length; i++) {
+            res.values[i] += vals[i];
+        }
+
+        return res;
+    }
+
+    public Vector multiply(float x) {
+        Vector res = copy(this);
+        for (int i = 0; i < this.values.length; i++) {
+            res.values[i] *= x;
+        }
+
+        return res;
+    }
+
+    public Vector divide(float x) {
+        return this.multiply(1 / x);
+    }
+
+    public float length() {
+        return (float) Math.sqrt(this.lengthSqrd());
+    }
+
+    public float lengthSqrd() {
+        float res = 0;
+        for (int i = 0; i < this.values.length; i++) {
+            res += this.values[i] * this.values[i];
+        }
+
+        return res;
     }
 
     /**
@@ -100,5 +153,68 @@ public class Vector {
         }
 
         return v;
+    }
+
+    public static Vector add(Vector v1, Vector v2) {
+        Vector v = new Vector(new float[v1.values.length]);
+        for (int i = 0 ; i < v1.values.length; i++) {
+            v.values[i] = v1.values[i] + v2.values[i];
+        }
+        return v;
+    }
+
+    public static Vector subtract(Vector v1, Vector v2) {
+        Vector v = new Vector(new float[v1.values.length]);
+        for (int i = 0 ; i < v1.values.length; i++) {
+            v.values[i] = v1.values[i] - v2.values[i];
+        }
+        return v;
+    }
+
+    public static Vector multiply(Vector v1, Vector v2) {
+        Vector v = new Vector(new float[v1.values.length]);
+        for (int i = 0 ; i < v1.values.length; i++) {
+            v.values[i] = v1.values[i] * v2.values[i];
+        }
+        return v;
+    }
+
+    public static Vector multiply(Vector v, float t) {
+        Vector res = copy(v);
+        res.multiply(t);
+        return res;
+    }
+
+    public static float dot(Vector v1, Vector v2) {
+        float res = 0;
+        for (int i = 0 ; i < v1.values.length; i++) {
+            res += v1.values[i] * v2.values[i];
+        }
+        return res;
+    }
+
+    /**
+     * Returns the cross product of the given vectors. Assumes each vector is
+     * a r-3 vector (which they should be anyway for purposes of this program).
+     *
+     * @param v1
+     * @param v2
+     * @return
+     */
+    public static Vector cross(Vector v1, Vector v2) {
+        return new Vector(new float[]{
+            v1.values[1] * v2.values[2] - v1.values[2] * v2.values[1],
+            v1.values[2] * v2.values[0] - v1.values[0] * v2.values[2],
+            v1.values[0] * v2.values[1] - v1.values[1] * v2.values[0]
+        });
+    }
+
+    public static Vector unit(Vector v) {
+        Vector res = copy(v);
+        return res.divide(res.length());
+    }
+
+    private static Vector copy(Vector v) {
+        return new Vector(new float[]{ v.getValues()[0], v.getValues()[1], v.getValues()[2]});
     }
 }

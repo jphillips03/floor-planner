@@ -31,4 +31,13 @@ public class Color {
     public void setBlue(float val) {
         this.blue = val;
     }
+
+    public String toRGBTripletString() {
+        // scale rgb values from 0.0 to 1.0 to be from 0 to 255
+        int r = (int) (this.red * 255.999);
+        int g = (int) (this.green * 255.999);
+        int b = (int) (this.blue * 255.999);
+
+        return String.format("%d %d %d \n", r, g, b);
+    }
 }
