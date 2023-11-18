@@ -198,11 +198,14 @@ public class MainController implements Initializable {
 
     @FXML
     private void onRayTrace(ActionEvent event) {
+        int height = 225; // this.glWindow.getHeight();
+        int width = 400; // this.glWindow.getWidth();
+
         // currently 2 * height * width steps to go through; height * width
         // rays are sent through screen, and height * width colors written to
         // image file
-        int max = 2 * this.glWindow.getHeight() * this.glWindow.getWidth();
-        RayTraceTask task = new RayTraceTask(this.glWindow.getHeight(), this.glWindow.getWidth(), max);
+        int max = 2 * height * width;
+        RayTraceTask task = new RayTraceTask(height, width, max);
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);
         progressBar.activateProgressBar(task);
