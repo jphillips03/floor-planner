@@ -1,8 +1,6 @@
 package floor.planner.util.math;
 
-import java.io.*;
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -75,6 +73,10 @@ public class Vector {
         }
 
         return res;
+    }
+
+    public String toString() {
+        return String.format("[%.2f, %.2f, %.2f]", this.values[0], this.values[1], this.values[2]);
     }
 
     /**
@@ -157,7 +159,7 @@ public class Vector {
 
     public static Vector add(Vector v1, Vector v2) {
         Vector v = new Vector(new float[v1.values.length]);
-        for (int i = 0 ; i < v1.values.length; i++) {
+        for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] + v2.values[i];
         }
         return v;
@@ -165,7 +167,7 @@ public class Vector {
 
     public static Vector subtract(Vector v1, Vector v2) {
         Vector v = new Vector(new float[v1.values.length]);
-        for (int i = 0 ; i < v1.values.length; i++) {
+        for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] - v2.values[i];
         }
         return v;
@@ -173,7 +175,7 @@ public class Vector {
 
     public static Vector multiply(Vector v1, Vector v2) {
         Vector v = new Vector(new float[v1.values.length]);
-        for (int i = 0 ; i < v1.values.length; i++) {
+        for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] * v2.values[i];
         }
         return v;
@@ -187,7 +189,7 @@ public class Vector {
 
     public static float dot(Vector v1, Vector v2) {
         float res = 0;
-        for (int i = 0 ; i < v1.values.length; i++) {
+        for (int i = 0; i < v1.values.length; i++) {
             res += v1.values[i] * v2.values[i];
         }
         return res;
