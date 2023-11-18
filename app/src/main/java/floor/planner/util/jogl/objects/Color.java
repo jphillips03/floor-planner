@@ -1,5 +1,7 @@
 package floor.planner.util.jogl.objects;
 
+import floor.planner.util.math.Vector;
+
 public class Color {
     private float red;
     private float green;
@@ -9,6 +11,18 @@ public class Color {
         this.red = red;
         this.green = green;
         this.blue = blue;
+    }
+
+    public Color(float[] color) {
+        this.red = color[0];
+        this.green = color[1];
+        this.blue = color[2];
+    } 
+
+    public Color(Vector color) {
+        this.red = color.getX();
+        this.green = color.getY();
+        this.blue = color.getZ();
     }
 
     public float getRed() {
