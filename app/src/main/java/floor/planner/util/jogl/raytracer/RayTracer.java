@@ -10,11 +10,14 @@ import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
+import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
 public class RayTracer {
     private static final Logger logger = LoggerFactory.getLogger(RayTracer.class);
+
+    private int samplesPerPixel = 100; // Count of random samples for each pixel
 
     // image
     private int imageWidth;
@@ -102,20 +105,43 @@ public class RayTracer {
         Color[][] image = new Color[this.imageHeight][this.imageWidth];
         for (int i = 0; i < this.imageHeight; i++) {
             for (int j = 0; j < this.imageWidth; j++) {
-                Vector pc1 = Vector.add(this.pixelDeltaU.multiply(j), this.pixelDeltaV.multiply(i));
-                Vector pixelCenter = Vector.add(this.pixel00Loc, pc1);
-                Vector rayDirection = Vector.subtract(pixelCenter, this.cameraCenter);
-                Ray r = new Ray(this.cameraCenter, rayDirection);
-                image[i][j] = this.rayColor(r, world);
-                task.updateProgress(task.workDone++);
+                Color pixelColor = new Color(0, 0, 0);
+                for (int sample = 0; sample < samplesPerPixel; sample++) {
+                    Ray r = this.getRay(j, i);
+                    Color rayColor = this.rayColor(r, world);
+                    pixelColor.setColor(
+                        Vector.add(pixelColor.getColor(), rayColor.getColor())
+                    );
+                    task.updateProgress(task.workDone++);
+                }
+                image[i][j] = pixelColor;
             }
         }
 
         // store the image as a PPM file
-        String imageStr = PPMImageFormatter.write(image, task);
+        String imageStr = PPMImageFormatter.write(image, task, samplesPerPixel);
         File file = new File("image.ppm");
         FileUtil.save(file, imageStr);
         task.updateProgress(task.workDone++);
+    }
+
+    private Ray getRay(int i, int j) {
+        Vector pc1 = Vector.add(this.pixelDeltaU.multiply(i), this.pixelDeltaV.multiply(j));
+        Vector pixelCenter = Vector.add(this.pixel00Loc, pc1);
+        Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare());
+
+        Vector rayOrigin = this.cameraCenter;
+        Vector rayDirection = Vector.subtract(pixelSample, rayOrigin);
+        return new Ray(rayOrigin, rayDirection);
+    }
+
+    private Vector pixelSampleSquare() {
+        float px = -0.5f + Random.randomFloat();
+        float py = -0.5f + Random.randomFloat();
+        return Vector.add(
+            pixelDeltaU.multiply(px),
+            pixelDeltaV.multiply(py)
+        );
     }
 
     public Color rayColor(Ray r, IntersectableList world) {
