@@ -3,6 +3,7 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Ray;
 
 public class Cylinder extends DrawableElement3D {
@@ -62,7 +63,12 @@ public class Cylinder extends DrawableElement3D {
     }
 
     @Override
-    public float intersect(Ray r) {
-        return 0;
+    public boolean intersect(
+        Ray r,
+        float tMinRay,
+        float tMaxRay,
+        IntersectRecord rec
+    ) {
+        return false;
     }
 }

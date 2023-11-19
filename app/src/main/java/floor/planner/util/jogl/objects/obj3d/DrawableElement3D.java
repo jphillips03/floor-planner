@@ -6,6 +6,7 @@ import java.util.List;
 
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.DrawableElement;
+import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -34,5 +35,10 @@ public abstract class DrawableElement3D extends DrawableElement {
         gl.glEnd();
     }
 
-    public abstract float intersect(Ray r);
+    public abstract boolean intersect(
+        Ray r,
+        float tMinRay,
+        float tMaxRay,
+        IntersectRecord rec
+    );
 }

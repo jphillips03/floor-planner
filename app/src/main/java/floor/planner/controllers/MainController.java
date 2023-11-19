@@ -200,11 +200,13 @@ public class MainController implements Initializable {
     private void onRayTrace(ActionEvent event) {
         int height = 225; // this.glWindow.getHeight();
         int width = 400; // this.glWindow.getWidth();
+        int num3DElements = 2; // TODO get this from current floorplan
 
-        // currently 2 * height * width steps to go through; height * width
-        // rays are sent through screen, and height * width colors written to
-        // image file
-        int max = 2 * height * width;
+        // currently 2 * height * width * num 3D elements steps to go through;
+        // height * width rays are sent through screen, and height * width
+        // colors written to image file, and we go through each 3D element for
+        // each of these to find intersections with light...
+        int max = 2 * height * width * num3DElements;
         RayTraceTask task = new RayTraceTask(height, width, max);
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);

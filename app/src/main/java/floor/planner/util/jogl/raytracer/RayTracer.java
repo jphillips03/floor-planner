@@ -34,9 +34,15 @@ public class RayTracer {
     private Vector viewportUpperLeft;
     private Vector pixel00Loc;
 
+    private IntersectableList world;
+
     public RayTracer(int imageHeight, int imageWidth) {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
+
+        this.world = new IntersectableList();
+        world.add(new Sphere(0, 0, -1, 0.5f));
+        world.add(new Sphere(0, -100.5f, -1f, 100f));
 
         this.viewportWidth = this.viewportHeight * ((float) imageWidth / (float) imageHeight);
 
@@ -72,6 +78,8 @@ public class RayTracer {
     }
 
     public void render(RayTraceTask task) {
+        this.world.setTask(task); // so we can track progress in intersect()...
+
         // generate a matrix of colors for the image; currently just a
         // placeholder for the actual ray trace algorithm...
         Color[][] image = new Color[this.imageHeight][this.imageWidth];
@@ -81,7 +89,7 @@ public class RayTracer {
                 Vector pixelCenter = Vector.add(this.pixel00Loc, pc1);
                 Vector rayDirection = Vector.subtract(pixelCenter, this.cameraCenter);
                 Ray r = new Ray(this.cameraCenter, rayDirection);
-                image[i][j] = this.rayColor(r);
+                image[i][j] = this.rayColor(r, world);
                 task.updateProgress(task.workDone++);
             }
         }
@@ -93,15 +101,14 @@ public class RayTracer {
         task.updateProgress(task.workDone++);
     }
 
-    public Color rayColor(Ray r) {
-        Sphere s = new Sphere(0, 0, -1);
-        float t = s.intersect(r);
-        if (t > 0f) {
-            Vector n = Vector.unit(Vector.subtract(r.at(t), s.getCenter()));
+    public Color rayColor(Ray r, IntersectableList world) {
+        IntersectRecord rec = world.intersect(r, 0, Float.POSITIVE_INFINITY);
+        if (rec != null) {
             return new Color(
-                0.5f * (n.getX() + 1),
-                0.5f * (n.getY() + 1),
-                0.5f * (n.getZ() + 1)
+                Vector.add(
+                    rec.getNormal(),
+                    new Vector(new float[]{1, 1, 1})
+                ).multiply(0.5f)
             );
         }
 
