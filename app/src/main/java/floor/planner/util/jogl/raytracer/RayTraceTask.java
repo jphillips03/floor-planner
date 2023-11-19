@@ -1,5 +1,8 @@
 package floor.planner.util.jogl.raytracer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.concurrent.Task;
 
 /**
@@ -10,6 +13,8 @@ import javafx.concurrent.Task;
  * following stackoverflow response: https://stackoverflow.com/a/29628430.
  */
 public class RayTraceTask extends Task<Void> {
+    private static final Logger logger = LoggerFactory.getLogger(RayTraceTask.class);
+
     public float workDone = 0f;
     private int height;
     private int width;
@@ -23,9 +28,20 @@ public class RayTraceTask extends Task<Void> {
 
     @Override
     public Void call() throws InterruptedException {
-        RayTracer rayTracer = new RayTracer(height, width);
-        rayTracer.render(this);
-        return null;
+        try {
+            RayTracer rayTracer = new RayTracer(height, width);
+            rayTracer.render(this);
+            return null;
+        } catch (Exception e) {
+            if (e instanceof InterruptedException) {
+                throw e;
+            }
+
+            // we hit a snag, log the error and cancel the thread...
+            logger.error(e.getMessage(), e);
+            this.cancel(isRunning());
+            return null;
+        }
     }
 
     /**
