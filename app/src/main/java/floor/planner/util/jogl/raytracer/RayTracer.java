@@ -5,6 +5,8 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.models.Camera;
+import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
@@ -19,6 +21,7 @@ public class RayTracer {
     private int imageHeight;
 
     // camera
+    private Camera camera;
     private float focalLength = 1f;
     private float viewportHeight = 2f;
     private float viewportWidth;
@@ -35,6 +38,16 @@ public class RayTracer {
     private Vector pixel00Loc;
 
     private IntersectableList world;
+    private FloorPlan floorPlan;
+
+    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth) {
+        this.floorPlan = floorPlan;
+        this.camera = floorPlan.getCamera();
+        this.imageHeight = imageHeight;
+        this.imageWidth = imageWidth;
+
+        this.initialize();
+    }
 
     public RayTracer(int imageHeight, int imageWidth) {
         this.imageHeight = imageHeight;
@@ -44,6 +57,10 @@ public class RayTracer {
         world.add(new Sphere(0, 0, -1, 0.5f));
         world.add(new Sphere(0, -100.5f, -1f, 100f));
 
+        this.initialize();
+    }
+
+    private void initialize() {
         this.viewportWidth = this.viewportHeight * ((float) imageWidth / (float) imageHeight);
 
         this.viewportU = new Vector(new float[]{ this.viewportWidth, 0, 0});

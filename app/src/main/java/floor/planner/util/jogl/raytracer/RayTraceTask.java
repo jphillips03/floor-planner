@@ -3,6 +3,8 @@ package floor.planner.util.jogl.raytracer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.models.Camera;
+import floor.planner.models.FloorPlan;
 import javafx.concurrent.Task;
 
 /**
@@ -16,9 +18,14 @@ public class RayTraceTask extends Task<Void> {
     private static final Logger logger = LoggerFactory.getLogger(RayTraceTask.class);
 
     public float workDone = 0f;
+    private FloorPlan floorPlan;
     private int height;
     private int width;
     private float max;
+
+    public RayTraceTask(FloorPlan floorPlan) {
+        this.floorPlan = floorPlan;
+    }
 
     public RayTraceTask(int height, int width, int max) {
         this.height = height;
