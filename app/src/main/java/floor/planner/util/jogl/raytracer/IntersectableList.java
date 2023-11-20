@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
+import floor.planner.util.math.Interval;
 import floor.planner.util.math.Ray;
 
 public class IntersectableList {
@@ -33,15 +34,14 @@ public class IntersectableList {
 
     public IntersectRecord intersect(
         Ray r,
-        float tMinRay,
-        float tMaxRay
+        Interval rayT
     ) {
         IntersectRecord rec = new IntersectRecord();
         boolean hitAnything = false;
-        float closestSoFar = tMaxRay;
+        float closestSoFar = rayT.getMax();
 
         for (DrawableElement3D element : this.elements) {
-            if (element.intersect(r, tMinRay, closestSoFar, rec)) {
+            if (element.intersect(r, new Interval(rayT.getMin(), closestSoFar), rec)) {
                 hitAnything = true;
                 closestSoFar = rec.getT();
             }

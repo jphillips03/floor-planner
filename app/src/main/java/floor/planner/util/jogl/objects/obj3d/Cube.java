@@ -4,6 +4,7 @@ import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.math.Interval;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -80,8 +81,7 @@ public class Cube extends DrawableElement3D {
     @Override
     public boolean intersect(
         Ray r,
-        float tMinRay,
-        float tMaxRay,
+        Interval rayT,
         IntersectRecord rec
     ) {
         return false;

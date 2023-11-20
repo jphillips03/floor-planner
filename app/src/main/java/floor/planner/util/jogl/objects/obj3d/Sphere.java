@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.math.Interval;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -38,8 +39,7 @@ public class Sphere extends DrawableElement3D {
     @Override
     public boolean intersect(
         Ray r,
-        float tMinRay,
-        float tMaxRay,
+        Interval rayT,
         IntersectRecord rec
     ) {
         Vector oc = Vector.subtract(r.getOrigin(), this.center);
@@ -55,9 +55,9 @@ public class Sphere extends DrawableElement3D {
 
         // find nearest root that lies in acceptable range
         float root = (-halfB - sqrtD) / a;
-        if (root <= tMinRay || tMaxRay <= root) {
+        if (!rayT.surrounds(root)) {
             root = (-halfB + sqrtD) / a;
-            if (root <= tMinRay || tMaxRay <= root) {
+            if (!rayT.surrounds(root)) {
                 return false;
             }
         }

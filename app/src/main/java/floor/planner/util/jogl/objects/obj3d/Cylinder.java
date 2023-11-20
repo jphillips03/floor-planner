@@ -4,6 +4,7 @@ import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.math.Interval;
 import floor.planner.util.math.Ray;
 
 public class Cylinder extends DrawableElement3D {
@@ -65,8 +66,7 @@ public class Cylinder extends DrawableElement3D {
     @Override
     public boolean intersect(
         Ray r,
-        float tMinRay,
-        float tMaxRay,
+        Interval rayT,
         IntersectRecord rec
     ) {
         return false;

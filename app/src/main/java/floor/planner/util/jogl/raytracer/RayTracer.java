@@ -145,7 +145,7 @@ public class RayTracer {
     }
 
     public Color rayColor(Ray r, IntersectableList world) {
-        IntersectRecord rec = world.intersect(r, 0, Float.POSITIVE_INFINITY);
+        IntersectRecord rec = world.intersect(r, new Interval(0, Float.POSITIVE_INFINITY));
         if (rec != null) {
             return new Color(
                 Vector.add(
