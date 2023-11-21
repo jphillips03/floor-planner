@@ -26,10 +26,10 @@ public class RayTracer {
 
     // camera
     private Camera camera;
-    private float focalLength = 1f;
-    private float viewportHeight = 2f;
-    private float viewportWidth;
-    private Vector cameraCenter = new Vector(new float[]{0, 0, 0});
+    private double focalLength = 1;
+    private double viewportHeight = 2;
+    private double viewportWidth;
+    private Vector cameraCenter = new Vector(new double[]{0, 0, 0});
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
@@ -58,23 +58,23 @@ public class RayTracer {
         this.imageWidth = imageWidth;
 
         this.world = new IntersectableList();
-        world.add(new Sphere(0, 0, -1, 0.5f));
-        world.add(new Sphere(0, -100.5f, -1f, 100f));
+        world.add(new Sphere(0, 0, -1, 0.5));
+        world.add(new Sphere(0, -100.5f, -1f, 100));
 
         this.initialize();
     }
 
     private void initialize() {
-        this.viewportWidth = this.viewportHeight * ((float) imageWidth / (float) imageHeight);
+        this.viewportWidth = this.viewportHeight * ((double) imageWidth / (double) imageHeight);
 
-        this.viewportU = new Vector(new float[]{ this.viewportWidth, 0, 0});
-        this.viewportV = new Vector(new float[]{ 0, -this.viewportHeight, 0});
+        this.viewportU = new Vector(new double[]{ this.viewportWidth, 0, 0});
+        this.viewportV = new Vector(new double[]{ 0, -this.viewportHeight, 0});
 
-        this.pixelDeltaU = this.viewportU.divide((float) imageWidth);
-        this.pixelDeltaV = this.viewportV.divide((float) imageHeight);
+        this.pixelDeltaU = this.viewportU.divide((double) imageWidth);
+        this.pixelDeltaV = this.viewportV.divide((double) imageHeight);
 
         // calculate location of upper left pixel
-        Vector v1 = Vector.subtract(cameraCenter, new Vector(new float[]{ 0, 0, this.focalLength}));
+        Vector v1 = Vector.subtract(cameraCenter, new Vector(new double[]{ 0, 0, this.focalLength}));
         Vector v2 = Vector.subtract(v1, this.viewportU.divide(2f));
         this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2f));
 
@@ -137,8 +137,8 @@ public class RayTracer {
     }
 
     private Vector pixelSampleSquare() {
-        float px = -0.5f + Random.randomFloat();
-        float py = -0.5f + Random.randomFloat();
+        double px = -0.5 + Random.randomDouble();
+        double py = -0.5 + Random.randomDouble();
         return Vector.add(
             pixelDeltaU.multiply(px),
             pixelDeltaV.multiply(py)
@@ -146,7 +146,7 @@ public class RayTracer {
     }
 
     public Color rayColor(Ray r, IntersectableList world) {
-        IntersectRecord rec = world.intersect(r, new Interval(0, Float.POSITIVE_INFINITY));
+        IntersectRecord rec = world.intersect(r, new Interval(0, Double.POSITIVE_INFINITY));
         if (rec != null) {
             Vector direction = Vector.randomOnHempisphere(rec.getNormal());
             return new Color(
@@ -157,10 +157,10 @@ public class RayTracer {
         }
 
         Vector unitDirection = Vector.unit(r.getDirection());
-        float a = 0.5f * (unitDirection.getY() + 1f);
-        Vector c1 = new Vector(new float[]{ 1f, 1f, 1f });
-        Vector c2 = new Vector(new float[]{ 0.5f, 0.7f, 1f });
+        double a = 0.5f * (unitDirection.getY() + 1);
+        Vector c1 = new Vector(new double[]{ 1, 1, 1 });
+        Vector c2 = new Vector(new double[]{ 0.5, 0.7, 1 });
         Vector color = Vector.add(c1.multiply(1 - a), c2.multiply(a));
-        return new Color(color.getValues());
+        return new Color(color.getFloatValues());
     }
 }

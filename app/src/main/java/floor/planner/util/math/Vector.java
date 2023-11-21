@@ -1,6 +1,6 @@
 package floor.planner.util.math;
 
-import java.nio.FloatBuffer;
+import java.nio.DoubleBuffer;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,39 +9,47 @@ import org.slf4j.LoggerFactory;
 public class Vector {
     private static final Logger logger = LoggerFactory.getLogger(Vector.class);
 
-    private float[] values;
+    private double[] values;
 
     public Vector() {}
 
-    public Vector(float[] values) {
-        this.values = values;
+    public Vector(double[] values) {
+        this.values = values;        
     }
 
-    public FloatBuffer getFloatBuffer() {
-        return FloatBuffer.wrap(this.values);
+    public DoubleBuffer getDoubleBuffer() {
+        return DoubleBuffer.wrap(this.values);
     }
 
-    public float[] getValues() {
+    public double[] getValues() {
         return this.values;
     }
 
-    public float getX() {
+    public float[] getFloatValues() {
+        float[] res = new float[values.length];
+        for (int i = 0; i < values.length; i++) {
+            res[i] = (float) this.values[i];
+        }
+        return res;
+    }
+
+    public double getX() {
         return this.values[0];
     }
 
-    public float getY() {
+    public double getY() {
         return this.values[1];
     }
 
-    public float getZ() {
+    public double getZ() {
         return this.values[2];
     }
 
-    public void setValues(float[] vals) {
+    public void setValues(double[] vals) {
         this.values = vals;
     }
 
-    public Vector add(float[] vals) {
+    public Vector add(double[] vals) {
         Vector res = copy(this);
         for (int i = 0; i < this.values.length; i++) {
             res.values[i] += vals[i];
@@ -50,7 +58,7 @@ public class Vector {
         return res;
     }
 
-    public Vector multiply(float x) {
+    public Vector multiply(double x) {
         Vector res = copy(this);
         for (int i = 0; i < this.values.length; i++) {
             res.values[i] *= x;
@@ -59,16 +67,16 @@ public class Vector {
         return res;
     }
 
-    public Vector divide(float x) {
+    public Vector divide(double x) {
         return this.multiply(1 / x);
     }
 
-    public float length() {
-        return (float) Math.sqrt(this.lengthSqrd());
+    public double length() {
+        return (double) Math.sqrt(this.lengthSqrd());
     }
 
-    public float lengthSqrd() {
-        float res = 0;
+    public double lengthSqrd() {
+        double res = 0;
         for (int i = 0; i < this.values.length; i++) {
             res += this.values[i] * this.values[i];
         }
@@ -89,8 +97,8 @@ public class Vector {
 	 * @param v3 The third array representing the surface.
 	 * @return The normal to the surface.
 	 */
-	public static float[] normal(float[] v1, float[] v2, float[] v3, float[] v4) {
-		float[] normal = new float[3];
+	public static double[] normal(double[] v1, double[] v2, double[] v3, double[] v4) {
+		double[] normal = new double[3];
 		normal[0] = foil(v1[1],v2[1],v1[2],v2[2]) + foil(v2[1],v3[1],v2[2],v3[2]) +
 			foil(v3[1],v4[1],v3[2],v4[2]) + foil(v4[1],v1[1],v4[2],v1[2]);
 		normal[1] = foil(v1[2],v2[2],v1[0],v2[0]) + foil(v2[2],v3[2],v2[0],v3[0]) +
@@ -103,7 +111,7 @@ public class Vector {
     /**
 	 * 
 	 */
-	private static float foil(float x1, float x2, float y1, float y2) {
+	private static double foil(double x1, double x2, double y1, double y2) {
 		return (x1-x2)*(y1+y2);
 	}
 	
@@ -112,7 +120,7 @@ public class Vector {
 	 * @param v The vector to normalize.
 	 * @return A unit length vector.
 	 */
-	private static float[] normalize(float[] v) {
+	private static double[] normalize(double[] v) {
 		for(int i = 0; i < v.length; i++) {
 			if(v[i] != 0) v[i] /= v[i];
 		}
@@ -120,7 +128,7 @@ public class Vector {
 	}
 
     public static Vector normal(List<Vector> vectors) {
-        Vector normal = new Vector(new float[]{
+        Vector normal = new Vector(new double[]{
             normalUtil(vectors, 1, 2),
             normalUtil(vectors, 2, 0),
             normalUtil(vectors, 0, 1)
@@ -128,23 +136,23 @@ public class Vector {
         return normalize(normal);
     }
     
-    private static float normalUtil(List<Vector> vectors, int i, int j) {
+    private static double normalUtil(List<Vector> vectors, int i, int j) {
         return multiplyBinomials(
-            new Point2D(vectors.get(0).values[i], vectors.get(0).values[j]),
-            new Point2D(vectors.get(1).values[i], vectors.get(1).values[j])
+            new Point2D((float) vectors.get(0).values[i], (float) vectors.get(0).values[j]),
+            new Point2D((float) vectors.get(1).values[i], (float) vectors.get(1).values[j])
         ) + multiplyBinomials(
-            new Point2D(vectors.get(1).values[i], vectors.get(1).values[j]),
-            new Point2D(vectors.get(2).values[i], vectors.get(2).values[j])
+            new Point2D((float) vectors.get(1).values[i], (float) vectors.get(1).values[j]),
+            new Point2D((float) vectors.get(2).values[i], (float) vectors.get(2).values[j])
         ) + multiplyBinomials(
-            new Point2D(vectors.get(2).values[i], vectors.get(2).values[j]),
-            new Point2D(vectors.get(3).values[i], vectors.get(3).values[j])
+            new Point2D((float) vectors.get(2).values[i], (float) vectors.get(2).values[j]),
+            new Point2D((float) vectors.get(3).values[i], (float) vectors.get(3).values[j])
         ) + multiplyBinomials(
-            new Point2D(vectors.get(3).values[i], vectors.get(3).values[j]),
-            new Point2D(vectors.get(0).values[i], vectors.get(0).values[j])
+            new Point2D((float) vectors.get(3).values[i], (float) vectors.get(3).values[j]),
+            new Point2D((float) vectors.get(0).values[i], (float) vectors.get(0).values[j])
         );
     }
 
-    private static float multiplyBinomials(Point2D b1, Point2D b2) {
+    private static double multiplyBinomials(Point2D b1, Point2D b2) {
         return (b1.getX() - b2.getX()) * (b1.getY() + b2.getY());
     }
 
@@ -159,7 +167,7 @@ public class Vector {
     }
 
     public static Vector add(Vector v1, Vector v2) {
-        Vector v = new Vector(new float[v1.values.length]);
+        Vector v = new Vector(new double[v1.values.length]);
         for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] + v2.values[i];
         }
@@ -167,7 +175,7 @@ public class Vector {
     }
 
     public static Vector subtract(Vector v1, Vector v2) {
-        Vector v = new Vector(new float[v1.values.length]);
+        Vector v = new Vector(new double[v1.values.length]);
         for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] - v2.values[i];
         }
@@ -175,15 +183,15 @@ public class Vector {
     }
 
     public static Vector multiply(Vector v1, Vector v2) {
-        Vector v = new Vector(new float[v1.values.length]);
+        Vector v = new Vector(new double[v1.values.length]);
         for (int i = 0; i < v1.values.length; i++) {
             v.values[i] = v1.values[i] * v2.values[i];
         }
         return v;
     }
 
-    public static float dot(Vector v1, Vector v2) {
-        float res = 0;
+    public static double dot(Vector v1, Vector v2) {
+        double res = 0;
         for (int i = 0; i < v1.values.length; i++) {
             res += v1.values[i] * v2.values[i];
         }
@@ -199,7 +207,7 @@ public class Vector {
      * @return
      */
     public static Vector cross(Vector v1, Vector v2) {
-        return new Vector(new float[]{
+        return new Vector(new double[]{
             v1.values[1] * v2.values[2] - v1.values[2] * v2.values[1],
             v1.values[2] * v2.values[0] - v1.values[0] * v2.values[2],
             v1.values[0] * v2.values[1] - v1.values[1] * v2.values[0]
@@ -212,18 +220,18 @@ public class Vector {
     }
 
     public static Vector random() {
-        return new Vector(new float[] {
-            Random.randomFloat(),
-            Random.randomFloat(),
-            Random.randomFloat()
+        return new Vector(new double[] {
+            Random.randomDouble(),
+            Random.randomDouble(),
+            Random.randomDouble()
         });
     }
 
     public static Vector random(int min, int max) {
-        return new Vector(new float[] {
-            Random.randomFloat(min, max),
-            Random.randomFloat(min, max),
-            Random.randomFloat(min, max)
+        return new Vector(new double[] {
+            Random.randomDouble(min, max),
+            Random.randomDouble(min, max),
+            Random.randomDouble(min, max)
         });
     }
 
@@ -253,6 +261,6 @@ public class Vector {
     }
 
     private static Vector copy(Vector v) {
-        return new Vector(new float[]{ v.getValues()[0], v.getValues()[1], v.getValues()[2]});
+        return new Vector(new double[]{ v.getValues()[0], v.getValues()[1], v.getValues()[2]});
     }
 }

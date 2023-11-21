@@ -17,11 +17,11 @@ import javafx.concurrent.Task;
 public class RayTraceTask extends Task<Void> {
     private static final Logger logger = LoggerFactory.getLogger(RayTraceTask.class);
 
-    public float workDone = 0f;
+    public double workDone = 0;
     private FloorPlan floorPlan;
     private int height;
     private int width;
-    private float max;
+    private double max;
 
     public RayTraceTask(FloorPlan floorPlan) {
         this.floorPlan = floorPlan;
@@ -58,7 +58,7 @@ public class RayTraceTask extends Task<Void> {
      * @param workDone
      * @param max
      */
-    public void updateProgress(float workDone) {
+    public void updateProgress(double workDone) {
         updateProgress((double) workDone, (double) this.max);
     }
 }

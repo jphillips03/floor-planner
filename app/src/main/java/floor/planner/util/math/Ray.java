@@ -42,7 +42,7 @@ public class Ray {
      * @param t Value to use to calculate point on ray.
      * @return Vector at position along ray at given t value.
      */
-    public Vector at(float t) {
+    public Vector at(double t) {
         return Vector.add(this.origin, this.direction.multiply(t));
     }
 }

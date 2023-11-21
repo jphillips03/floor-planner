@@ -38,7 +38,7 @@ public class IntersectableList {
     ) {
         IntersectRecord rec = new IntersectRecord();
         boolean hitAnything = false;
-        float closestSoFar = rayT.getMax();
+        double closestSoFar = rayT.getMax();
 
         for (DrawableElement3D element : this.elements) {
             if (element.intersect(r, new Interval(rayT.getMin(), closestSoFar), rec)) {

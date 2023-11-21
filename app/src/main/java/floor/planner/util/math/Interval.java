@@ -3,43 +3,43 @@ package floor.planner.util.math;
 public class Interval {
     public final static Interval EMPTY = new Interval();
     public final static Interval UNIVERSE = new Interval(
-        Float.NEGATIVE_INFINITY,
-        Float.POSITIVE_INFINITY
+        Double.NEGATIVE_INFINITY,
+        Double.POSITIVE_INFINITY
     );
 
-    private float min;
-    private float max;
+    private double min;
+    private double max;
 
     // Default interval is empty
     public Interval() {
-        this.min = Float.POSITIVE_INFINITY;
-        this.max = Float.NEGATIVE_INFINITY;
+        this.min = Double.POSITIVE_INFINITY;
+        this.max = Double.NEGATIVE_INFINITY;
     }
 
-    public Interval(float min, float max) {
+    public Interval(double min, double max) {
         this.min = min;
         this.max = max;
     }
 
-    public float getMin() {
+    public double getMin() {
         return this.min;
     }
 
-    public float getMax() {
+    public double getMax() {
         return this.max;
     }
 
-    public float clamp(float x) {
+    public double clamp(double x) {
         if (x < this.min) return this.min;
         if (x > this.max) return this.max;
         return x;
     }
 
-    public boolean contains(float x) {
+    public boolean contains(double x) {
         return this.min <= x && x <= this.max;
     }
 
-    public boolean surrounds(float x) {
+    public boolean surrounds(double x) {
         return this.min < x && x < this.max;
     }
 }

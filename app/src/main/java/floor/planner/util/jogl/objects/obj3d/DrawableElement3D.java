@@ -8,6 +8,7 @@ import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.DrawableElement;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -20,13 +21,13 @@ public abstract class DrawableElement3D extends DrawableElement {
     public void drawPolygon(GL2 gl, List<float[]> points) {
         gl.glColor3f(this.color.getRed(), this.color.getGreen(), this.color.getBlue());
         gl.glBegin(GL2.GL_POLYGON);
-        float[] normal = Vector.normal(
-            points.get(0),
-            points.get(1),
-            points.get(2),
-            points.get(3)
+        double[] normal = Vector.normal(
+            MathUtil.floatToDoubleArray(points.get(0)),
+            MathUtil.floatToDoubleArray(points.get(1)),
+            MathUtil.floatToDoubleArray(points.get(2)),
+            MathUtil.floatToDoubleArray(points.get(3))
         );
-        gl.glNormal3f(normal[0], normal[1], normal[2]);
+        gl.glNormal3f((float) normal[0], (float) normal[1], (float) normal[2]);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
         gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);

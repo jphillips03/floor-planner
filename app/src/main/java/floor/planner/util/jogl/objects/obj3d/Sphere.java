@@ -12,20 +12,20 @@ import floor.planner.util.math.Vector;
 
 public class Sphere extends DrawableElement3D {
     private static final Logger logger = LoggerFactory.getLogger(Sphere.class);
-    //private static float radius = 0.5f; // 0.0625f;
+    //private static double radius = 0.5f; // 0.0625f;
 
-    // private float x;
-    // private float y;
-    // private float z;
-    private float radius;
+    // private double x;
+    // private double y;
+    // private double z;
+    private double radius;
     private Vector center;
 
-    public Sphere(float x, float y, float z, float radius) {
+    public Sphere(double x, double y, double z, double radius) {
         // this.x = x; // + 0.5f; // move to middle of tile
         // this.y = y; // + 0.5f; // move to middle of tile
         // this.z = z;
         this.radius = radius;
-        center = new Vector(new float[]{ x, y, z });
+        center = new Vector(new double[]{ x, y, z });
     }
 
     public Vector getCenter() {
@@ -42,18 +42,18 @@ public class Sphere extends DrawableElement3D {
         IntersectRecord rec
     ) {
         Vector oc = Vector.subtract(r.getOrigin(), this.center);
-        float a = r.getDirection().lengthSqrd();
-        float halfB = Vector.dot(oc, r.getDirection());
-        float c = oc.lengthSqrd() - radius * radius;
-        float discriminant = halfB * halfB - a * c;
+        double a = r.getDirection().lengthSqrd();
+        double halfB = Vector.dot(oc, r.getDirection());
+        double c = oc.lengthSqrd() - radius * radius;
+        double discriminant = halfB * halfB - a * c;
 
         if (discriminant < 0) {
             return false;
         }
 
         // find nearest root that lies in acceptable range
-        float sqrtD = (float) Math.sqrt((double) discriminant);
-        float root = (-halfB - sqrtD) / a;
+        double sqrtD = (double) Math.sqrt((double) discriminant);
+        double root = (-halfB - sqrtD) / a;
         if (!rayT.surrounds(root)) {
             root = (-halfB + sqrtD) / a;
             if (!rayT.surrounds(root)) {

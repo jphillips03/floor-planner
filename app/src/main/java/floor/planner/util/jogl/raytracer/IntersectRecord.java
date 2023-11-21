@@ -6,12 +6,12 @@ import floor.planner.util.math.Vector;
 public class IntersectRecord {
     private Vector p;
     private Vector normal;
-    private float t;
+    private double t;
     boolean frontFace;
     
     public IntersectRecord() {}
 
-    public IntersectRecord(Vector p, Vector normal, float t) {
+    public IntersectRecord(Vector p, Vector normal, double t) {
         this.p = p;
         this.normal = normal;
         this.t = t;
@@ -31,10 +31,10 @@ public class IntersectRecord {
         this.normal = n;
     }
 
-    public float getT() {
+    public double getT() {
         return this.t;
     }
-    public void setT(float t) {
+    public void setT(double t) {
         this.t = t;
     }
 

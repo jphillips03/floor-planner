@@ -5,6 +5,9 @@ import com.jogamp.opengl.GL2;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
+import floor.planner.util.math.MathUtil;
+import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -59,13 +62,13 @@ public class Cube extends DrawableElement3D {
         int[][] verticesOrder = Cube.VERTICES_ORDER;
         for (int i = 0; i < verticesOrder.length; i++) {
             int[] order = verticesOrder[i];
-            float[] normal = Vector.normal(
-                vertices[order[0]],
-                vertices[order[1]],
-                vertices[order[2]],
-                vertices[order[3]]
+            double[] normal = Vector.normal(
+                MathUtil.floatToDoubleArray(vertices[order[0]]),
+                MathUtil.floatToDoubleArray(vertices[order[1]]),
+                MathUtil.floatToDoubleArray(vertices[order[2]]),
+                MathUtil.floatToDoubleArray(vertices[order[3]])
             );
-            gl.glNormal3f(normal[0], normal[1], normal[2]);
+            gl.glNormal3f((float) normal[0], (float) normal[1], (float) normal[2]);
             this.drawPolygon(
                 gl,
                 Arrays.asList(
