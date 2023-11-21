@@ -21,22 +21,24 @@ public class RayTraceTask extends Task<Void> {
     private FloorPlan floorPlan;
     private int height;
     private int width;
+    private int maxDepth;
     private double max;
 
     public RayTraceTask(FloorPlan floorPlan) {
         this.floorPlan = floorPlan;
     }
 
-    public RayTraceTask(int height, int width, int max) {
+    public RayTraceTask(int height, int width, int max, int maxDepth) {
         this.height = height;
         this.width = width;
         this.max = max;
+        this.maxDepth = maxDepth;
     }
 
     @Override
     public Void call() throws InterruptedException {
         try {
-            RayTracer rayTracer = new RayTracer(height, width);
+            RayTracer rayTracer = new RayTracer(height, width, maxDepth);
             rayTracer.render(this);
             return null;
         } catch (Exception e) {

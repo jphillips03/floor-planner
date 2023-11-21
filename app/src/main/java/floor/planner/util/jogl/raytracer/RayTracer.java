@@ -30,6 +30,7 @@ public class RayTracer {
     private double viewportHeight = 2;
     private double viewportWidth;
     private Vector cameraCenter = new Vector(new double[]{0, 0, 0});
+    private int maxDepth; // Maximum number of ray bounces into scene
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
@@ -44,18 +45,20 @@ public class RayTracer {
     private IntersectableList world;
     private FloorPlan floorPlan;
 
-    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth) {
+    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth) {
         this.floorPlan = floorPlan;
         this.camera = floorPlan.getCamera();
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
+        this.maxDepth = maxDepth;
 
         this.initialize();
     }
 
-    public RayTracer(int imageHeight, int imageWidth) {
+    public RayTracer(int imageHeight, int imageWidth, int maxDepth) {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
+        this.maxDepth = maxDepth;
 
         this.world = new IntersectableList();
         world.add(new Sphere(0, 0, -1, 0.5));
@@ -109,7 +112,7 @@ public class RayTracer {
                 Color pixelColor = new Color(0, 0, 0);
                 for (int sample = 0; sample < samplesPerPixel; sample++) {
                     Ray r = this.getRay(j, i);
-                    Color rayColor = this.rayColor(r, world);
+                    Color rayColor = this.rayColor(r, maxDepth, world);
                     pixelColor.setColor(
                         Vector.add(pixelColor.getColor(), rayColor.getColor())
                     );
@@ -145,12 +148,17 @@ public class RayTracer {
         );
     }
 
-    public Color rayColor(Ray r, IntersectableList world) {
+    public Color rayColor(Ray r, int depth, IntersectableList world) {
+        // If we've exceeded the ray bounce limit, no more light is gathered.
+        if (depth <= 0) {
+            return new Color(0,0,0);
+        }
+
         IntersectRecord rec = world.intersect(r, new Interval(0, Double.POSITIVE_INFINITY));
         if (rec != null) {
             Vector direction = Vector.randomOnHempisphere(rec.getNormal());
             return new Color(
-                rayColor(new Ray(rec.getP(), direction), world)
+                rayColor(new Ray(rec.getP(), direction), depth - 1, world)
                     .getColor()
                     .multiply(0.5f)
             );
