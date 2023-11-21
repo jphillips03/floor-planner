@@ -84,6 +84,13 @@ public class Vector {
         return res;
     }
 
+    public boolean nearZero() {
+        double s = 1e-8;
+        return Math.abs(this.getX()) < s &&
+            Math.abs(this.getY()) < s &&
+            Math.abs(this.getZ()) < s;
+    }
+
     public String toString() {
         return String.format("[%.2f, %.2f, %.2f]", this.values[0], this.values[1], this.values[2]);
     }
@@ -258,6 +265,10 @@ public class Vector {
 
     public static Vector randomUnitVector() {
         return unit(randomInUnitSphere());
+    }
+
+    public static Vector reflect(Vector v, Vector n) {
+        return subtract(v, n.multiply(2 * dot(v, n)));
     }
 
     private static Vector copy(Vector v) {

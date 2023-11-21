@@ -1,5 +1,6 @@
 package floor.planner.util.jogl.raytracer;
 
+import floor.planner.util.jogl.material.Material;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -8,6 +9,7 @@ public class IntersectRecord {
     private Vector normal;
     private double t;
     boolean frontFace;
+    Material mat;
     
     public IntersectRecord() {}
 
@@ -44,5 +46,12 @@ public class IntersectRecord {
 
         this.frontFace = Vector.dot(r.getDirection(), outwardNormal) < 0;
         this.normal = this.frontFace ? outwardNormal : outwardNormal.multiply(-1);
+    }
+
+    public Material getMaterial() {
+        return this.mat;
+    }
+    public void setMaterial(Material mat) {
+        this.mat = mat;
     }
 }

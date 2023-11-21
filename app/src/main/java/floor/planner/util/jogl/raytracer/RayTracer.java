@@ -8,6 +8,10 @@ import org.slf4j.LoggerFactory;
 import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
+import floor.planner.util.jogl.material.Lambertian;
+import floor.planner.util.jogl.material.Material;
+import floor.planner.util.jogl.material.Metal;
+import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.math.Interval;
@@ -60,9 +64,16 @@ public class RayTracer {
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
 
+        Material ground = new Lambertian(new Color(0.8f, 0.8f, 0.0f));
+        Material center = new Lambertian(new Color(0.7f, 0.3f, 0.3f));
+        Material left = new Metal(new Color(0.8f, 0.8f, 0.8f));
+        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f));
+
         this.world = new IntersectableList();
-        world.add(new Sphere(0, 0, -1, 0.5));
-        world.add(new Sphere(0, -100.5f, -1f, 100));
+        world.add(new Sphere(0, -100.5f, -1f, 100, ground));
+        world.add(new Sphere(0, 0, -1, 0.5, center));
+        world.add(new Sphere(-1, 0, -1, 0.5, left));
+        world.add(new Sphere(1, 0, -1, 0.5, right));
 
         this.initialize();
     }
@@ -156,12 +167,18 @@ public class RayTracer {
 
         IntersectRecord rec = world.intersect(r, new Interval(0.001, Double.POSITIVE_INFINITY));
         if (rec != null) {
-            Vector direction = Vector.add(rec.getNormal(), Vector.randomUnitVector());
-            return new Color(
-                rayColor(new Ray(rec.getP(), direction), depth - 1, world)
-                    .getColor()
-                    .multiply(0.5f)
-            );
+            ScatterAttenuation sa = rec.mat.scatter(r, rec);
+            if (sa != null) {
+                return new Color(
+                    Vector.multiply(
+                        sa.getAttenuation().getColor(),
+                        rayColor(sa.getScattered(), depth - 1, world)
+                            .getColor()
+                    )
+                );
+            } else {
+                return new Color(0, 0, 0);
+            }
         }
 
         Vector unitDirection = Vector.unit(r.getDirection());
