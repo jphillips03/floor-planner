@@ -14,18 +14,17 @@ public class Sphere extends DrawableElement3D {
     private static final Logger logger = LoggerFactory.getLogger(Sphere.class);
     //private static float radius = 0.5f; // 0.0625f;
 
-    private float x;
-    private float y;
-    private float z;
+    // private float x;
+    // private float y;
+    // private float z;
     private float radius;
     private Vector center;
-    
-    public Sphere(float x, float y, float z, float radius) {
-        this.x = x; // + 0.5f; // move to middle of tile where cylinder drawn
-        this.y = y; // + 0.5f; // move to middle of tile where cylinder drawn
-        this.z = z;
-        this.radius = radius;
 
+    public Sphere(float x, float y, float z, float radius) {
+        // this.x = x; // + 0.5f; // move to middle of tile
+        // this.y = y; // + 0.5f; // move to middle of tile
+        // this.z = z;
+        this.radius = radius;
         center = new Vector(new float[]{ x, y, z });
     }
 
@@ -51,9 +50,9 @@ public class Sphere extends DrawableElement3D {
         if (discriminant < 0) {
             return false;
         }
-        float sqrtD = (float) Math.sqrt((double) discriminant);
 
         // find nearest root that lies in acceptable range
+        float sqrtD = (float) Math.sqrt((double) discriminant);
         float root = (-halfB - sqrtD) / a;
         if (!rayT.surrounds(root)) {
             root = (-halfB + sqrtD) / a;
