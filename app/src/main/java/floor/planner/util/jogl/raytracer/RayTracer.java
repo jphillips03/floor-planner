@@ -156,7 +156,7 @@ public class RayTracer {
 
         IntersectRecord rec = world.intersect(r, new Interval(0.001, Double.POSITIVE_INFINITY));
         if (rec != null) {
-            Vector direction = Vector.randomOnHempisphere(rec.getNormal());
+            Vector direction = Vector.add(rec.getNormal(), Vector.randomUnitVector());
             return new Color(
                 rayColor(new Ray(rec.getP(), direction), depth - 1, world)
                     .getColor()
