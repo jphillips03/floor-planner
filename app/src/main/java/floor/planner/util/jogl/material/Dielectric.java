@@ -18,9 +18,18 @@ public class Dielectric implements Material {
         double refractionRatio = rec.isFrontFace() ? (1 / this.ir) : this.ir;
 
         Vector unitDirection = Vector.unit(rIn.getDirection());
-        Vector refracted = Vector.refract(unitDirection, rec.getNormal(), refractionRatio);
+        double cosTheta = Math.min(Vector.dot(unitDirection.multiply(-1), rec.getNormal()), 1);
+        double sinTheta = Math.sqrt(1 - cosTheta * cosTheta);
+        boolean cannotRefract = refractionRatio * sinTheta > 1;
+        Vector direction;
 
-        Ray scattered = new Ray(rec.getP(), refracted);
+        if (cannotRefract) {
+            direction = Vector.reflect(unitDirection, rec.getNormal());
+        } else {
+            direction = Vector.refract(unitDirection, rec.getNormal(), refractionRatio);
+        }
+
+        Ray scattered = new Ray(rec.getP(), direction);
         return new ScatterAttenuation(attenuation, scattered);
     }
 }

@@ -66,9 +66,9 @@ public class RayTracer {
         this.maxDepth = maxDepth;
 
         Material ground = new Lambertian(new Color(0.8f, 0.8f, 0.0f));
-        Material center = new Dielectric(1.5);
+        Material center = new Lambertian(new Color(0.1f, 0.2f, 0.5f));
         Material left = new Dielectric(1.5);
-        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 1.0);
+        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 0);
 
         this.world = new IntersectableList();
         world.add(new Sphere(0, -100.5f, -1f, 100, ground));
