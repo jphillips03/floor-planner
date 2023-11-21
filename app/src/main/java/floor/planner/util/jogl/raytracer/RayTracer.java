@@ -31,11 +31,12 @@ public class RayTracer {
 
     // camera
     private Camera camera;
-    private double focalLength = 1;
-    private double viewportHeight = 2;
+    private double focalLength;
+    private double viewportHeight;
     private double viewportWidth;
     private Vector cameraCenter = new Vector(new double[]{0, 0, 0});
     private int maxDepth; // Maximum number of ray bounces into scene
+    private double vFov = 90; // vertical view angle (field of view)
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
@@ -65,22 +66,22 @@ public class RayTracer {
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
 
-        Material ground = new Lambertian(new Color(0.8f, 0.8f, 0.0f));
-        Material center = new Lambertian(new Color(0.1f, 0.2f, 0.5f));
-        Material left = new Dielectric(1.5);
-        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 0);
+        double R = Math.cos(Math.PI / 4);
+        Material left = new Lambertian(new Color(0, 0, 1));
+        Material right = new Lambertian(new Color(1, 0, 0));
 
         this.world = new IntersectableList();
-        world.add(new Sphere(0, -100.5f, -1f, 100, ground));
-        world.add(new Sphere(0, 0, -1, 0.5, center));
-        world.add(new Sphere(-1, 0, -1, 0.5, left));
-        world.add(new Sphere(-1, 0, -1, -0.4, left));
-        world.add(new Sphere(1, 0, -1, 0.5, right));
+        world.add(new Sphere(-R, 0, -1f, R, left));
+        world.add(new Sphere(R, 0, -1f, R, right));
 
         this.initialize();
     }
 
     private void initialize() {
+        this.focalLength = 1;
+        double theta = Math.toRadians(vFov);
+        double h = Math.tan(theta / 2);
+        this.viewportHeight = 2 * h * this.focalLength;
         this.viewportWidth = this.viewportHeight * ((double) imageWidth / (double) imageHeight);
 
         this.viewportU = new Vector(new double[]{ this.viewportWidth, 0, 0});
