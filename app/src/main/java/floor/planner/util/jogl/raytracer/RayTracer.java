@@ -74,6 +74,7 @@ public class RayTracer {
         world.add(new Sphere(0, -100.5f, -1f, 100, ground));
         world.add(new Sphere(0, 0, -1, 0.5, center));
         world.add(new Sphere(-1, 0, -1, 0.5, left));
+        world.add(new Sphere(-1, 0, -1, -0.4, left));
         world.add(new Sphere(1, 0, -1, 0.5, right));
 
         this.initialize();
