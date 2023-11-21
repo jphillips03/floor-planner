@@ -10,6 +10,7 @@ import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
+import floor.planner.util.math.Interval;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -147,11 +148,11 @@ public class RayTracer {
     public Color rayColor(Ray r, IntersectableList world) {
         IntersectRecord rec = world.intersect(r, new Interval(0, Float.POSITIVE_INFINITY));
         if (rec != null) {
+            Vector direction = Vector.randomOnHempisphere(rec.getNormal());
             return new Color(
-                Vector.add(
-                    rec.getNormal(),
-                    new Vector(new float[]{1, 1, 1})
-                ).multiply(0.5f)
+                rayColor(new Ray(rec.getP(), direction), world)
+                    .getColor()
+                    .multiply(0.5f)
             );
         }
 

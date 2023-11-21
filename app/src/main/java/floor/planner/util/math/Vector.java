@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 
 public class Vector {
     private static final Logger logger = LoggerFactory.getLogger(Vector.class);
+
     private float[] values;
 
     public Vector() {}
@@ -208,6 +209,47 @@ public class Vector {
     public static Vector unit(Vector v) {
         Vector res = copy(v);
         return res.divide(res.length());
+    }
+
+    public static Vector random() {
+        return new Vector(new float[] {
+            Random.randomFloat(),
+            Random.randomFloat(),
+            Random.randomFloat()
+        });
+    }
+
+    public static Vector random(int min, int max) {
+        return new Vector(new float[] {
+            Random.randomFloat(min, max),
+            Random.randomFloat(min, max),
+            Random.randomFloat(min, max)
+        });
+    }
+
+    public static Vector randomInUnitSphere() {
+        // it feels really wrong to loop while true, but going off code from
+        // https://raytracing.github.io/books/RayTracingInOneWeekend.html
+        while (true) {
+            Vector p = Vector.random(-1, 1);
+            if (p.lengthSqrd() < 1f) {
+                return p;
+            }
+        }
+    }
+
+    public static Vector randomOnHempisphere(Vector normal) {
+        Vector onUnitSphere = randomUnitVector();
+        if (dot(onUnitSphere, normal) > 0.0f) {
+            // In the same hemisphere as the normal
+            return onUnitSphere;
+        } else {
+            return onUnitSphere.multiply(-1);
+        }
+    }
+
+    public static Vector randomUnitVector() {
+        return unit(randomInUnitSphere());
     }
 
     private static Vector copy(Vector v) {
