@@ -19,6 +19,10 @@ public class IntersectRecord {
         this.t = t;
     }
 
+    public boolean isFrontFace() {
+        return this.frontFace;
+    }
+
     public Vector getP() {
         return this.p;
     }

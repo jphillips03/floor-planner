@@ -271,6 +271,13 @@ public class Vector {
         return subtract(v, n.multiply(2 * dot(v, n)));
     }
 
+    public static Vector refract(Vector v, Vector n, double etaiOverEtat) {
+        double cosTheta = Math.min(dot(v.multiply(-1), n), 1);
+        Vector rOutPerp = Vector.add(v, n.multiply(cosTheta)).multiply(etaiOverEtat);
+        Vector rOutParallel = n.multiply(- Math.sqrt(Math.abs(1 - rOutPerp.lengthSqrd())));
+        return Vector.add(rOutPerp, rOutParallel);
+    }
+
     private static Vector copy(Vector v) {
         return new Vector(new double[]{ v.getValues()[0], v.getValues()[1], v.getValues()[2]});
     }

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
+import floor.planner.util.jogl.material.Dielectric;
 import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.Metal;
@@ -65,8 +66,8 @@ public class RayTracer {
         this.maxDepth = maxDepth;
 
         Material ground = new Lambertian(new Color(0.8f, 0.8f, 0.0f));
-        Material center = new Lambertian(new Color(0.7f, 0.3f, 0.3f));
-        Material left = new Metal(new Color(0.8f, 0.8f, 0.8f), 0.3);
+        Material center = new Dielectric(1.5);
+        Material left = new Dielectric(1.5);
         Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 1.0);
 
         this.world = new IntersectableList();
