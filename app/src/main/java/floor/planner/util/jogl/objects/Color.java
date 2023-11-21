@@ -89,6 +89,10 @@ public class Color {
         green *= scale;
         blue *= scale;
 
+        red = this.linearToGamma(red);
+        green = this.linearToGamma(green);
+        blue = this.linearToGamma(blue);
+
         // Write the translated [0,255] value of each color component
         Interval intensity = new Interval(0.000, 0.999);
         int r = (int) (256 * intensity.clamp(red));
@@ -96,5 +100,9 @@ public class Color {
         int b = (int) (256 * intensity.clamp(blue));
 
         return String.format("%d %d %d \n", r, g, b);
+    }
+
+    private double linearToGamma(double linearComponent) {
+        return Math.sqrt(linearComponent);
     }
 }
