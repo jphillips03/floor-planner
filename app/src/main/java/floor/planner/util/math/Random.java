@@ -1,23 +1,42 @@
 package floor.planner.util.math;
 
+import java.util.concurrent.ThreadLocalRandom;
+
+/**
+ * Utility class for generating random number values. We use ThreadLocalRandom
+ * since the ray tracer runs in it's own thread. Otherwise Math.random() does
+ * not produce sufficiently random values needed.
+ */
 public class Random {
+
     /**
-     * Default max random value which should be next value down from 1 since
-     * Math.random() returns a number in [0, 1)
+     * Returns a random real in [0, 1).
+     *
+     * @return A random real in [0, 1).
      */
-    private static double RAND_MAX = (double) Math.nextDown(1.0);
-
     public static double randomDouble() {
-        return (double) Math.random() / (RAND_MAX + 1);
+        return ThreadLocalRandom.current().nextDouble();
     }
 
+    /**
+     * Returns a random real in [min, max).
+     *
+     * @param min The least value that can be returned.
+     * @param max The upper bound (exclusive) for the returned value.
+     * @return A random real in [min, max).
+     */
     public static double randomDouble(int min, int max) {
-        // returns a random real in [min, max)
-        return (double) (min + ((max - min) * Math.random()));
+        return ThreadLocalRandom.current().nextDouble(min, max);
     }
 
+    /**
+     * Returns a random real in [min, max).
+     *
+     * @param min The least value that can be returned.
+     * @param max The upper bound (exclusive) for the returned value.
+     * @return A random real in [min, max).
+     */
     public static double randomDouble(double min, double max) {
-        // returns a random real in [min, max)
-        return (double) (min + ((max - min) * Math.random()));
+        return ThreadLocalRandom.current().nextDouble();
     }
 }
