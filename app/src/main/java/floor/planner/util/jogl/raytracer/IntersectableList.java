@@ -45,7 +45,6 @@ public class IntersectableList {
                 hitAnything = true;
                 closestSoFar = rec.getT();
             }
-            task.updateProgress(task.workDone++);
         }
 
         return hitAnything ? rec : null;

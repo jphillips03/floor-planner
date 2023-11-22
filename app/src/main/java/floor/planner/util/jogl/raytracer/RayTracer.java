@@ -179,17 +179,20 @@ public class RayTracer {
                     pixelColor.setColor(
                         Vector.add(pixelColor.getColor(), rayColor.getColor())
                     );
+                    task.updateProgress(task.workDone++);
                 }
                 image[i][j] = pixelColor;
-                task.updateProgress(task.workDone++);
+                
             }
         }
+        logger.info("Ray trace done, saving image to disk...");
 
         // store the image as a PPM file
         String imageStr = PPMImageFormatter.write(image, task, samplesPerPixel);
         File file = new File("image.ppm");
         FileUtil.save(file, imageStr);
         task.updateProgress(task.workDone++);
+        logger.info("Ray trace image saved to disk successfully");
     }
 
     // get a randomly sampled camera ray for pixel at location i,j originating

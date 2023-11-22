@@ -38,7 +38,10 @@ public class RayTraceTask extends Task<Void> {
     @Override
     public Void call() throws InterruptedException {
         try {
+            logger.info("Initializing ray tracer");
             RayTracer rayTracer = new RayTracer(height, width, maxDepth);
+            logger.info("Ray tracer initialized successfully");
+            logger.info("Ray trace starting...");
             rayTracer.render(this);
             return null;
         } catch (Exception e) {
