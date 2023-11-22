@@ -15,4 +15,9 @@ public class Random {
         // returns a random real in [min, max)
         return (double) (min + ((max - min) * Math.random()));
     }
+
+    public static double randomDouble(double min, double max) {
+        // returns a random real in [min, max)
+        return (double) (min + ((max - min) * Math.random()));
+    }
 }

@@ -31,8 +31,8 @@ public class RayTracer {
 
     // camera
     private Camera camera;
-    private Vector lookFrom = new Vector(-2f, 2f, 1f);
-    private Vector lookAt = new Vector(0, 0, -1);
+    private Vector lookFrom = new Vector(13f, 2f, 3f);
+    private Vector lookAt = new Vector(0, 0, 0);
     private Vector vUp = new Vector(0, 1, 0);
     private Vector defocusDiskU; // defocus disk horizontal radius
     private Vector defocusDiskV; // defocus disk vertical radius
@@ -42,8 +42,8 @@ public class RayTracer {
     private int maxDepth; // Maximum number of ray bounces into scene
     private double vFov = 20; // vertical view angle (field of view)
     private Vector u, v, w; // camera frame basis vectors
-    private double defocusAngle = 10.0; // variation angle of rays through each pixel
-    private double focusDist = 3.4; // distance from camera lookFrom point to plane of perfect focus
+    private double defocusAngle = 0.6; // variation angle of rays through each pixel
+    private double focusDist = 10.0; // distance from camera lookFrom point to plane of perfect focus
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
@@ -73,17 +73,43 @@ public class RayTracer {
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
 
-        Material ground = new Lambertian(new Color(0.8f, 0.8f, 0));
-        Material center = new Lambertian(new Color(0.1f, 0.2f, 0.5f));
-        Material left = new Dielectric(1.5);
-        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 0.0);
-
         this.world = new IntersectableList();
-        world.add(new Sphere(new Vector(0.0, -100.5, -1.0), 100.0, ground));
-        world.add(new Sphere(new Vector(0.0, 0.0, -1.0),   0.5, center));
-        world.add(new Sphere(new Vector(-1.0, 0.0, -1.0),   0.5, left));
-        world.add(new Sphere(new Vector(-1.0, 0.0, -1.0),  -0.4, left));
-        world.add(new Sphere(new Vector(1.0, 0.0, -1.0),   0.5, right));
+        Material ground = new Lambertian(new Color(0.5f, 0.5f, 0.5f));
+        world.add(new Sphere(new Vector(0.0, -1000, 0), 1000, ground));
+
+        for (int a = -11; a < 11; a++) {
+            for (int b = -11; b < 11; b++) {
+                // choose a material randomly
+                double chooseMat = Random.randomDouble();
+                Vector center = new Vector(a + 0.9 * Random.randomDouble(), 0.2, b + 0.9 * Random.randomDouble());
+
+                if (Vector.subtract(center, new Vector(4, 0.2, 0)).length() > 0.9) {
+                    Material mat;
+                    if (chooseMat < 0.8) {
+                        // diffuse
+                        Color albedo = new Color(Vector.multiply(Vector.random(), Vector.random()));
+                        mat = new Lambertian(albedo);
+                    } else if (chooseMat < 0.95) {
+                        // metal
+                        Color albedo = new Color(Vector.random(0.5, 1));
+                        double fuzz = Random.randomDouble(0, 0.5);
+                        mat = new Metal(albedo, fuzz);
+                    } else {
+                        mat = new Dielectric(1.5);
+                    }
+
+                    world.add(new Sphere(center, 0.2, mat));
+                }
+            }
+        }
+
+        Material mat1 = new Dielectric(1.5);
+        Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
+        Material mat3 = new Metal(new Color(0.7f, 0.6f, 0.5f), 0.0);
+        
+        world.add(new Sphere(new Vector(0, 1, 0),   1, mat1));
+        world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
+        world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
 
         this.initialize();
     }
@@ -153,9 +179,9 @@ public class RayTracer {
                     pixelColor.setColor(
                         Vector.add(pixelColor.getColor(), rayColor.getColor())
                     );
-                    task.updateProgress(task.workDone++);
                 }
                 image[i][j] = pixelColor;
+                task.updateProgress(task.workDone++);
             }
         }
 

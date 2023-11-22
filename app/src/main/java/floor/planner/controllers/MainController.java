@@ -200,7 +200,7 @@ public class MainController implements Initializable {
     private void onRayTrace(ActionEvent event) {
         int height = 225; // this.glWindow.getHeight();
         int width = 400; // this.glWindow.getWidth();
-        int num3DElements = 2; // TODO get this from current floorplan
+        int num3DElements = 488; // TODO get this from current floorplan
         int samplesPerPixel = 100;
         int maxDepth = 50;
 

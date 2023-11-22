@@ -246,6 +246,14 @@ public class Vector {
         });
     }
 
+    public static Vector random(double min, double max) {
+        return new Vector(new double[] {
+            Random.randomDouble(min, max),
+            Random.randomDouble(min, max),
+            Random.randomDouble(min, max)
+        });
+    }
+
     public static Vector randomInUnitDisk() {
         // another while true...
         while (true) {
