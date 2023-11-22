@@ -13,6 +13,10 @@ public class Vector {
 
     public Vector() {}
 
+    public Vector(double x, double y, double z) {
+        this.values = new double[]{ x, y, z};
+    }
+
     public Vector(double[] values) {
         this.values = values;        
     }

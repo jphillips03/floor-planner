@@ -22,6 +22,12 @@ public class Sphere extends DrawableElement3D {
     private Vector center;
     private Material mat;
 
+    public Sphere(Vector pos, double radius, Material mat) {
+        this.radius = radius;
+        this.center = pos;
+        this.mat = mat;
+    }
+
     public Sphere(double x, double y, double z, double radius, Material mat) {
         // this.x = x; // + 0.5f; // move to middle of tile
         // this.y = y; // + 0.5f; // move to middle of tile

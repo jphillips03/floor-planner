@@ -31,12 +31,16 @@ public class RayTracer {
 
     // camera
     private Camera camera;
+    private Vector lookFrom = new Vector(-2f, 2f, 1f);
+    private Vector lookAt = new Vector(0, 0, -1);
+    private Vector vUp = new Vector(0, 1, 0);
     private double focalLength;
     private double viewportHeight;
     private double viewportWidth;
-    private Vector cameraCenter = new Vector(new double[]{0, 0, 0});
+    private Vector cameraCenter;
     private int maxDepth; // Maximum number of ray bounces into scene
-    private double vFov = 90; // vertical view angle (field of view)
+    private double vFov = 20; // vertical view angle (field of view)
+    private Vector u, v, w; // camera frame basis vectors
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
@@ -66,34 +70,46 @@ public class RayTracer {
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
 
-        double R = Math.cos(Math.PI / 4);
-        Material left = new Lambertian(new Color(0, 0, 1));
-        Material right = new Lambertian(new Color(1, 0, 0));
+        Material ground = new Lambertian(new Color(0.8f, 0.8f, 0));
+        Material center = new Lambertian(new Color(0.1f, 0.2f, 0.5f));
+        Material left = new Dielectric(1.5);
+        Material right = new Metal(new Color(0.8f, 0.6f, 0.2f), 0.0);
 
         this.world = new IntersectableList();
-        world.add(new Sphere(-R, 0, -1f, R, left));
-        world.add(new Sphere(R, 0, -1f, R, right));
+        world.add(new Sphere(new Vector(0.0, -100.5, -1.0), 100.0, ground));
+        world.add(new Sphere(new Vector(0.0, 0.0, -1.0),   0.5, center));
+        world.add(new Sphere(new Vector(-1.0, 0.0, -1.0),   0.5, left));
+        world.add(new Sphere(new Vector(-1.0, 0.0, -1.0),  -0.4, left));
+        world.add(new Sphere(new Vector(1.0, 0.0, -1.0),   0.5, right));
 
         this.initialize();
     }
 
     private void initialize() {
-        this.focalLength = 1;
+        this.cameraCenter = lookFrom;
+
+        // determine viewport dimensions
+        this.focalLength = Vector.subtract(lookFrom, lookAt).length();
         double theta = Math.toRadians(vFov);
         double h = Math.tan(theta / 2);
         this.viewportHeight = 2 * h * this.focalLength;
         this.viewportWidth = this.viewportHeight * ((double) imageWidth / (double) imageHeight);
 
-        this.viewportU = new Vector(new double[]{ this.viewportWidth, 0, 0});
-        this.viewportV = new Vector(new double[]{ 0, -this.viewportHeight, 0});
+        // calculate u, v, w unit basis vectors for camera coordinate frame
+        w = Vector.unit(Vector.subtract(lookFrom, lookAt));
+        u = Vector.unit(Vector.cross(vUp, w));
+        v = Vector.cross(w, u);
+    
+        this.viewportU = u.multiply(this.viewportWidth);// new Vector(new double[]{ this.viewportWidth, 0, 0});
+        this.viewportV = v.multiply(-1).multiply(this.viewportHeight); // new Vector(new double[]{ 0, -this.viewportHeight, 0});
 
         this.pixelDeltaU = this.viewportU.divide((double) imageWidth);
         this.pixelDeltaV = this.viewportV.divide((double) imageHeight);
 
         // calculate location of upper left pixel
-        Vector v1 = Vector.subtract(cameraCenter, new Vector(new double[]{ 0, 0, this.focalLength}));
-        Vector v2 = Vector.subtract(v1, this.viewportU.divide(2f));
-        this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2f));
+        Vector v1 = Vector.subtract(cameraCenter, w.multiply(focalLength));
+        Vector v2 = Vector.subtract(v1, this.viewportU.divide(2));
+        this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2));
 
         Vector pixelDelta = Vector.add(this.pixelDeltaU, this.pixelDeltaV);
         this.pixel00Loc = Vector.add(this.viewportUpperLeft, pixelDelta.multiply(0.5f));
