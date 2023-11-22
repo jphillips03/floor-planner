@@ -34,20 +34,23 @@ public class RayTracer {
     private Vector lookFrom = new Vector(-2f, 2f, 1f);
     private Vector lookAt = new Vector(0, 0, -1);
     private Vector vUp = new Vector(0, 1, 0);
-    private double focalLength;
+    private Vector defocusDiskU; // defocus disk horizontal radius
+    private Vector defocusDiskV; // defocus disk vertical radius
     private double viewportHeight;
     private double viewportWidth;
     private Vector cameraCenter;
     private int maxDepth; // Maximum number of ray bounces into scene
     private double vFov = 20; // vertical view angle (field of view)
     private Vector u, v, w; // camera frame basis vectors
+    private double defocusAngle = 10.0; // variation angle of rays through each pixel
+    private double focusDist = 3.4; // distance from camera lookFrom point to plane of perfect focus
 
     // vectors across horizontal and down vertical viewport edges
     private Vector viewportU;
     private Vector viewportV;
 
-    private Vector pixelDeltaU;
-    private Vector pixelDeltaV;
+    private Vector pixelDeltaU; // offset to pixel to right
+    private Vector pixelDeltaV; // offset to pixel below
 
     private Vector viewportUpperLeft;
     private Vector pixel00Loc;
@@ -89,10 +92,9 @@ public class RayTracer {
         this.cameraCenter = lookFrom;
 
         // determine viewport dimensions
-        this.focalLength = Vector.subtract(lookFrom, lookAt).length();
         double theta = Math.toRadians(vFov);
         double h = Math.tan(theta / 2);
-        this.viewportHeight = 2 * h * this.focalLength;
+        this.viewportHeight = 2 * h * focusDist;
         this.viewportWidth = this.viewportHeight * ((double) imageWidth / (double) imageHeight);
 
         // calculate u, v, w unit basis vectors for camera coordinate frame
@@ -107,12 +109,17 @@ public class RayTracer {
         this.pixelDeltaV = this.viewportV.divide((double) imageHeight);
 
         // calculate location of upper left pixel
-        Vector v1 = Vector.subtract(cameraCenter, w.multiply(focalLength));
+        Vector v1 = Vector.subtract(cameraCenter, w.multiply(focusDist));
         Vector v2 = Vector.subtract(v1, this.viewportU.divide(2));
         this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2));
 
         Vector pixelDelta = Vector.add(this.pixelDeltaU, this.pixelDeltaV);
         this.pixel00Loc = Vector.add(this.viewportUpperLeft, pixelDelta.multiply(0.5f));
+
+        // calculate camera defocus disk basis vectors
+        double defocusRadius = focusDist * Math.tan(Math.toRadians(defocusAngle / 2));
+        defocusDiskU = u.multiply(defocusRadius);
+        defocusDiskV = v.multiply(defocusRadius);
     }
 
     public Vector getCameraCenter() {
@@ -159,14 +166,24 @@ public class RayTracer {
         task.updateProgress(task.workDone++);
     }
 
+    // get a randomly sampled camera ray for pixel at location i,j originating
+    // from camera defocus disk
     private Ray getRay(int i, int j) {
         Vector pc1 = Vector.add(this.pixelDeltaU.multiply(i), this.pixelDeltaV.multiply(j));
         Vector pixelCenter = Vector.add(this.pixel00Loc, pc1);
         Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare());
 
-        Vector rayOrigin = this.cameraCenter;
+        Vector rayOrigin = defocusAngle <= 0 ? cameraCenter : defocusDiskSample();
         Vector rayDirection = Vector.subtract(pixelSample, rayOrigin);
         return new Ray(rayOrigin, rayDirection);
+    }
+
+    private Vector defocusDiskSample() {
+        Vector p = Vector.randomInUnitDisk();
+        return Vector.add(
+            Vector.add(cameraCenter, defocusDiskU.multiply(p.getX())),
+            defocusDiskV.multiply(p.getY())
+        );
     }
 
     private Vector pixelSampleSquare() {

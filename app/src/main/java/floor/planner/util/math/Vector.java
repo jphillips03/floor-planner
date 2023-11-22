@@ -246,6 +246,16 @@ public class Vector {
         });
     }
 
+    public static Vector randomInUnitDisk() {
+        // another while true...
+        while (true) {
+            Vector p = new Vector(Random.randomDouble(-1, 1), Random.randomDouble(-1, 1), 0);
+            if (p.lengthSqrd() < 1) {
+                return p;
+            }
+        }
+    }
+
     public static Vector randomInUnitSphere() {
         // it feels really wrong to loop while true, but going off code from
         // https://raytracing.github.io/books/RayTracingInOneWeekend.html
