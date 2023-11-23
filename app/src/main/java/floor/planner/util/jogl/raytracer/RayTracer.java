@@ -14,8 +14,10 @@ import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.Metal;
 import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -72,8 +74,55 @@ public class RayTracer {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
-
         this.world = new IntersectableList();
+
+        //this.spheres();
+        this.quads();
+
+        this.initialize();
+    }
+
+    private void quads() {
+        Material left = new Lambertian(new Color(1f, 0.2f, 0.2f));
+        Material green = new Lambertian(new Color(0.2f, 1f, 0.2f));
+        Material blue = new Lambertian(new Color(0.2f, 0.2f, 1f));
+        Material orange = new Lambertian(new Color(1f, 0.5f, 0f));
+        Material teal = new Lambertian(new Color(0.2f, 0.8f, 0.8f));
+
+        this.world.add(new Quad(
+            new Point3D(-3, -2, 5),
+            new Vector(0, 0, -4),
+            new Vector(0, 4, 0), left)
+        );
+        this.world.add(new Quad(
+            new Point3D(-2, -2, 0),
+            new Vector(4, 0, 0),
+            new Vector(0, 4, 0), green)
+        );
+        this.world.add(new Quad(
+            new Point3D(3, -2, 1),
+            new Vector(0, 0, 4),
+            new Vector(0, 4, 0), blue)
+        );
+        this.world.add(new Quad(
+            new Point3D(-2, 3, 1),
+            new Vector(4, 0, 0),
+            new Vector(0, 0, 4), orange)
+        );
+        this.world.add(new Quad(
+            new Point3D(-2, -3, 5),
+            new Vector(4, 0, 0),
+            new Vector(0, 0, -4), teal)
+        );
+
+        this.vFov = 80;
+        this.lookFrom = new Vector(0, 0, 9);
+        this.lookAt = new Vector(0, 0, 0);
+        this.vUp = new Vector(0, 1, 0);
+        defocusAngle = 0;
+    }
+
+    private void spheres() {
         Material ground = new Lambertian(new Color(0.5f, 0.5f, 0.5f));
         world.add(new Sphere(new Vector(0.0, -1000, 0), 1000, ground));
 
@@ -113,8 +162,6 @@ public class RayTracer {
 
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
-
-        this.initialize();
     }
 
     private void initialize() {

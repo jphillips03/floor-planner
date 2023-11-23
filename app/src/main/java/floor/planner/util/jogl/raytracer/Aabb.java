@@ -91,6 +91,14 @@ public class Aabb {
         return this.axis(axis).getMin() > boxB.axis(axis).getMin();
     }
 
+    public Aabb pad() {
+        double delta = 0.0001;
+        Interval newX = x.size() >= delta ? x : x.expand(delta);
+        Interval newY = y.size() >= delta ? y : y.expand(delta);
+        Interval newZ = z.size() >= delta ? z : z.expand(delta);
+        return new Aabb(newX, newY, newZ);
+    }
+
     public String toString() {
         return String.format("%s %s %s", this.x.toString(), this.y.toString(), this.z.toString());
     }

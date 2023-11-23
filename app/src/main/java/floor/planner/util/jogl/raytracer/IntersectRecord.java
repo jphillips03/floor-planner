@@ -8,6 +8,8 @@ public class IntersectRecord {
     private Vector p;
     private Vector normal;
     private double t;
+    private double u; 
+    private double v;
     boolean frontFace;
     Material mat;
     
@@ -42,6 +44,20 @@ public class IntersectRecord {
     }
     public void setT(double t) {
         this.t = t;
+    }
+
+    public double getU() {
+        return this.u;
+    }
+    public void setU(double u) {
+        this.u = u;
+    }
+
+    public double getV() {
+        return this.v;
+    }
+    public void setV(double v) {
+        this.v = v;
     }
 
     public void setFaceNormal(Ray r, Vector outwardNormal) {
