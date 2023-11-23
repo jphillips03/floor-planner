@@ -111,6 +111,9 @@ public class RayTracer {
         world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
         world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
 
+        BvhNode node = new BvhNode(world.getElements());
+        world = new IntersectableList(world.getElements(), node.boundingBox());
+
         this.initialize();
     }
 

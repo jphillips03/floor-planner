@@ -39,4 +39,8 @@ public class Random {
     public static double randomDouble(double min, double max) {
         return ThreadLocalRandom.current().nextDouble();
     }
+
+    public static int randomInt(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max);
+    }
 }

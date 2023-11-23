@@ -8,6 +8,11 @@ public class Point3D extends Point2D {
         this.z = z;
     }
 
+    public Point3D(Vector v) {
+        super((float) v.getX(), (float) v.getY());
+        this.z = (float) v.getZ();
+    }
+
     public float getZ() {
         return this.z;
     }
