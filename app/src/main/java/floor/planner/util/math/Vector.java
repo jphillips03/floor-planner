@@ -21,6 +21,20 @@ public class Vector {
         this.values = values;        
     }
 
+    /**
+     * Creates and returns a new Vector based on given start and end points. A
+     * vector is found between 2 points by subtracting the start point from the
+     * end point.
+     *
+     * @param start The starting point of the vector.
+     * @param end The ending point of the vector.
+     */
+    public Vector(double[] start, double[] end) {
+        Vector u = new Vector(start);
+        Vector v = new Vector(end);
+        this.values = Vector.subtract(v, u).values;
+    }
+
     public DoubleBuffer getDoubleBuffer() {
         return DoubleBuffer.wrap(this.values);
     }

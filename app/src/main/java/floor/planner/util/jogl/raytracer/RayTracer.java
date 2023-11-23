@@ -14,6 +14,7 @@ import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.Metal;
 import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.math.Interval;
@@ -35,7 +36,7 @@ public class RayTracer {
     private Camera camera;
     private Vector lookFrom = new Vector(13f, 2f, 3f);
     private Vector lookAt = new Vector(0, 0, 0);
-    private Vector vUp = new Vector(0, 1, 0);
+    private Vector vUp = new Vector(0, 0, 1);
     private Vector defocusDiskU; // defocus disk horizontal radius
     private Vector defocusDiskV; // defocus disk vertical radius
     private double viewportHeight;
@@ -76,14 +77,30 @@ public class RayTracer {
         this.maxDepth = maxDepth;
         this.world = new IntersectableList();
 
-        //this.spheres();
-        this.quads();
+        switch(0) {
+            case 0:
+                this.cube();
+                break;
+            case 1:
+                this.quads();
+                break;
+            case 2:
+                this.someSpheres();
+                break;
+            default:
+                this.spheres();
+                break;
+        }
 
         this.initialize();
     }
 
+    private void cube() {
+        this.world.add(new Cube(Cube.DEFAULT_VERTICES));
+    }
+
     private void quads() {
-        Material left = new Lambertian(new Color(1f, 0.2f, 0.2f));
+        Material red = new Lambertian(new Color(1f, 0.2f, 0.2f));
         Material green = new Lambertian(new Color(0.2f, 1f, 0.2f));
         Material blue = new Lambertian(new Color(0.2f, 0.2f, 1f));
         Material orange = new Lambertian(new Color(1f, 0.5f, 0f));
@@ -92,7 +109,7 @@ public class RayTracer {
         this.world.add(new Quad(
             new Point3D(-3, -2, 5),
             new Vector(0, 0, -4),
-            new Vector(0, 4, 0), left)
+            new Vector(0, 4, 0), red)
         );
         this.world.add(new Quad(
             new Point3D(-2, -2, 0),
@@ -116,10 +133,24 @@ public class RayTracer {
         );
 
         this.vFov = 80;
-        this.lookFrom = new Vector(0, 0, 9);
+        this.lookFrom = new Vector(2, 2, 2);
         this.lookAt = new Vector(0, 0, 0);
-        this.vUp = new Vector(0, 1, 0);
+        this.vUp = new Vector(0, 0, 1);
         defocusAngle = 0;
+    }
+
+    private void someSpheres() {
+        Material mat1 = new Dielectric(1.5);
+        Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
+        Material mat3 = new Metal(new Color(0.7f, 0.6f, 0.5f), 0.0);
+        
+        world.add(new Sphere(new Vector(0, 1, 0),   1, mat1));
+        world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
+        world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
+
+        this.vUp = new Vector(0, 0, 1);
+        BvhNode node = new BvhNode(world.getElements());
+        world = new IntersectableList(world.getElements(), node.boundingBox());
     }
 
     private void spheres() {
