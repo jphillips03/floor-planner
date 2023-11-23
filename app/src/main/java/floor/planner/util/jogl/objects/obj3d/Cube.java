@@ -5,7 +5,6 @@ import com.jogamp.opengl.GL2;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
-import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Ray;
