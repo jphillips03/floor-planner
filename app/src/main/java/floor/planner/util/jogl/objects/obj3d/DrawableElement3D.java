@@ -6,13 +6,16 @@ import java.util.List;
 
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.DrawableElement;
+import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
-public abstract class DrawableElement3D extends DrawableElement {
+public abstract class DrawableElement3D extends DrawableElement implements Intersectable {
+    public Aabb boundingBox;
     public float[] materialColor = { 0.5f, 0.5f, 0.5f, 1.0f };
     public float[] specularColor = { 1f, 1f, 1f, 1f };
     public float[] shininess = { 5.0f }; // this is low apparently...
@@ -37,9 +40,8 @@ public abstract class DrawableElement3D extends DrawableElement {
         gl.glEnd();
     }
 
-    public abstract boolean intersect(
-        Ray r,
-        Interval rayT,
-        IntersectRecord rec
-    );
+    @Override
+    public Aabb boundingBox() {
+        return this.boundingBox;
+    }
 }

@@ -3,10 +3,10 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
-import floor.planner.util.math.MathUtil;
-import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -88,5 +88,10 @@ public class Cube extends DrawableElement3D {
         IntersectRecord rec
     ) {
         return false;
+    }
+
+    @Override
+    public Aabb boundingBox() {
+        return this.boundingBox;
     }
 }

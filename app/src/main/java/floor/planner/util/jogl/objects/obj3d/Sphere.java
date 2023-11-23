@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.material.Material;
+import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -26,6 +28,12 @@ public class Sphere extends DrawableElement3D {
         this.radius = radius;
         this.center = pos;
         this.mat = mat;
+
+        Vector rvec = new Vector(radius, radius, radius);
+        this.boundingBox = new Aabb(
+            new Point3D(Vector.subtract(pos, rvec)),
+            new Point3D(Vector.add(pos, rvec))
+        );
     }
 
     public Sphere(double x, double y, double z, double radius, Material mat) {
@@ -35,6 +43,12 @@ public class Sphere extends DrawableElement3D {
         this.radius = radius;
         this.center = new Vector(new double[]{ x, y, z });
         this.mat = mat;
+
+        Vector rvec = new Vector(radius, radius, radius);
+        this.boundingBox = new Aabb(
+            new Point3D(Vector.subtract(this.center, rvec)),
+            new Point3D(Vector.add(this.center, rvec))
+        );
     }
 
     public Vector getCenter() {
@@ -77,4 +91,6 @@ public class Sphere extends DrawableElement3D {
         rec.setMaterial(this.mat);
         return true;
     }
+
+
 }
