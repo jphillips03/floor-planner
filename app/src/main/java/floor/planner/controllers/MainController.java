@@ -207,7 +207,7 @@ public class MainController implements Initializable {
         // samplesPerPixel times for each ray and run through each element each
         // time...
         int max = height * width * samplesPerPixel;
-        RayTraceTask task = new RayTraceTask(height, width, max, maxDepth);
+        RayTraceTask task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth);
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);
         progressBar.activateProgressBar(task);

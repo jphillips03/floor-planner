@@ -28,7 +28,8 @@ public class RayTraceTask extends Task<Void> {
         this.floorPlan = floorPlan;
     }
 
-    public RayTraceTask(int height, int width, int max, int maxDepth) {
+    public RayTraceTask(FloorPlan floorPlan, int height, int width, int max, int maxDepth) {
+        this.floorPlan = floorPlan;
         this.height = height;
         this.width = width;
         this.max = max;
@@ -39,7 +40,7 @@ public class RayTraceTask extends Task<Void> {
     public Void call() throws InterruptedException {
         try {
             logger.info("Initializing ray tracer");
-            RayTracer rayTracer = new RayTracer(height, width, maxDepth);
+            RayTracer rayTracer = new RayTracer(this.floorPlan, this.height, this.width, this.maxDepth, true);
             logger.info("Ray tracer initialized successfully");
             logger.info("Ray trace starting...");
             rayTracer.render(this);

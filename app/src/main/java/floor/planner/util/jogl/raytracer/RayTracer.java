@@ -34,50 +34,50 @@ public class RayTracer {
 
     // camera
     private Camera camera;
-    private Vector lookFrom = new Vector(13f, 2f, 3f);
-    private Vector lookAt = new Vector(0, 0, 0);
-    private Vector vUp = new Vector(0, 0, 1);
-    private Vector defocusDiskU; // defocus disk horizontal radius
-    private Vector defocusDiskV; // defocus disk vertical radius
-    private double viewportHeight;
-    private double viewportWidth;
-    private Vector cameraCenter;
     private int maxDepth; // Maximum number of ray bounces into scene
-    private double vFov = 20; // vertical view angle (field of view)
-    private Vector u, v, w; // camera frame basis vectors
-    private double defocusAngle = 0.6; // variation angle of rays through each pixel
-    private double focusDist = 10.0; // distance from camera lookFrom point to plane of perfect focus
-
-    // vectors across horizontal and down vertical viewport edges
-    private Vector viewportU;
-    private Vector viewportV;
-
-    private Vector pixelDeltaU; // offset to pixel to right
-    private Vector pixelDeltaV; // offset to pixel below
-
-    private Vector viewportUpperLeft;
-    private Vector pixel00Loc;
 
     private IntersectableList world;
     private FloorPlan floorPlan;
 
-    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth) {
+    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth, boolean initWorld) {
         this.floorPlan = floorPlan;
-        this.camera = floorPlan.getCamera();
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
+        this.camera = floorPlan.getCamera();
 
-        this.initialize();
+        if (!initWorld) {
+            // TODO initialize world based on floor plan...
+        } else {
+            this.initWorld();
+
+            // set camera properties based on world objects
+            boolean cube = false;
+            if (cube) {
+                // ray tracing a 1x1x1 cube starting from (0, 0, 0).
+                this.camera.setVFov(20);
+                this.camera.setLookFrom(2, 2, 2);
+                this.camera.setLookAt(0, 0, 1);
+                this.camera.setDefocusAngle(0);
+            } else {
+                // ray tracing spheres so use "default" settings...
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setVFov(20);
+                this.camera.setLookFrom(13, 2, 3);
+                this.camera.setLookAt(0, 0, 0);
+                this.camera.setDefocusAngle(0.6);
+                this.camera.setFocusDist(10);
+            }
+        }
+
+        // initialize ray trace properties needed for camera
+        this.camera.initRayTraceProperties(imageWidth, imageHeight);
     }
 
-    public RayTracer(int imageHeight, int imageWidth, int maxDepth) {
-        this.imageHeight = imageHeight;
-        this.imageWidth = imageWidth;
-        this.maxDepth = maxDepth;
+    private void initWorld() {
         this.world = new IntersectableList();
 
-        switch(0) {
+        switch(3) {
             case 0:
                 this.cube();
                 break;
@@ -91,8 +91,6 @@ public class RayTracer {
                 this.spheres();
                 break;
         }
-
-        this.initialize();
     }
 
     private void cube() {
@@ -131,12 +129,6 @@ public class RayTracer {
             new Vector(4, 0, 0),
             new Vector(0, 0, -4), teal)
         );
-
-        this.vFov = 80;
-        this.lookFrom = new Vector(2, 2, 2);
-        this.lookAt = new Vector(0, 0, 0);
-        this.vUp = new Vector(0, 0, 1);
-        defocusAngle = 0;
     }
 
     private void someSpheres() {
@@ -148,7 +140,6 @@ public class RayTracer {
         world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
         world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
 
-        this.vUp = new Vector(0, 0, 1);
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
     }
@@ -195,56 +186,6 @@ public class RayTracer {
         world = new IntersectableList(world.getElements(), node.boundingBox());
     }
 
-    private void initialize() {
-        this.cameraCenter = lookFrom;
-
-        // determine viewport dimensions
-        double theta = Math.toRadians(vFov);
-        double h = Math.tan(theta / 2);
-        this.viewportHeight = 2 * h * focusDist;
-        this.viewportWidth = this.viewportHeight * ((double) imageWidth / (double) imageHeight);
-
-        // calculate u, v, w unit basis vectors for camera coordinate frame
-        w = Vector.unit(Vector.subtract(lookFrom, lookAt));
-        u = Vector.unit(Vector.cross(vUp, w));
-        v = Vector.cross(w, u);
-    
-        this.viewportU = u.multiply(this.viewportWidth);// new Vector(new double[]{ this.viewportWidth, 0, 0});
-        this.viewportV = v.multiply(-1).multiply(this.viewportHeight); // new Vector(new double[]{ 0, -this.viewportHeight, 0});
-
-        this.pixelDeltaU = this.viewportU.divide((double) imageWidth);
-        this.pixelDeltaV = this.viewportV.divide((double) imageHeight);
-
-        // calculate location of upper left pixel
-        Vector v1 = Vector.subtract(cameraCenter, w.multiply(focusDist));
-        Vector v2 = Vector.subtract(v1, this.viewportU.divide(2));
-        this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2));
-
-        Vector pixelDelta = Vector.add(this.pixelDeltaU, this.pixelDeltaV);
-        this.pixel00Loc = Vector.add(this.viewportUpperLeft, pixelDelta.multiply(0.5f));
-
-        // calculate camera defocus disk basis vectors
-        double defocusRadius = focusDist * Math.tan(Math.toRadians(defocusAngle / 2));
-        defocusDiskU = u.multiply(defocusRadius);
-        defocusDiskV = v.multiply(defocusRadius);
-    }
-
-    public Vector getCameraCenter() {
-        return this.cameraCenter;
-    }
-
-    public Vector getPixel00Loc() {
-        return this.pixel00Loc;
-    }
-
-    public Vector getPixelDeltaU() {
-        return this.pixelDeltaU;
-    }
-
-    public Vector getPixelDeltaV() {
-        return this.pixelDeltaV;
-    }
-
     public void render(RayTraceTask task) {
         this.world.setTask(task); // so we can track progress in intersect()...
 
@@ -279,11 +220,11 @@ public class RayTracer {
     // get a randomly sampled camera ray for pixel at location i,j originating
     // from camera defocus disk
     private Ray getRay(int i, int j) {
-        Vector pc1 = Vector.add(this.pixelDeltaU.multiply(i), this.pixelDeltaV.multiply(j));
-        Vector pixelCenter = Vector.add(this.pixel00Loc, pc1);
+        Vector pc1 = Vector.add(this.camera.getPixelDeltaU().multiply(i), this.camera.getPixelDeltaV().multiply(j));
+        Vector pixelCenter = Vector.add(this.camera.getPixel00Loc(), pc1);
         Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare());
 
-        Vector rayOrigin = defocusAngle <= 0 ? cameraCenter : defocusDiskSample();
+        Vector rayOrigin = this.camera.getDefocusAngle() <= 0 ? this.camera.getCenter() : defocusDiskSample();
         Vector rayDirection = Vector.subtract(pixelSample, rayOrigin);
         return new Ray(rayOrigin, rayDirection);
     }
@@ -291,8 +232,8 @@ public class RayTracer {
     private Vector defocusDiskSample() {
         Vector p = Vector.randomInUnitDisk();
         return Vector.add(
-            Vector.add(cameraCenter, defocusDiskU.multiply(p.getX())),
-            defocusDiskV.multiply(p.getY())
+            Vector.add(this.camera.getCenter(), this.camera.getDefocusDiskU().multiply(p.getX())),
+            this.camera.getDefocusDiskV().multiply(p.getY())
         );
     }
 
@@ -300,8 +241,8 @@ public class RayTracer {
         double px = -0.5 + Random.randomDouble();
         double py = -0.5 + Random.randomDouble();
         return Vector.add(
-            pixelDeltaU.multiply(px),
-            pixelDeltaV.multiply(py)
+            this.camera.getPixelDeltaU().multiply(px),
+            this.camera.getPixelDeltaV().multiply(py)
         );
     }
 
