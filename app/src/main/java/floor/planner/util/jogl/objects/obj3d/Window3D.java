@@ -41,14 +41,17 @@ public class Window3D extends Cube {
             this.windowWidth,
             Cube.BOTTOM_FACE
         );
+
+        // about 0.5 overlap between glass and wall to prevent gap in ray
+        // traced image; TODO figure out a better way to handle this
         float[][] windowVertices = Matrix.translatePartialZ(
             this.getVertices(),
-            - (1 - windowWidth),
+            - 0.2f,
             TOP_FACE
         );
         windowVertices = Matrix.translatePartialZ(
             windowVertices,
-            1 - windowWidth,
+            0.2f,
             BOTTOM_FACE
         );
 
