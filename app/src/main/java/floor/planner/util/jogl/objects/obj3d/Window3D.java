@@ -52,7 +52,8 @@ public class Window3D extends Cube {
             BOTTOM_FACE
         );
 
-        this.mat = new Lambertian(new Color(Vector.random()));
+        this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
+        this.mat = new Lambertian(new Color(this.materialColor));
         this.bottomWall = new Wall3D(bottomWallVertices, orientation, this.mat);
         this.topWall = new Wall3D(topWallVertices, orientation, this.mat);
         this.window = new Wall3D(windowVertices, orientation, new Dielectric(1.55));

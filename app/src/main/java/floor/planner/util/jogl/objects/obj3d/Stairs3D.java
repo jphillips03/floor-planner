@@ -30,7 +30,7 @@ public class Stairs3D extends Cube {
         this.orientation = orientation;
         this.color = new Color(0, 0, 1);
         this.materialColor = new float[]{ 0.7f, 0f, 0f, 1f };
-        this.mat = new Lambertian(new Color(Vector.random()));
+        this.mat = new Lambertian(new Color(this.materialColor));
         this.initStairs();
     }
 

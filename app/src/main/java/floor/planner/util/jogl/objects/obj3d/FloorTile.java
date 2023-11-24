@@ -1,5 +1,7 @@
 package floor.planner.util.jogl.objects.obj3d;
 
+import floor.planner.util.jogl.material.Lambertian;
+import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.math.Matrix;
 
 public class FloorTile extends Cube {
@@ -7,6 +9,9 @@ public class FloorTile extends Cube {
     public FloorTile(float[][] vertices) {
         super(vertices);
         this.scaleCube();
+
+        // default grey
+        this.mat = new Lambertian(new Color(this.materialColor));
         this.initQuads();
     }
 

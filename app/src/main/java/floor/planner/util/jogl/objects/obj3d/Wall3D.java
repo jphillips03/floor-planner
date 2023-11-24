@@ -4,9 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.math.Matrix;
+import floor.planner.util.math.Vector;
 
 public class Wall3D extends Cube {
     private static final Logger logger = LoggerFactory.getLogger(Wall3D.class);
@@ -18,6 +20,7 @@ public class Wall3D extends Cube {
         this.color = new Color(0, 0, 1);
         this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
         this.scaleCube();
+        this.mat = new Lambertian(new Color(this.materialColor));
         this.initQuads();
     }
 
