@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.raytracer.IntersectableList;
 import floor.planner.util.math.Matrix;
+import floor.planner.util.math.Vector;
 
 /**
  * The Stairs3D defines properties and methods needed to render stairs in 3D.
@@ -27,6 +30,7 @@ public class Stairs3D extends Cube {
         this.orientation = orientation;
         this.color = new Color(0, 0, 1);
         this.materialColor = new float[]{ 0.7f, 0f, 0f, 1f };
+        this.mat = new Lambertian(new Color(Vector.random()));
         this.initStairs();
     }
 
@@ -46,6 +50,8 @@ public class Stairs3D extends Cube {
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
                 cube.materialColor = this.materialColor;
+                cube.mat = this.mat;
+                cube.initQuads();
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.WEST_EAST)) {
@@ -58,6 +64,8 @@ public class Stairs3D extends Cube {
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
                 cube.materialColor = this.materialColor;
+                cube.mat = this.mat;
+                cube.initQuads();
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.NORTH_SOUTH)) {
@@ -70,6 +78,8 @@ public class Stairs3D extends Cube {
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
                 cube.materialColor = this.materialColor;
+                cube.mat = this.mat;
+                cube.initQuads();
                 this.stairs.add(cube);
             }
         } else if (this.orientation.equals(Orientation.SOUTH_NORTH)) {
@@ -82,6 +92,8 @@ public class Stairs3D extends Cube {
                 Cube cube = new Cube(vertices);
                 cube.color = this.color;
                 cube.materialColor = this.materialColor;
+                cube.mat = this.mat;
+                cube.initQuads();
                 this.stairs.add(cube);
             }
         }
@@ -165,5 +177,15 @@ public class Stairs3D extends Cube {
         for (Cube stair : this.stairs) {
             stair.draw(gl);
         }
+    }
+
+    @Override
+    public IntersectableList getIntersectableList() {
+        IntersectableList list = new IntersectableList();
+        for (Cube stair : this.stairs) {
+            list.addAll(stair.getIntersectableList());
+        }
+
+        return list;
     }
 }

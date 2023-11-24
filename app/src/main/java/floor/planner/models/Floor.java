@@ -7,7 +7,11 @@ import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.ObjectType;
 import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
+import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
+import floor.planner.util.jogl.raytracer.IntersectableList;
+import floor.planner.util.math.Point3D;
+import floor.planner.util.math.Vector;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);
@@ -132,6 +136,37 @@ public class Floor {
 
     public void setElement3D(int row, int col, DrawableElement3D[] elements) {
         this.elements3D[row][col] = elements;
+    }
+
+    public IntersectableList getIntersectableList() {
+        IntersectableList list = new IntersectableList();
+        for (int i = 0; i < this.elements3D.length; i++) {
+            for (int j = 0; j < this.elements3D[i].length; j++) {
+                for (int k = 0; k < this.elements3D[i][j].length; k++) {
+                    DrawableElement3D element = this.elements3D[i][j][k];
+                    if (element instanceof Cube) {
+                        Cube cube = (Cube) element;
+                        list.addAll(cube.getIntersectableList());
+                    } else {
+                        list.add(element);
+                    }
+                }
+            }
+        }
+
+        return list;
+    }
+
+    public Point3D getMidPoint() {
+        int midRow = this.height / 2;
+        int midCol = this.width / 2;
+        DrawableElement3D[] elements = this.elements3D[midRow][midCol];
+        Vector midPoint = new Vector(0, 0, 0);
+        for (DrawableElement3D element : elements) {
+            midPoint = midPoint.add(element.getMidPoint().getVector().getValues());
+        }
+        midPoint = midPoint.divide(elements.length);
+        return new Point3D(midPoint);
     }
 
     public boolean aboveEquals(int row, int col, ObjectType element) {

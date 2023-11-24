@@ -3,9 +3,13 @@ package floor.planner.util.jogl.objects.obj3d;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
+import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
+import floor.planner.util.math.Vector;
 
 public class Cylinder extends DrawableElement3D {
     private static float angleStepsize = 0.1f;
@@ -21,6 +25,7 @@ public class Cylinder extends DrawableElement3D {
         // default to red for now...
         this.color = new Color(1f, 0f, 0f);
         this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
+        this.boundingBox = new Aabb();
     }
 
     @Override
@@ -70,5 +75,9 @@ public class Cylinder extends DrawableElement3D {
         IntersectRecord rec
     ) {
         return false;
+    }
+
+    public Point3D getMidPoint() {
+        return new Point3D(this.x, this.y, height / 2f);
     }
 }

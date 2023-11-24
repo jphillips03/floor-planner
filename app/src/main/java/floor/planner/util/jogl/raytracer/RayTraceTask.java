@@ -40,7 +40,7 @@ public class RayTraceTask extends Task<Void> {
     public Void call() throws InterruptedException {
         try {
             logger.info("Initializing ray tracer");
-            RayTracer rayTracer = new RayTracer(this.floorPlan, this.height, this.width, this.maxDepth, true);
+            RayTracer rayTracer = new RayTracer(this.floorPlan, this.height, this.width, this.maxDepth, false);
             logger.info("Ray tracer initialized successfully");
             logger.info("Ray trace starting...");
             rayTracer.render(this);

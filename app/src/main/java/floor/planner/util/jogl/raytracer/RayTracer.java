@@ -37,17 +37,16 @@ public class RayTracer {
     private int maxDepth; // Maximum number of ray bounces into scene
 
     private IntersectableList world;
-    private FloorPlan floorPlan;
 
     public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth, boolean initWorld) {
-        this.floorPlan = floorPlan;
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
         this.camera = floorPlan.getCamera();
 
         if (!initWorld) {
-            // TODO initialize world based on floor plan...
+            this.world = floorPlan.getIntersectableList();
+            this.camera.setFocusDist(Point3D.distanceBetween(new Point3D(this.camera.getLookFrom()), floorPlan.getMidPoint()));
         } else {
             this.initWorld();
 
@@ -72,6 +71,7 @@ public class RayTracer {
 
         // initialize ray trace properties needed for camera
         this.camera.initRayTraceProperties(imageWidth, imageHeight);
+
     }
 
     private void initWorld() {

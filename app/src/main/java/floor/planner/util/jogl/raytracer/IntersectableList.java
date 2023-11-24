@@ -49,6 +49,14 @@ public class IntersectableList implements Intersectable {
         this.boundingBox = new Aabb(boundingBox, element.boundingBox());
     }
 
+    public void addAll(IntersectableList elements) {
+        List<Intersectable> intersectableElements = elements.getElements();
+        this.elements.addAll(intersectableElements);
+        for (Intersectable element : intersectableElements) {
+            this.boundingBox = new Aabb(boundingBox, element.boundingBox());
+        }
+    }
+
     public IntersectRecord intersect(
         Ray r,
         Interval rayT

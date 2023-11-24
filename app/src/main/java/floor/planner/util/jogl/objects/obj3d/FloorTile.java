@@ -7,6 +7,7 @@ public class FloorTile extends Cube {
     public FloorTile(float[][] vertices) {
         super(vertices);
         this.scaleCube();
+        this.initQuads();
     }
 
     /**

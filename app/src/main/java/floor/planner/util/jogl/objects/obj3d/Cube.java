@@ -7,9 +7,11 @@ import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.jogl.raytracer.IntersectableList;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
+import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -50,22 +52,21 @@ public class Cube extends DrawableElement3D {
 
     private float[][] vertices;
     private Quad[] quads;
-    private Material mat;
+    protected Material mat;
 
     public Cube(float[][] vertices) {
         this.vertices = vertices;
 
         // default to diffuse red for now...
         this.color = new Color(1f, 0f, 0f);
-        this.mat = new Lambertian(this.color);
-        this.initQuads();
+        this.mat = new Lambertian(new Color(Vector.random()));
     }
 
     /**
      * Initializes quads for each side of the cube which are needed for ray
      * tracer.
      */
-    private void initQuads() {
+    public void initQuads() {
         this.quads = new Quad[6];
         this.quads[0] = this.createQuad(vertices[2], vertices[1], vertices[3], mat);
         this.quads[1] = this.createQuad(vertices[2], vertices[6], vertices[1], mat);
@@ -73,10 +74,8 @@ public class Cube extends DrawableElement3D {
         this.quads[3] = this.createQuad(vertices[4], vertices[5], vertices[7], mat);
         this.quads[4] = this.createQuad(vertices[4], vertices[0], vertices[5], mat);
         this.quads[5] = this.createQuad(vertices[4], vertices[7], vertices[0], mat);
+
         this.boundingBox = new Aabb();
-        for (int i = 0; i < this.quads.length; i++) {
-            this.boundingBox = new Aabb(boundingBox, this.quads[i].boundingBox());
-        }
     }
 
     /**
@@ -155,5 +154,18 @@ public class Cube extends DrawableElement3D {
     @Override
     public Aabb boundingBox() {
         return this.boundingBox;
+    }
+
+    public IntersectableList getIntersectableList() {
+        return new IntersectableList(Arrays.asList(this.quads), boundingBox);
+    }
+
+    public Point3D getMidPoint() {
+        Vector midPoint = new Vector(0, 0, 0);
+        for(float[] vertex : vertices) {
+            midPoint = midPoint.add(MathUtil.floatToDoubleArray(vertex));
+        }
+        midPoint = midPoint.divide(this.vertices.length);
+        return new Point3D(midPoint);
     }
 }

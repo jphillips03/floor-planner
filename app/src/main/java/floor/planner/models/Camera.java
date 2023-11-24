@@ -41,10 +41,10 @@ public class Camera {
     private Vector defocusDiskV; // defocus disk vertical radius
     private double viewportHeight;
     private double viewportWidth;
-    private double vFov = 20; // vertical view angle (field of view)
+    private double vFov = 50; // vertical view angle (field of view)
     private Vector u, v, w; // camera frame basis vectors
     private double defocusAngle = 0.6; // variation angle of rays through each pixel
-    private double focusDist = 10.0; // distance from camera lookFrom point to plane of perfect focus
+    private double focusDist = 2.5; // distance from camera lookFrom point to plane of perfect focus
     private Vector viewportU;
     private Vector viewportV;
     private Vector pixelDeltaU; // offset to pixel to right

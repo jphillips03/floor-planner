@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.math.Matrix;
 
@@ -17,6 +18,17 @@ public class Wall3D extends Cube {
         this.color = new Color(0, 0, 1);
         this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
         this.scaleCube();
+        this.initQuads();
+    }
+
+    public Wall3D(float[][] vertices, Orientation orientation, Material mat) {
+        super(vertices);
+        this.orientation = orientation;
+        this.color = new Color(0, 0, 1);
+        this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
+        this.scaleCube();
+        this.mat = mat;
+        this.initQuads();
     }
 
     /**

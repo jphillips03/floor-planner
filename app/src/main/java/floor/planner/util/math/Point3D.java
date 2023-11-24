@@ -30,4 +30,12 @@ public class Point3D extends Point2D {
     public String toString() {
         return "(" + this.getX() + ", " + this.getY() + ", " + this.z + ")";
     }
+
+    public static double distanceBetween(Point3D p1, Point3D p2) {
+        return Math.sqrt(
+            Math.pow((p2.getX() - p1.getX()), 2) +
+            Math.pow((p2.getY() - p1.getY()), 2) +
+            Math.pow((p2.getZ() - p1.getZ()), 2)
+        );
+    }
 }

@@ -7,6 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
+import floor.planner.util.jogl.raytracer.IntersectableList;
+import floor.planner.util.math.Point3D;
+import floor.planner.util.math.Vector;
 
 public class FloorPlan {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlan.class);
@@ -161,5 +164,23 @@ public class FloorPlan {
     }
     public void setRender2D(boolean val) {
         this.render2D = val;
+    }
+
+    public IntersectableList getIntersectableList() {
+        IntersectableList list = new IntersectableList();
+        for (Floor floor : this.floors) {
+            list.addAll(floor.getIntersectableList());
+        }
+
+        return list;
+    }
+
+    public Point3D getMidPoint() {
+        Vector midPoint = new Vector(0, 0, 0);
+        for (Floor floor : this.floors) {
+            midPoint = midPoint.add(floor.getMidPoint().getVector().getValues());
+        }
+        midPoint = midPoint.divide(this.floors.size());
+        return new Point3D(midPoint);
     }
 }

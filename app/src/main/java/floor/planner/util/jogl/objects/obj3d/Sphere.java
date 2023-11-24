@@ -9,6 +9,7 @@ import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -92,5 +93,7 @@ public class Sphere extends DrawableElement3D {
         return true;
     }
 
-
+    public Point3D getMidPoint() {
+        return new Point3D(this.center);
+    }
 }

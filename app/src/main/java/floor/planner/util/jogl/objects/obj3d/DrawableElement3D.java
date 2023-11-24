@@ -11,6 +11,7 @@ import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
+import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -44,4 +45,6 @@ public abstract class DrawableElement3D extends DrawableElement implements Inter
     public Aabb boundingBox() {
         return this.boundingBox;
     }
+
+    public abstract Point3D getMidPoint();
 }
