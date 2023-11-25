@@ -2,6 +2,8 @@ package floor.planner.util.jogl.objects.obj3d;
 
 import com.jogamp.opengl.GL2;
 
+import floor.planner.util.jogl.material.Lambertian;
+import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
@@ -16,15 +18,19 @@ public class Cylinder extends DrawableElement3D {
     private static float height = 1f;
     private static float radius = 0.0625f;
 
+    private Vector center;
     private float x;
     private float y;
+    private Material mat;
 
     public Cylinder(float x, float y) {
         this.x = x + 0.5f; // move to middle of tile where cylinder drawn
         this.y = y + 0.5f; // move to middle of tile where cylinder drawn
+        this.center = new Vector(this.x, this.y, 0.5);
         // default to red for now...
         this.color = new Color(1f, 0f, 0f);
         this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
+        this.mat = new Lambertian(new Color(this.materialColor));
         this.boundingBox = new Aabb();
     }
 
@@ -74,10 +80,39 @@ public class Cylinder extends DrawableElement3D {
         Interval rayT,
         IntersectRecord rec
     ) {
-        return false;
+        double a = (r.getDirection().getX() * r.getDirection().getX()) + (r.getDirection().getY() * r.getDirection().getY());
+        double b = 2 * r.getDirection().getX() * (r.getOrigin().getX() - this.center.getX()) + 2 * r.getDirection().getY() * (r.getOrigin().getY() - this.center.getY());
+        double c = Math.pow(r.getOrigin().getX() - this.center.getX(), 2) + Math.pow(r.getOrigin().getY() - this.center.getY(), 2) - radius * radius;
+
+        double discriminant = b*b - (4*a*c);
+        //if(Math.abs(discriminant) < 0.001) return false;
+        if(discriminant < 0.0) return false;
+        
+        // find nearest root that lies in acceptable range
+        double halfB = b / 2;
+        double sqrtD = (double) Math.sqrt((double) discriminant);
+        double root = (-halfB - sqrtD) / a;
+        if (!rayT.surrounds(root)) {
+            root = (-halfB + sqrtD) / a;
+            if (!rayT.surrounds(root)) {
+                return false;
+            }
+        }
+
+        Vector point = Vector.add(r.getOrigin(), r.getDirection().multiply(root));
+        if (point.getZ() < 0.05 || point.getZ() > 1) {
+            return false;
+        }
+
+        rec.setT(root);
+        rec.setP(r.at(rec.getT()));
+        Vector outwardNormal = Vector.subtract(rec.getP(), this.center).divide(radius);
+        rec.setFaceNormal(r, outwardNormal);
+        rec.setMaterial(this.mat);
+        return true;
     }
 
     public Point3D getMidPoint() {
-        return new Point3D(this.x, this.y, height / 2f);
+        return new Point3D(this.center);
     }
 }
