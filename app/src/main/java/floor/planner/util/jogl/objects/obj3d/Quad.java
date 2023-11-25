@@ -5,6 +5,7 @@ import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -25,6 +26,29 @@ public class Quad implements Intersectable {
         this.v = v;
         this.mat = mat;
 
+        this.init();
+    }
+
+    public Quad(float[] originf, float[] uf, float[] vf, Material mat) {
+        Point3D origin = new Point3D(originf[0], originf[1], originf[2]);
+        Vector u = new Vector(
+            MathUtil.floatToDoubleArray(originf),
+            MathUtil.floatToDoubleArray(uf)
+        );
+        Vector v = new Vector(
+            MathUtil.floatToDoubleArray(originf),
+            MathUtil.floatToDoubleArray(vf)
+        );
+
+        this.Q = origin;
+        this.u = u;
+        this.v = v;
+        this.mat = mat;
+
+        this.init();
+    }
+
+    private void init() {
         Vector n = Vector.cross(u, v);
         this.normal = Vector.unit(n);
         this.D = Vector.dot(this.normal, Q.getVector());

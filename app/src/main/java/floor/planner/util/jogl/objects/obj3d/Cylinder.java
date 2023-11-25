@@ -1,19 +1,21 @@
 package floor.planner.util.jogl.objects.obj3d;
 
-import com.jogamp.opengl.GL2;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import com.jogamp.opengl.GL2;
 import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
-import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
 public class Cylinder extends DrawableElement3D {
+    private static final Logger logger = LoggerFactory.getLogger(Cylinder.class);
     private static float angleStepsize = 0.1f;
     private static float height = 1f;
     private static float radius = 0.0625f;
@@ -80,6 +82,11 @@ public class Cylinder extends DrawableElement3D {
         Interval rayT,
         IntersectRecord rec
     ) {
+        // check if we intersected the top of cylinder first...
+        if (this.intersectDisk(r, rayT, rec)) {
+            return true;
+        }
+
         double a = (r.getDirection().getX() * r.getDirection().getX()) + (r.getDirection().getY() * r.getDirection().getY());
         double b = 2 * r.getDirection().getX() * (r.getOrigin().getX() - this.center.getX()) + 2 * r.getDirection().getY() * (r.getOrigin().getY() - this.center.getY());
         double c = Math.pow(r.getOrigin().getX() - this.center.getX(), 2) + Math.pow(r.getOrigin().getY() - this.center.getY(), 2) - radius * radius;
@@ -89,11 +96,11 @@ public class Cylinder extends DrawableElement3D {
         if(discriminant < 0.0) return false;
         
         // find nearest root that lies in acceptable range
-        double halfB = b / 2;
         double sqrtD = (double) Math.sqrt((double) discriminant);
-        double root = (-halfB - sqrtD) / a;
+        double root = (-b - sqrtD) / (2*a);
+
         if (!rayT.surrounds(root)) {
-            root = (-halfB + sqrtD) / a;
+            root = (-b + sqrtD) / (2*a);
             if (!rayT.surrounds(root)) {
                 return false;
             }
@@ -106,10 +113,29 @@ public class Cylinder extends DrawableElement3D {
 
         rec.setT(root);
         rec.setP(r.at(rec.getT()));
-        Vector outwardNormal = new Vector(2 * point.getX(), 2 * point.getY(), 0);
+        Vector outwardNormal = new Vector(point.getX(), point.getY(), 0);
         rec.setNormal(outwardNormal);
         rec.setMaterial(this.mat);
         return true;
+    }
+
+    private boolean intersectDisk(
+        Ray r,
+        Interval rayT,
+        IntersectRecord rec
+    ) {
+        float[] originf = new float[]{ this.x - 0.5f, this.y - 0.5f, 1f };
+        float[] uf = new float[]{ this.x + 1, this.y - 0.5f, 1 };
+        float[] vf = new float[]{ this.x - 0.5f, this.y + 1, 1 };
+        Quad q = new Quad(originf, uf, vf, mat);
+        if (q.intersect(r, rayT, rec)) {
+            Vector p = Vector.add(r.getOrigin(), r.getDirection().multiply(rec.getT()));
+            Vector v1 = Vector.subtract(p, new Vector(this.x, this.y, 1));
+            double d = Vector.dot(v1, v1);
+            return Math.sqrt(d) <= radius;
+        } else {
+            return false;
+        }
     }
 
     public Point3D getMidPoint() {
