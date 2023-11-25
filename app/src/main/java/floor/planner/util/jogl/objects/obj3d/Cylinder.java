@@ -106,8 +106,8 @@ public class Cylinder extends DrawableElement3D {
 
         rec.setT(root);
         rec.setP(r.at(rec.getT()));
-        Vector outwardNormal = Vector.subtract(rec.getP(), this.center).divide(radius);
-        rec.setFaceNormal(r, outwardNormal);
+        Vector outwardNormal = new Vector(2 * point.getX(), 2 * point.getY(), 0);
+        rec.setNormal(outwardNormal);
         rec.setMaterial(this.mat);
         return true;
     }
