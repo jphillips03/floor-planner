@@ -92,9 +92,9 @@ public class RayTracer {
                 break;
             case CUBE:
                 this.world = service.cube();
-                this.camera.setVFov(20);
+                this.camera.setVFov(40);
                 this.camera.setLookFrom(2, 2, 2);
-                this.camera.setLookAt(0, 0, 1);
+                this.camera.setLookAt(0, 0, 0);
                 this.camera.setDefocusAngle(0);
                 break;
             case QUADS:

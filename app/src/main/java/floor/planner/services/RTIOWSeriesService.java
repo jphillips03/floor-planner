@@ -39,7 +39,9 @@ public class RTIOWSeriesService {
 
     public IntersectableList cube() {
         IntersectableList world = new IntersectableList();
-        world.add(new Cube(Cube.DEFAULT_VERTICES));
+        Cube cube = new Cube(Cube.DEFAULT_VERTICES);
+        cube.initQuads();
+        world.add(cube);
         return world;
     }
 
