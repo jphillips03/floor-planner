@@ -10,6 +10,7 @@ import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.RTIOWSeriesService;
 import floor.planner.util.FileUtil;
+import floor.planner.util.jogl.material.DiffuseLight;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
@@ -33,6 +34,7 @@ public class RayTracer {
     // camera
     private Camera camera;
     private int maxDepth; // Maximum number of ray bounces into scene
+    private Color background;
 
     private IntersectableList world;
 
@@ -69,6 +71,15 @@ public class RayTracer {
 
     private void initWorld(RayTraceTaskType type) {
         switch(type) {
+            case CORNELL_BOX:
+                this.world = service.cornellBox();
+                this.camera.setVFov(40);
+                this.camera.setLookAt(278, 278, 0);
+                this.camera.setLookFrom(278, 278, -800);
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setDefocusAngle(0);
+                this.background = new Color(0, 0, 0);
+                break;
             case CUBE:
                 this.world = service.cube();
                 this.camera.setVFov(20);
@@ -173,26 +184,43 @@ public class RayTracer {
         }
 
         IntersectRecord rec = world.intersect(r, new Interval(0.001, Double.POSITIVE_INFINITY));
-        if (rec != null) {
-            ScatterAttenuation sa = rec.mat.scatter(r, rec);
-            if (sa != null) {
-                return new Color(
-                    Vector.multiply(
-                        sa.getAttenuation().getColor(),
-                        rayColor(sa.getScattered(), depth - 1, world)
-                            .getColor()
-                    )
-                );
-            } else {
-                return new Color(0, 0, 0);
-            }
+        if (rec == null) {
+            return this.getBackground(r);
         }
 
-        Vector unitDirection = Vector.unit(r.getDirection());
-        double a = 0.5f * (unitDirection.getY() + 1);
-        Vector c1 = new Vector(new double[]{ 1, 1, 1 });
-        Vector c2 = new Vector(new double[]{ 0.5, 0.7, 1 });
-        Vector color = Vector.add(c1.multiply(1 - a), c2.multiply(a));
-        return new Color(color.getFloatValues());
+        Color colorFromEmission = rec.mat.emitted(rec.getU(), rec.getV(), new Point3D(rec.getP()));
+
+        ScatterAttenuation sa = rec.mat.scatter(r, rec);
+        if (sa == null) {
+            return colorFromEmission;
+        }
+
+        Color colorFromScatter = new Color(
+            Vector.multiply(
+                sa.getAttenuation().getColor(),
+                rayColor(sa.getScattered(), depth - 1, world)
+                    .getColor()
+            )
+        );
+
+        return new Color(
+            Vector.add(
+                colorFromEmission.getColor(),
+                colorFromScatter.getColor()
+            )
+        );
+    }
+
+    private Color getBackground(Ray r) {
+        if (this.background != null) {
+            return this.background;
+        } else {
+            Vector unitDirection = Vector.unit(r.getDirection());
+            double a = 0.5f * (unitDirection.getY() + 1);
+            Vector c1 = new Vector(new double[]{ 1, 1, 1 });
+            Vector c2 = new Vector(new double[]{ 0.5, 0.7, 1 });
+            Vector color = Vector.add(c1.multiply(1 - a), c2.multiply(a));
+            return new Color(color.getFloatValues());
+        }
     }
 }

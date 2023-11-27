@@ -40,11 +40,12 @@
                 <Menu fx:id="floorMenu" mnemonicParsing="false" text="Floor"></Menu>
                 <Menu fx:id="rayTraceMenu" mnemonicParsing="false" text="Ray Trace">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="3D" text="3D Rendering" />
+                        <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="THREE_D" text="3D Rendering" />
                         <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CUBE" text="Cube" />
                         <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="QUADS" text="Quads" />
                         <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="SOME_SPHERES" text="Some Spheres" />
                         <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="SPHERES" text="Spheres... Lots of Spheres" />
+                        <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CORNELL_BOX" text="Cornell Box" />
                     </items>
                 </Menu>
             </menus>

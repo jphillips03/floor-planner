@@ -2,6 +2,8 @@ package floor.planner.controllers;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
@@ -201,9 +203,10 @@ public class MainController implements Initializable {
     private void onRayTrace(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
         String data = (String) menuItem.getUserData();
+        RayTraceTaskType type = RayTraceTaskType.valueOf(data);
 
-        int height = 225; // this.glWindow.getHeight();
-        int width = 400; // this.glWindow.getWidth();
+        int height = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 225; // this.glWindow.getHeight();
+        int width = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 400; // this.glWindow.getWidth();
         int samplesPerPixel = 100;
         int maxDepth = 50;
 
@@ -213,10 +216,10 @@ public class MainController implements Initializable {
         int max = height * width * samplesPerPixel;
 
         RayTraceTask task;
-        if (data.equals("3D")) {
+        if (type.equals(RayTraceTaskType.THREE_D)) {
             task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth);
         } else {
-            task = new RayTraceTask(height, width, max, maxDepth, RayTraceTaskType.valueOf(data));
+            task = new RayTraceTask(height, width, max, maxDepth, type);
         }
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);

@@ -1,6 +1,7 @@
 package floor.planner.services;
 
 import floor.planner.util.jogl.material.Dielectric;
+import floor.planner.util.jogl.material.DiffuseLight;
 import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.Metal;
@@ -20,6 +21,22 @@ import floor.planner.util.math.Vector;
  */
 public class RTIOWSeriesService {
     
+    public IntersectableList cornellBox() {
+        IntersectableList world = new IntersectableList();
+        Material red = new Lambertian(new Color(0.65, 0.05, 0.05));
+        Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
+        Material green = new Lambertian(new Color(0.12, 0.45, 0.15));
+        Material light = new DiffuseLight(new Color(15, 15, 15));
+
+        world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
+        world.add(new Quad(new Point3D(0, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), red));
+        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
+        world.add(new Quad(new Point3D(0, 0, 0), new Vector(555, 0, 0), new Vector(0, 0, 555), white));
+        world.add(new Quad(new Point3D(555, 555, 555), new Vector(-555, 0, 0), new Vector(0, 0, -555), white));
+        world.add(new Quad(new Point3D(0, 0, 555), new Vector(555, 0, 0), new Vector(0, 555, 0), white));
+        return world;
+    }
+
     public IntersectableList cube() {
         IntersectableList world = new IntersectableList();
         world.add(new Cube(Cube.DEFAULT_VERTICES));
