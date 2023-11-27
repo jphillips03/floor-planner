@@ -61,25 +61,7 @@ public class RayTracer {
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
         this.camera = new Camera(imageWidth, imageHeight, 1);
-
         this.initWorld(type);
-
-        // set camera properties based on world objects
-        if (type.equals(RayTraceTaskType.CUBE)) {
-            // ray tracing a 1x1x1 cube starting from (0, 0, 0).
-            this.camera.setVFov(20);
-            this.camera.setLookFrom(2, 2, 2);
-            this.camera.setLookAt(0, 0, 1);
-            this.camera.setDefocusAngle(0);
-        } else {
-            // ray tracing spheres so use "default" settings...
-            this.camera.setVUp(0, 1, 0);
-            this.camera.setVFov(20);
-            this.camera.setLookFrom(13, 2, 3);
-            this.camera.setLookAt(0, 0, 0);
-            this.camera.setDefocusAngle(0.6);
-            this.camera.setFocusDist(10);
-        }
 
         // initialize ray trace properties needed for camera
         this.camera.initRayTraceProperties(imageWidth, imageHeight);
@@ -89,15 +71,37 @@ public class RayTracer {
         switch(type) {
             case CUBE:
                 this.world = service.cube();
+                this.camera.setVFov(20);
+                this.camera.setLookFrom(2, 2, 2);
+                this.camera.setLookAt(0, 0, 1);
+                this.camera.setDefocusAngle(0);
                 break;
             case QUADS:
                 this.world = service.quads();
+                this.camera.setVFov(80);
+                this.camera.setLookFrom(0, 0, 9);
+                this.camera.setLookAt(0, 0, 0);
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setDefocusAngle(0);
                 break;
             case SOME_SPHERES:
                 this.world = service.someSpheres();
+                // ray tracing spheres so use "default" settings...
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setVFov(20);
+                this.camera.setLookFrom(13, 2, 3);
+                this.camera.setLookAt(0, 0, 0);
+                this.camera.setDefocusAngle(0.6);
+                this.camera.setFocusDist(10);
                 break;
             default:
                 this.world = service.spheres();
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setVFov(20);
+                this.camera.setLookFrom(13, 2, 3);
+                this.camera.setLookAt(0, 0, 0);
+                this.camera.setDefocusAngle(0.6);
+                this.camera.setFocusDist(10);
                 break;
         }
     }
