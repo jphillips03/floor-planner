@@ -18,6 +18,7 @@ public class Color {
         this.red = (float) red;
         this.green = (float) green;
         this.blue = (float) blue;
+        this.color = new Vector(new double[]{ red, green, blue });
     }
 
     public Color(float red, float green, float blue) {
