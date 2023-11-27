@@ -49,6 +49,16 @@ public class RayTracer {
 
         this.world = floorPlan.getIntersectableList();
         this.camera.setFocusDist(Point3D.distanceBetween(new Point3D(this.camera.getLookFrom()), floorPlan.getMidPoint()));
+        this.background = new Color(0, 0, 0);
+        
+        // add a light to the world so we can see stuff...
+        Material diffuseLight = new DiffuseLight(new Color(15, 15, 15));
+        Point3D midPoint = floorPlan.getMidPoint();
+        // make it a big sphere high above mid point of floor plan
+        world.add(
+            new Sphere(midPoint.getX(), midPoint.getY(), 10, 6, diffuseLight)
+        );
+
         // initialize ray trace properties needed for camera
         this.camera.initRayTraceProperties(imageWidth, imageHeight);
     }
