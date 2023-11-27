@@ -6,7 +6,7 @@ import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
-public class Dielectric implements Material {
+public class Dielectric extends Material {
     /** Index of refraction. */
     private double ir;
 

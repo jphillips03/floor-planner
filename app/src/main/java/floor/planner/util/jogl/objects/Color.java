@@ -14,6 +14,12 @@ public class Color {
     private float blue;
     private Vector color;
 
+    public Color(double red, double green, double blue) {
+        this.red = (float) red;
+        this.green = (float) green;
+        this.blue = (float) blue;
+    }
+
     public Color(float red, float green, float blue) {
         this.red = red;
         this.green = green;

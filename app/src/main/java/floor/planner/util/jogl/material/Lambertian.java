@@ -2,17 +2,24 @@ package floor.planner.util.jogl.material;
 
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.jogl.raytracer.texture.SolidColor;
+import floor.planner.util.jogl.raytracer.texture.Texture;
+import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
-public class Lambertian implements Material {
-    private Color albedo;
+public class Lambertian extends Material {
+    private Texture albedo;
 
-    public Lambertian(Color a) {
-        this.albedo = a;
+    public Lambertian(Texture t) {
+        this.albedo = t;
     }
 
-    public Color getAlbedo() {
+    public Lambertian(Color c) {
+        this.albedo = new SolidColor(c);
+    }
+
+    public Texture getAlbedo() {
         return this.albedo;
     }
 
@@ -25,6 +32,6 @@ public class Lambertian implements Material {
         }
 
         Ray scattered = new Ray(rec.getP(), scatterDirection);
-        return new ScatterAttenuation(albedo, scattered);
+        return new ScatterAttenuation(albedo.value(rec.getU(), rec.getV(), new Point3D(rec.getP())), scattered);
     }
 }

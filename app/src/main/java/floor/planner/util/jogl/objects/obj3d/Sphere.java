@@ -89,8 +89,17 @@ public class Sphere extends DrawableElement3D {
         rec.setP(r.at(rec.getT()));
         Vector outwardNormal = Vector.subtract(rec.getP(), this.center).divide(radius);
         rec.setFaceNormal(r, outwardNormal);
+        this.getSphereUv(outwardNormal, rec);
         rec.setMaterial(this.mat);
         return true;
+    }
+
+    private void getSphereUv(Vector normal, IntersectRecord rec) {
+        double theta = Math.acos(-normal.getY());
+        double phi = Math.atan2(-normal.getZ(), normal.getX()) + Math.PI;
+
+        rec.setU(phi / (2 * Math.PI));
+        rec.setV(theta / Math.PI);
     }
 
     public Point3D getMidPoint() {
