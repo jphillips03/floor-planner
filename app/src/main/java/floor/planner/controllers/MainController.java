@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jogamp.newt.opengl.GLWindow;
 
+import floor.planner.constants.RayTraceTaskType;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
@@ -198,6 +199,9 @@ public class MainController implements Initializable {
 
     @FXML
     private void onRayTrace(ActionEvent event) {
+        MenuItem menuItem = (MenuItem) event.getSource();
+        String data = (String) menuItem.getUserData();
+
         int height = 225; // this.glWindow.getHeight();
         int width = 400; // this.glWindow.getWidth();
         int samplesPerPixel = 100;
@@ -207,7 +211,13 @@ public class MainController implements Initializable {
         // samplesPerPixel times for each ray and run through each element each
         // time...
         int max = height * width * samplesPerPixel;
-        RayTraceTask task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth);
+
+        RayTraceTask task;
+        if (data.equals("3D")) {
+            task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth);
+        } else {
+            task = new RayTraceTask(height, width, max, maxDepth, RayTraceTaskType.valueOf(data));
+        }
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);
         progressBar.activateProgressBar(task);

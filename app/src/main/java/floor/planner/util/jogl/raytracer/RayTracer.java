@@ -5,6 +5,7 @@ import java.io.File;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.constants.RayTraceTaskType;
 import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
@@ -38,53 +39,66 @@ public class RayTracer {
 
     private IntersectableList world;
 
-    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth, boolean initWorld) {
+    /**
+     * Initializes the ray tracer for the current view of the 3D floor plan.
+     */
+    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth) {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
         this.camera = floorPlan.getCamera();
 
-        if (!initWorld) {
-            this.world = floorPlan.getIntersectableList();
-            this.camera.setFocusDist(Point3D.distanceBetween(new Point3D(this.camera.getLookFrom()), floorPlan.getMidPoint()));
-        } else {
-            this.initWorld();
+        this.world = floorPlan.getIntersectableList();
+        this.camera.setFocusDist(Point3D.distanceBetween(new Point3D(this.camera.getLookFrom()), floorPlan.getMidPoint()));
+        // initialize ray trace properties needed for camera
+        this.camera.initRayTraceProperties(imageWidth, imageHeight);
+    }
 
-            // set camera properties based on world objects
-            boolean cube = false;
-            if (cube) {
-                // ray tracing a 1x1x1 cube starting from (0, 0, 0).
-                this.camera.setVFov(20);
-                this.camera.setLookFrom(2, 2, 2);
-                this.camera.setLookAt(0, 0, 1);
-                this.camera.setDefocusAngle(0);
-            } else {
-                // ray tracing spheres so use "default" settings...
-                this.camera.setVUp(0, 1, 0);
-                this.camera.setVFov(20);
-                this.camera.setLookFrom(13, 2, 3);
-                this.camera.setLookAt(0, 0, 0);
-                this.camera.setDefocusAngle(0.6);
-                this.camera.setFocusDist(10);
-            }
+    public RayTracer(
+        int imageHeight,
+        int imageWidth,
+        int maxDepth,
+        RayTraceTaskType type
+    ) {
+        this.imageHeight = imageHeight;
+        this.imageWidth = imageWidth;
+        this.maxDepth = maxDepth;
+        this.camera = new Camera(imageWidth, imageHeight, 1);
+
+        this.initWorld(type);
+
+        // set camera properties based on world objects
+        if (type.equals(RayTraceTaskType.CUBE)) {
+            // ray tracing a 1x1x1 cube starting from (0, 0, 0).
+            this.camera.setVFov(20);
+            this.camera.setLookFrom(2, 2, 2);
+            this.camera.setLookAt(0, 0, 1);
+            this.camera.setDefocusAngle(0);
+        } else {
+            // ray tracing spheres so use "default" settings...
+            this.camera.setVUp(0, 1, 0);
+            this.camera.setVFov(20);
+            this.camera.setLookFrom(13, 2, 3);
+            this.camera.setLookAt(0, 0, 0);
+            this.camera.setDefocusAngle(0.6);
+            this.camera.setFocusDist(10);
         }
 
         // initialize ray trace properties needed for camera
         this.camera.initRayTraceProperties(imageWidth, imageHeight);
-
     }
 
-    private void initWorld() {
+    private void initWorld(RayTraceTaskType type) {
         this.world = new IntersectableList();
 
-        switch(3) {
-            case 0:
+        switch(type) {
+            case CUBE:
                 this.cube();
                 break;
-            case 1:
+            case QUADS:
                 this.quads();
                 break;
-            case 2:
+            case SOME_SPHERES:
                 this.someSpheres();
                 break;
             default:
@@ -135,11 +149,10 @@ public class RayTracer {
         Material mat1 = new Dielectric(1.5);
         Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
         Material mat3 = new Metal(new Color(0.7f, 0.6f, 0.5f), 0.0);
-        
+
         world.add(new Sphere(new Vector(0, 1, 0),   1, mat1));
         world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
         world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
-
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
     }
