@@ -8,15 +8,11 @@ import org.slf4j.LoggerFactory;
 import floor.planner.constants.RayTraceTaskType;
 import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
+import floor.planner.services.RTIOWSeriesService;
 import floor.planner.util.FileUtil;
-import floor.planner.util.jogl.material.Dielectric;
-import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
-import floor.planner.util.jogl.material.Metal;
 import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
-import floor.planner.util.jogl.objects.obj3d.Cube;
-import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.Point3D;
@@ -26,6 +22,7 @@ import floor.planner.util.math.Vector;
 
 public class RayTracer {
     private static final Logger logger = LoggerFactory.getLogger(RayTracer.class);
+    private final RTIOWSeriesService service = new RTIOWSeriesService();
 
     private int samplesPerPixel = 100; // Count of random samples for each pixel
 
@@ -89,114 +86,20 @@ public class RayTracer {
     }
 
     private void initWorld(RayTraceTaskType type) {
-        this.world = new IntersectableList();
-
         switch(type) {
             case CUBE:
-                this.cube();
+                this.world = service.cube();
                 break;
             case QUADS:
-                this.quads();
+                this.world = service.quads();
                 break;
             case SOME_SPHERES:
-                this.someSpheres();
+                this.world = service.someSpheres();
                 break;
             default:
-                this.spheres();
+                this.world = service.spheres();
                 break;
         }
-    }
-
-    private void cube() {
-        this.world.add(new Cube(Cube.DEFAULT_VERTICES));
-    }
-
-    private void quads() {
-        Material red = new Lambertian(new Color(1f, 0.2f, 0.2f));
-        Material green = new Lambertian(new Color(0.2f, 1f, 0.2f));
-        Material blue = new Lambertian(new Color(0.2f, 0.2f, 1f));
-        Material orange = new Lambertian(new Color(1f, 0.5f, 0f));
-        Material teal = new Lambertian(new Color(0.2f, 0.8f, 0.8f));
-
-        this.world.add(new Quad(
-            new Point3D(-3, -2, 5),
-            new Vector(0, 0, -4),
-            new Vector(0, 4, 0), red)
-        );
-        this.world.add(new Quad(
-            new Point3D(-2, -2, 0),
-            new Vector(4, 0, 0),
-            new Vector(0, 4, 0), green)
-        );
-        this.world.add(new Quad(
-            new Point3D(3, -2, 1),
-            new Vector(0, 0, 4),
-            new Vector(0, 4, 0), blue)
-        );
-        this.world.add(new Quad(
-            new Point3D(-2, 3, 1),
-            new Vector(4, 0, 0),
-            new Vector(0, 0, 4), orange)
-        );
-        this.world.add(new Quad(
-            new Point3D(-2, -3, 5),
-            new Vector(4, 0, 0),
-            new Vector(0, 0, -4), teal)
-        );
-    }
-
-    private void someSpheres() {
-        Material mat1 = new Dielectric(1.5);
-        Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
-        Material mat3 = new Metal(new Color(0.7f, 0.6f, 0.5f), 0.0);
-
-        world.add(new Sphere(new Vector(0, 1, 0),   1, mat1));
-        world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
-        world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
-        BvhNode node = new BvhNode(world.getElements());
-        world = new IntersectableList(world.getElements(), node.boundingBox());
-    }
-
-    private void spheres() {
-        Material ground = new Lambertian(new Color(0.5f, 0.5f, 0.5f));
-        world.add(new Sphere(new Vector(0.0, -1000, 0), 1000, ground));
-
-        for (int a = -11; a < 11; a++) {
-            for (int b = -11; b < 11; b++) {
-                // choose a material randomly
-                double chooseMat = Random.randomDouble();
-                Vector center = new Vector(a + 0.9 * Random.randomDouble(), 0.2, b + 0.9 * Random.randomDouble());
-
-                if (Vector.subtract(center, new Vector(4, 0.2, 0)).length() > 0.9) {
-                    Material mat;
-                    if (chooseMat < 0.8) {
-                        // diffuse
-                        Color albedo = new Color(Vector.multiply(Vector.random(), Vector.random()));
-                        mat = new Lambertian(albedo);
-                    } else if (chooseMat < 0.95) {
-                        // metal
-                        Color albedo = new Color(Vector.random(0.5, 1));
-                        double fuzz = Random.randomDouble(0, 0.5);
-                        mat = new Metal(albedo, fuzz);
-                    } else {
-                        mat = new Dielectric(1.5);
-                    }
-
-                    world.add(new Sphere(center, 0.2, mat));
-                }
-            }
-        }
-
-        Material mat1 = new Dielectric(1.5);
-        Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
-        Material mat3 = new Metal(new Color(0.7f, 0.6f, 0.5f), 0.0);
-        
-        world.add(new Sphere(new Vector(0, 1, 0),   1, mat1));
-        world.add(new Sphere(new Vector(-4, 1, 0),   1, mat2));
-        world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
-
-        BvhNode node = new BvhNode(world.getElements());
-        world = new IntersectableList(world.getElements(), node.boundingBox());
     }
 
     public void render(RayTraceTask task) {
