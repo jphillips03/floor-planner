@@ -68,40 +68,14 @@ public class Cube extends DrawableElement3D {
      */
     public void initQuads() {
         this.quads = new Quad[6];
-        this.quads[0] = this.createQuad(vertices[2], vertices[1], vertices[3], mat);
-        this.quads[1] = this.createQuad(vertices[2], vertices[6], vertices[1], mat);
-        this.quads[2] = this.createQuad(vertices[2], vertices[3], vertices[6], mat);
-        this.quads[3] = this.createQuad(vertices[4], vertices[5], vertices[7], mat);
-        this.quads[4] = this.createQuad(vertices[4], vertices[0], vertices[5], mat);
-        this.quads[5] = this.createQuad(vertices[4], vertices[7], vertices[0], mat);
+        this.quads[0] = new Quad(vertices[2], vertices[1], vertices[3], mat);
+        this.quads[1] = new Quad(vertices[2], vertices[6], vertices[1], mat);
+        this.quads[2] = new Quad(vertices[2], vertices[3], vertices[6], mat);
+        this.quads[3] = new Quad(vertices[4], vertices[5], vertices[7], mat);
+        this.quads[4] = new Quad(vertices[4], vertices[0], vertices[5], mat);
+        this.quads[5] = new Quad(vertices[4], vertices[7], vertices[0], mat);
 
         this.boundingBox = new Aabb();
-    }
-
-    /**
-     * Creates and returns a Quad given 3 points in a plane. The points are
-     * provided as float arrays since these values come from the vertices for
-     * the cube. The first point should be the origin, the other 2 should be
-     * points that can be used to generate perpendicular vectors starting at
-     * the origin point.
-     *
-     * @param originf The origin point of the quad. 
-     * @param uf A point to generate vector for one side of quad.
-     * @param vf A point to generate perpendicular vector for other side of quad.
-     * @param mat The material for the quad (needed for ray tracer).
-     * @return The Quad 
-     */
-    private Quad createQuad(float[] originf, float[] uf, float[] vf, Material mat) {
-        Point3D origin = new Point3D(originf[0], originf[1], originf[2]);
-        Vector u = new Vector(
-            MathUtil.floatToDoubleArray(originf),
-            MathUtil.floatToDoubleArray(uf)
-        );
-        Vector v = new Vector(
-            MathUtil.floatToDoubleArray(originf),
-            MathUtil.floatToDoubleArray(vf)
-        );
-        return new Quad(origin, u, v, mat);
     }
 
     public float[][] getVertices() {
