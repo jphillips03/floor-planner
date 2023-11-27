@@ -30,22 +30,18 @@ public class Quad implements Intersectable {
     }
 
     public Quad(float[] originf, float[] uf, float[] vf, Material mat) {
-        Point3D origin = new Point3D(originf[0], originf[1], originf[2]);
-        Vector u = new Vector(
-            MathUtil.floatToDoubleArray(originf),
-            MathUtil.floatToDoubleArray(uf)
+        this(
+            new Point3D(originf[0], originf[1], originf[2]),
+            new Vector(
+                MathUtil.floatToDoubleArray(originf),
+                MathUtil.floatToDoubleArray(uf)
+            ),
+            new Vector(
+                MathUtil.floatToDoubleArray(originf),
+                MathUtil.floatToDoubleArray(vf)
+            ),
+            mat
         );
-        Vector v = new Vector(
-            MathUtil.floatToDoubleArray(originf),
-            MathUtil.floatToDoubleArray(vf)
-        );
-
-        this.Q = origin;
-        this.u = u;
-        this.v = v;
-        this.mat = mat;
-
-        this.init();
     }
 
     private void init() {
