@@ -11,16 +11,26 @@ import floor.planner.util.jogl.raytracer.IntersectableList;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
-import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
 import java.util.Arrays;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**    
+ *          y
+ *   z      ^          
+ *   ^     / 
+ *   | 5  / 6
+ *   | +----+
+ *   |/| / /|
+ *  1+--/-+2|
+ *   |4+--|-+7
+ *   |/   |/
+ *   +----+-------->x
+ *   0    3
+ */
 public class Cube extends DrawableElement3D {
     private static Logger logger = LoggerFactory.getLogger(Cube.class);
 
@@ -29,8 +39,8 @@ public class Cube extends DrawableElement3D {
      * positive x, y, z planes.
      */
     public static float[][] DEFAULT_VERTICES = {
-        {0, 0, 1}, {0, 1, 1}, {1, 1, 1}, {1, 0, 1},
-        {0, 0, 0}, {0, 1, 0}, {1, 1, 0}, {1, 0, 0}
+        {0, 0, 0}, {0, 0, 1}, {1, 0, 1}, {1, 0, 0},
+        {0, 1, 0}, {0, 1, 1}, {1, 1, 1}, {1, 1, 0}
     };
     /**
      * Order to draw vertices to render cube in 3D.
@@ -43,12 +53,12 @@ public class Cube extends DrawableElement3D {
         {4, 5, 6, 7},
         {5, 4, 0, 1}
     };
-    public static List<Integer> TOP_FACE = Arrays.asList(0, 1, 2, 3);
-    public static List<Integer> BOTTOM_FACE = Arrays.asList(4, 5, 6, 7);
-    public static List<Integer> FRONT_FACE = Arrays.asList(0, 3, 4, 7);
-    public static List<Integer> BACK_FACE = Arrays.asList(1, 2, 5, 6);
-    public static List<Integer> RIGHT_FACE = Arrays.asList(2, 3, 6, 7);
-    public static List<Integer> LEFT_FACE = Arrays.asList(0, 1, 4, 5);
+    public static int[] FRONT_FACE = VERTICES_ORDER[0];
+    public static int[] RIGHT_FACE = VERTICES_ORDER[1];
+    public static int[] BOTTOM_FACE = VERTICES_ORDER[2];
+    public static int[] TOP_FACE = VERTICES_ORDER[3];
+    public static int[] BACK_FACE = VERTICES_ORDER[4];
+    public static int[] LEFT_FACE = VERTICES_ORDER[5];
 
     private float[][] vertices;
     private Quad[] quads;

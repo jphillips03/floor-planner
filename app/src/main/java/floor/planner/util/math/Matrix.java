@@ -84,6 +84,46 @@ public class Matrix {
         return cof;
     }
 
+    /**
+     * Rotates the given matrix vertices above the x-axis by the given amount
+     * of degrees.
+     *
+     * @param matrix The matrix to rotate about the x-axis.
+     * @param degrees The degrees to rotate.
+     * @return
+     */
+    public static float[][] rotateX(float[][] matrix, float degrees) {
+        return rotate(matrix, degrees, 1, 2);
+    }
+
+    public static float[][] rotateY(float[][] matrix, float degrees) {
+        return rotate(matrix, degrees, 0, 2);
+    }
+
+    public static float[][] rotateZ(float[][] matrix, float degrees) {
+        return rotate(matrix, degrees, 0, 1);
+    }
+
+    public static float[][] rotate(float[][] matrix, float degrees, int coord1, int coord2) {
+        float[][] copy = copy(matrix);
+        double radians = Math.toRadians(degrees);
+        double sinTheta = Math.sin(radians);
+        double cosTheta = Math.cos(radians);
+        for (int i = 0; i < copy.length; i++) {
+            if (coord1 == 0 && coord2 == 2) {
+                // rotate y
+                copy[i][coord1] = (float) (cosTheta * copy[i][coord1] + sinTheta * copy[i][coord2]);
+                copy[i][coord2] = (float) (-sinTheta * copy[i][coord1] + cosTheta * copy[i][coord2]);
+            } else {
+                // rotate x or z (formulas are same for both; just different coordinates...)
+                copy[i][coord1] = (float) (cosTheta * copy[i][coord1] - sinTheta * copy[i][coord2]);
+                copy[i][coord2] = (float) (sinTheta * copy[i][coord1] + cosTheta * copy[i][coord2]);
+            }
+        }
+        return copy;
+    }
+
+
     public static float[][] scaleX(float[][] matrix, float delta) {
         return scale(matrix, delta, 0);
     }
@@ -102,7 +142,7 @@ public class Matrix {
             copy[i][coord] *= delta;
         }
         return copy;
-    } 
+    }
 
     /**
      * Returns a copy of the given matrix moved in the X direction by the
@@ -164,7 +204,7 @@ public class Matrix {
     public static float[][] translatePartialX(
         float[][] matrix,
         float delta,
-        List<Integer> indexes
+        int[] indexes
     ) {
         return translatePartial(matrix, delta, indexes, 0);
     }
@@ -172,7 +212,7 @@ public class Matrix {
     public static float[][] translatePartialY(
         float[][] matrix,
         float delta,
-        List<Integer> indexes
+        int[] indexes
     ) {
         return translatePartial(matrix, delta, indexes, 1);
     }
@@ -180,7 +220,7 @@ public class Matrix {
     public static float[][] translatePartialZ(
         float[][] matrix,
         float delta,
-        List<Integer> indexes
+        int[] indexes
     ) {
         return translatePartial(matrix, delta, indexes, 2);
     }
@@ -188,12 +228,12 @@ public class Matrix {
     private static float[][] translatePartial(
         float[][] matrix,
         float delta,
-        List<Integer> indexes,
+        int[] indexes,
         int coord
     ) {
         float[][] copy = copy(matrix);
-        for (int i = 0; i < indexes.size(); i++) {
-            copy[indexes.get(i)][coord] += delta;
+        for (int i = 0; i < indexes.length; i++) {
+            copy[indexes[i]][coord] += delta;
         }
         return copy;
     }
