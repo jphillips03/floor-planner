@@ -76,6 +76,15 @@ public class Vector {
         return res;
     }
 
+    public Vector subtract(double[] vals) {
+        Vector res = copy(this);
+        for (int i = 0; i < this.values.length; i++) {
+            res.values[i] -= vals[i];
+        }
+
+        return res;
+    }
+
     public Vector multiply(double x) {
         Vector res = copy(this);
         for (int i = 0; i < this.values.length; i++) {
