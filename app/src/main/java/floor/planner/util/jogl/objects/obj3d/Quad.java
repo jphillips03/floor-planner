@@ -102,7 +102,7 @@ public class Quad implements Intersectable {
     }
 
     // Given the hit point in plane coordinates, return false if it is outside the
-        // primitive, otherwise set the hit record UV coordinates and return true.
+    // primitive, otherwise set the hit record UV coordinates and return true.
     private boolean isInterior(double a, double b, IntersectRecord rec) {
         if (a < 0 || 1 < a || b < 0 || 1 < b) {
             return false;
@@ -116,5 +116,20 @@ public class Quad implements Intersectable {
     @Override
     public Aabb boundingBox() {
         return this.boundingBox;
+    }
+
+    public Point3D getMidPoint() {
+        Point3D diagPoint = new Point3D(
+            Vector.add(
+                Vector.add(this.Q.getVector(), this.u),
+                this.v
+            )
+        );
+
+        return new Point3D(
+            (this.Q.getX() + diagPoint.getX()) / 2,
+            (this.Q.getY() + diagPoint.getY()) / 2,
+            (this.Q.getZ() + diagPoint.getZ()) / 2
+        );
     }
 }
