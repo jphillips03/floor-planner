@@ -61,7 +61,7 @@ public class RTIOWSeriesService {
         world.add(box1);
 
         // box 2
-        Cube box2 = new Cube(Cube.DEFAULT_VERTICES_Y_UP);
+        Cube box2 = new Cube(Cube.DEFAULT_VERTICES_Y_UP, white);
         box2.setVertices(Matrix.scaleX(box2.getVertices(), 165));
         box2.setVertices(Matrix.scaleY(box2.getVertices(), 165));
         box2.setVertices(Matrix.scaleZ(box2.getVertices(), 165));
