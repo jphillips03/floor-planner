@@ -1,5 +1,12 @@
 package floor.planner.services;
 
+import java.util.Arrays;
+import java.util.Comparator;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import floor.planner.models.Camera;
 import floor.planner.util.jogl.material.Dielectric;
 import floor.planner.util.jogl.material.DiffuseLight;
 import floor.planner.util.jogl.material.Lambertian;
@@ -11,6 +18,7 @@ import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.jogl.raytracer.BvhNode;
 import floor.planner.util.jogl.raytracer.IntersectableList;
+import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Vector;
@@ -20,20 +28,51 @@ import floor.planner.util.math.Vector;
  * for initializing intersectable lists for worlds in examples used in series.
  */
 public class RTIOWSeriesService {
+    private static final Logger logger = LoggerFactory.getLogger(RTIOWSeriesService.class);
     
-    public IntersectableList cornellBox() {
+    public IntersectableList cornellBox(Camera camera) {
+        QuadComparator comparator = new QuadComparator(camera);
         IntersectableList world = new IntersectableList();
         Material red = new Lambertian(new Color(0.65, 0.05, 0.05));
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
         Material green = new Lambertian(new Color(0.12, 0.45, 0.15));
         Material light = new DiffuseLight(new Color(15, 15, 15));
 
+        // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), red));
-        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(555, 0, 0), new Vector(0, 0, 555), white));
         world.add(new Quad(new Point3D(555, 555, 555), new Vector(-555, 0, 0), new Vector(0, 0, -555), white));
         world.add(new Quad(new Point3D(0, 0, 555), new Vector(555, 0, 0), new Vector(0, 555, 0), white));
+
+        // add a light
+        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
+
+        // box1
+        Cube box1 = new Cube(Cube.DEFAULT_VERTICES_Y_UP, white);
+        box1.setVertices(Matrix.scaleX(box1.getVertices(), 165));
+        box1.setVertices(Matrix.scaleY(box1.getVertices(), 330));
+        box1.setVertices(Matrix.scaleZ(box1.getVertices(), 165));
+        box1.setVertices(Matrix.translateX(box1.getVertices(), 265));
+        box1.setVertices(Matrix.translateZ(box1.getVertices(), 295));
+        box1.setVertices(Matrix.rotateY(box1.getVertices(), 15));
+        box1.initQuads();
+        Arrays.sort(box1.getQuads(), comparator);
+        world.add(box1);
+
+        // box 2
+        Cube box2 = new Cube(Cube.DEFAULT_VERTICES_Y_UP);
+        box2.setVertices(Matrix.scaleX(box2.getVertices(), 165));
+        box2.setVertices(Matrix.scaleY(box2.getVertices(), 165));
+        box2.setVertices(Matrix.scaleZ(box2.getVertices(), 165));
+        box2.setVertices(Matrix.translateX(box2.getVertices(), 130));
+        box2.setVertices(Matrix.translateZ(box2.getVertices(), 65));
+        box2.setVertices(Matrix.rotateY(box2.getVertices(), -18));
+        box2.initQuads();
+        Arrays.sort(box2.getQuads(), comparator);
+
+        world.add(box2);
+
         return world;
     }
 
@@ -138,5 +177,30 @@ public class RTIOWSeriesService {
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
         return world;
+    }
+
+    /**
+     * The QuadComparator defines a convenience compare method for 2 quads,
+     * comparing them in distance from the defined camera. This is needed for
+     * the cubes rendered in this series, because as defined the quads do not
+     * render correctly when included in ray traced image. This is true even
+     * though the quads for the cube are defined in the same order they are in
+     * the series. Without this the cubes can appear inside out when viewed at
+     * different angles. Perhaps there is an issue with how vertices and quads
+     * are defined, but this seems to at least get the desired image we are
+     * going for...
+     */
+    private class QuadComparator implements Comparator<Quad> {
+        private Camera camera;
+    
+        public QuadComparator(Camera camera) {
+            this.camera = camera;
+        }
+
+        public int compare(Quad q1, Quad q2) {
+            double d1 = Point3D.distanceBetween(q1.getMidPoint(), new Point3D(camera.getCenter()));
+            double d2 = Point3D.distanceBetween(q2.getMidPoint(), new Point3D(camera.getCenter()));
+            return Double.compare(d1, d2);
+        }
     }
 }

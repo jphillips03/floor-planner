@@ -36,11 +36,20 @@ public class Cube extends DrawableElement3D {
 
     /**
      * Default vertices for a 1x1x1 cube located at the origin extending in
-     * positive x, y, z planes.
+     * positive x, y, z planes with z plane being up.
      */
     public static float[][] DEFAULT_VERTICES = {
         {0, 0, 0}, {0, 0, 1}, {1, 0, 1}, {1, 0, 0},
         {0, 1, 0}, {0, 1, 1}, {1, 1, 1}, {1, 1, 0}
+    };
+    /**
+     * Default vertices for a 1x1x1 cube located at the origin extending in
+     * positive x, y, z planes with y plane being up. The RTIOW series uses
+     * y as up, so this is used when creating cubes for worlds in that series.
+     */
+    public static float[][] DEFAULT_VERTICES_Y_UP = {
+        {0, 0, 0}, {0, 1, 0}, {1, 1, 0}, {1, 0, 0},
+        {0, 0, 1}, {0, 1, 1}, {1, 1, 1}, {1, 0, 1}
     };
     /**
      * Order to draw vertices to render cube in 3D.
@@ -72,20 +81,42 @@ public class Cube extends DrawableElement3D {
         this.mat = new Lambertian(new Color(Vector.random()));
     }
 
+    public Cube(float[][] vertices, Material mat) {
+        this.vertices = vertices;
+        this.mat = mat;
+    }
+
+    public Quad[] getQuads() {
+        return this.quads;
+    }
+    public void setQuads(Quad[] quads) {
+        this.quads = quads;
+
+        // reset the bounding box...
+        this.boundingBox = new Aabb();
+        for (Quad quad : this.quads) {
+            this.boundingBox = new Aabb(this.boundingBox, quad.boundingBox());
+        }
+    }
+
     /**
      * Initializes quads for each side of the cube which are needed for ray
-     * tracer.
+     * tracer. The order the quads are defined matters to the ray tracer. If
+     * the order is not right, then the cube appears inside out.
      */
     public void initQuads() {
         this.quads = new Quad[6];
-        this.quads[0] = new Quad(vertices[2], vertices[1], vertices[3], mat);
-        this.quads[1] = new Quad(vertices[2], vertices[6], vertices[1], mat);
-        this.quads[2] = new Quad(vertices[2], vertices[3], vertices[6], mat);
-        this.quads[3] = new Quad(vertices[4], vertices[5], vertices[7], mat);
-        this.quads[4] = new Quad(vertices[4], vertices[0], vertices[5], mat);
-        this.quads[5] = new Quad(vertices[4], vertices[7], vertices[0], mat);
+        this.quads[0] = new Quad(vertices[0], vertices[3], vertices[1], mat); // front
+        this.quads[1] = new Quad(vertices[3], vertices[7], vertices[2], mat); // right
+        this.quads[2] = new Quad(vertices[7], vertices[4], vertices[6], mat); // back
+        this.quads[3] = new Quad(vertices[4], vertices[0], vertices[5], mat); // left
+        this.quads[4] = new Quad(vertices[1], vertices[2], vertices[5], mat); // top
+        this.quads[5] = new Quad(vertices[4], vertices[0], vertices[7], mat); // bottom
 
         this.boundingBox = new Aabb();
+        for (Quad quad : this.quads) {
+            this.boundingBox = new Aabb(this.boundingBox, quad.boundingBox());
+        }
     }
 
     public float[][] getVertices() {

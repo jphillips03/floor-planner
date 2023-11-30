@@ -82,13 +82,13 @@ public class RayTracer {
     private void initWorld(RayTraceTaskType type) {
         switch(type) {
             case CORNELL_BOX:
-                this.world = service.cornellBox();
                 this.camera.setVFov(40);
-                this.camera.setLookAt(278, 278, 0);
                 this.camera.setLookFrom(278, 278, -800);
+                this.camera.setLookAt(278, 278, 0);
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setDefocusAngle(0);
-                this.background = new Color(0, 0, 0);
+                this.world = service.cornellBox(camera);
+                this.background = new Color(0, 0, 0); 
                 break;
             case CUBE:
                 this.world = service.cube();
