@@ -19,10 +19,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**    
- *          y
- *   z      ^          
- *   ^     / 
- *   | 5  / 6
+ *           y
+ *   z       ^          
+ *   ^      / 
+ *   | 5   /6
  *   | +----+
  *   |/| / /|
  *  1+--/-+2|
@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
  *   |/   |/
  *   +----+-------->x
  *   0    3
+ * 
  */
 public class Cube extends DrawableElement3D {
     private static Logger logger = LoggerFactory.getLogger(Cube.class);
@@ -163,7 +164,7 @@ public class Cube extends DrawableElement3D {
                 return true;
             }
         }
-         return false;
+        return false;
     }
 
     @Override
