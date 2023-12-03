@@ -326,4 +326,14 @@ public class Vector {
     private static Vector copy(Vector v) {
         return new Vector(new double[]{ v.getValues()[0], v.getValues()[1], v.getValues()[2]});
     }
+
+    public static Vector randomeCosineDirection() {
+        double r1 = Random.randomDouble();
+        double r2 = Random.randomDouble();
+        double phi = 2 * Math.PI * r1;
+        double x = Math.cos(phi) * Math.sqrt(r2);
+        double y = Math.sin(phi) * Math.sqrt(r2);
+        double z = Math.sqrt(1 - r2);
+        return new Vector(x, y, z);
+    }
 }

@@ -25,4 +25,12 @@ public class DiffuseLight extends Material {
     public Color emitted(double u, double v, Point3D p) {
         return emit.value(u, v, p);
     }
+
+    public Color emitted(Ray rIn, IntersectRecord rec, double u, double v, Point3D p) {
+        if (!rec.isFrontFace()) {
+            return new Color(0, 0, 0);
+        } else {
+            return emit.value(u, v, p);
+        }
+    }
 }

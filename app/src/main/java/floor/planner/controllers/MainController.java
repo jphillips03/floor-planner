@@ -207,19 +207,20 @@ public class MainController implements Initializable {
 
         int height = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 225; // this.glWindow.getHeight();
         int width = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 400; // this.glWindow.getWidth();
-        int samplesPerPixel = 100;
+        int samplesPerPixel = 10;
+        int sqrtSpp = (int) Math.sqrt(samplesPerPixel);
         int maxDepth = 50;
 
         // height * width rays are sent through screen, we do this 
         // samplesPerPixel times for each ray and run through each element each
         // time...
-        int max = height * width * samplesPerPixel;
+        int max = height * width * (sqrtSpp * 2);
 
         RayTraceTask task;
         if (type.equals(RayTraceTaskType.THREE_D)) {
-            task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth);
+            task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth, samplesPerPixel);
         } else {
-            task = new RayTraceTask(height, width, max, maxDepth, type);
+            task = new RayTraceTask(height, width, max, maxDepth, type, samplesPerPixel);
         }
 
         ProgressBarDialogController progressBar = new ProgressBarDialogController(this.stage);

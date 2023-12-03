@@ -10,10 +10,17 @@ public class Ray {
     private Vector direction;
     /** The origin of the line. */
     private Vector origin;
+    private double time;
 
     public Ray(Vector origin, Vector direction) {
         this.origin = origin;
         this.direction = direction;
+    }
+
+    public Ray(Vector origin, Vector direction, double time) {
+        this.origin = origin;
+        this.direction = direction;
+        this.time = time;
     }
 
     /**
@@ -32,6 +39,10 @@ public class Ray {
      */
     public Vector getOrigin() {
         return this.origin;
+    }
+
+    public double getTime() {
+        return this.time;
     }
 
     /**

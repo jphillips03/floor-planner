@@ -14,6 +14,7 @@ import floor.planner.util.jogl.material.DiffuseLight;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.ScatterAttenuation;
 import floor.planner.util.jogl.objects.Color;
+import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.Point3D;
@@ -25,7 +26,9 @@ public class RayTracer {
     private static final Logger logger = LoggerFactory.getLogger(RayTracer.class);
     private final RTIOWSeriesService service = new RTIOWSeriesService();
 
-    private int samplesPerPixel = 100; // Count of random samples for each pixel
+    private int samplesPerPixel = 10; // Count of random samples for each pixel
+    private int sqrtSpp;
+    private double recipSqrtSpp;
 
     // image
     private int imageWidth;
@@ -41,10 +44,11 @@ public class RayTracer {
     /**
      * Initializes the ray tracer for the current view of the 3D floor plan.
      */
-    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth) {
+    public RayTracer(FloorPlan floorPlan, int imageHeight, int imageWidth, int maxDepth, int samplesPerPixel) {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
+        this.samplesPerPixel = samplesPerPixel;
         this.camera = floorPlan.getCamera();
 
         this.world = floorPlan.getIntersectableList();
@@ -55,28 +59,41 @@ public class RayTracer {
         Material diffuseLight = new DiffuseLight(new Color(15, 15, 15));
         Point3D midPoint = floorPlan.getMidPoint();
         // make it a big sphere high above mid point of floor plan
+        // world.add(
+        //     new Sphere(midPoint.getX(), midPoint.getY(), 10, floorPlan.getWidth() / 2, diffuseLight)
+        // );
+        Vector dx = new Vector(imageWidth, 0, 0);
+        Vector dy = new Vector(0, imageHeight, 0);
         world.add(
-            new Sphere(midPoint.getX(), midPoint.getY(), 10, 6, diffuseLight)
+            new Quad(new Point3D(midPoint.getX(), midPoint.getY(), 10), dx, dy, diffuseLight)
         );
 
-        // initialize ray trace properties needed for camera
-        this.camera.initRayTraceProperties(imageWidth, imageHeight);
+        this.initRayTracer();
     }
 
     public RayTracer(
         int imageHeight,
         int imageWidth,
         int maxDepth,
-        RayTraceTaskType type
+        RayTraceTaskType type,
+        int samplesPerPixel
     ) {
         this.imageHeight = imageHeight;
         this.imageWidth = imageWidth;
         this.maxDepth = maxDepth;
         this.camera = new Camera(imageWidth, imageHeight, 1);
+        this.samplesPerPixel = samplesPerPixel;
         this.initWorld(type);
 
+        this.initRayTracer();
+    }
+
+    private void initRayTracer() {
         // initialize ray trace properties needed for camera
         this.camera.initRayTraceProperties(imageWidth, imageHeight);
+
+        this.sqrtSpp = (int) Math.sqrt(this.samplesPerPixel);
+        this.recipSqrtSpp = (double) 1 / (double) this.sqrtSpp;
     }
 
     private void initWorld(RayTraceTaskType type) {
@@ -136,13 +153,15 @@ public class RayTracer {
         for (int i = 0; i < this.imageHeight; i++) {
             for (int j = 0; j < this.imageWidth; j++) {
                 Color pixelColor = new Color(0, 0, 0);
-                for (int sample = 0; sample < samplesPerPixel; sample++) {
-                    Ray r = this.getRay(j, i);
-                    Color rayColor = this.rayColor(r, maxDepth, world);
-                    pixelColor.setColor(
-                        Vector.add(pixelColor.getColor(), rayColor.getColor())
-                    );
-                    task.updateProgress(task.workDone++);
+                for (int sI = 0; sI < this.sqrtSpp; ++sI) {
+                    for (int sJ = 0; sJ < this.sqrtSpp; ++sJ) {
+                        Ray r = getRay(j, i, sJ, sI);
+                        Color rayColor = this.rayColor(r, maxDepth, world);
+                        pixelColor.setColor(
+                            Vector.add(pixelColor.getColor(), rayColor.getColor())
+                        );
+                        task.updateProgress(task.workDone++);
+                    }
                 }
                 image[i][j] = pixelColor;
                 
@@ -160,10 +179,10 @@ public class RayTracer {
 
     // get a randomly sampled camera ray for pixel at location i,j originating
     // from camera defocus disk
-    private Ray getRay(int i, int j) {
+    private Ray getRay(int i, int j, int sI, int sJ) {
         Vector pc1 = Vector.add(this.camera.getPixelDeltaU().multiply(i), this.camera.getPixelDeltaV().multiply(j));
         Vector pixelCenter = Vector.add(this.camera.getPixel00Loc(), pc1);
-        Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare());
+        Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare(sI, sJ));
 
         Vector rayOrigin = this.camera.getDefocusAngle() <= 0 ? this.camera.getCenter() : defocusDiskSample();
         Vector rayDirection = Vector.subtract(pixelSample, rayOrigin);
@@ -178,9 +197,9 @@ public class RayTracer {
         );
     }
 
-    private Vector pixelSampleSquare() {
-        double px = -0.5 + Random.randomDouble();
-        double py = -0.5 + Random.randomDouble();
+    private Vector pixelSampleSquare(int sI, int sJ) {
+        double px = -0.5 + this.recipSqrtSpp * (sI + Random.randomDouble());
+        double py = -0.5 + this.recipSqrtSpp * (sJ + Random.randomDouble());
         return Vector.add(
             this.camera.getPixelDeltaU().multiply(px),
             this.camera.getPixelDeltaV().multiply(py)
@@ -198,6 +217,7 @@ public class RayTracer {
             return this.getBackground(r);
         }
 
+        Ray scattered;
         Color colorFromEmission = rec.mat.emitted(rec.getU(), rec.getV(), new Point3D(rec.getP()));
 
         ScatterAttenuation sa = rec.mat.scatter(r, rec);
@@ -205,14 +225,34 @@ public class RayTracer {
             return colorFromEmission;
         }
 
-        Color colorFromScatter = new Color(
-            Vector.multiply(
-                sa.getAttenuation().getColor(),
-                rayColor(sa.getScattered(), depth - 1, world)
-                    .getColor()
-            )
+        Point3D onLight = new Point3D(
+            (float) Random.randomDouble(213, 343),
+            554,
+            (float) Random.randomDouble(227, 332)
         );
+        Point3D toLight = new Point3D(onLight.getVector().subtract(rec.getP().getValues()));
+        double distanceSquared = toLight.getVector().lengthSqrd();
+        toLight = new Point3D(Vector.unit(toLight.getVector()));
 
+        if (Vector.dot(toLight.getVector(), rec.getNormal()) < 0) {
+            return colorFromEmission;
+        }
+
+        double lightArea = (343 - 213) * (332 - 227);
+        double lightCosine = Math.abs(toLight.getVector().getY());
+        if (lightCosine < 0.000001) {
+            return colorFromEmission;
+        }
+        double pdf = distanceSquared / (lightCosine * lightArea);
+        scattered = new Ray(rec.getP(), toLight.getVector(), r.getTime());
+        double scatteringPdf = rec.mat.scatteringPdf(r, rec, scattered);
+
+        Color colorFromScatter = new Color(
+        Vector.multiply(
+            sa.getAttenuation().getColor().multiply(scatteringPdf),
+            rayColor(scattered, depth - 1, world)
+                .getColor()
+        ).divide(pdf));
         return new Color(
             Vector.add(
                 colorFromEmission.getColor(),

@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.RayTraceTaskType;
-import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import javafx.concurrent.Task;
 
@@ -24,22 +23,24 @@ public class RayTraceTask extends Task<Void> {
     private int width;
     private int maxDepth;
     private double max;
+    private int samplesPerPixel = 10; // Count of random samples for each pixel
     private RayTraceTaskType type;
 
-    public RayTraceTask(int height, int width, int max, int maxDepth) {
+    public RayTraceTask(int height, int width, int max, int maxDepth, int samplesPerPixel) {
         this.height = height;
         this.width = width;
         this.max = max;
         this.maxDepth = maxDepth;
+        this.samplesPerPixel = samplesPerPixel;
     }
 
-    public RayTraceTask(FloorPlan floorPlan, int height, int width, int max, int maxDepth) {
-        this(height, width, max, maxDepth);
+    public RayTraceTask(FloorPlan floorPlan, int height, int width, int max, int maxDepth, int samplesPerPixel) {
+        this(height, width, max, maxDepth, samplesPerPixel);
         this.floorPlan = floorPlan;
     }
 
-    public RayTraceTask(int height, int width, int max, int maxDepth, RayTraceTaskType type) {
-        this(height, width, max, maxDepth);
+    public RayTraceTask(int height, int width, int max, int maxDepth, RayTraceTaskType type, int samplesPerPixel) {
+        this(height, width, max, maxDepth, samplesPerPixel);
         this.type = type;
     }
 
@@ -49,9 +50,9 @@ public class RayTraceTask extends Task<Void> {
             logger.info("Initializing ray tracer");
             RayTracer rayTracer;
             if (this.floorPlan != null) {
-                rayTracer = new RayTracer(this.floorPlan, this.height, this.width, this.maxDepth);
+                rayTracer = new RayTracer(this.floorPlan, this.height, this.width, this.maxDepth, this.samplesPerPixel);
             } else {
-                rayTracer = new RayTracer(this.height, this.width, this.maxDepth, this.type);
+                rayTracer = new RayTracer(this.height, this.width, this.maxDepth, this.type, this.samplesPerPixel);
             }
 
             logger.info("Ray tracer initialized successfully");

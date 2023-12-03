@@ -22,4 +22,12 @@ public abstract class Material {
         // default to black...
         return new Color(0, 0, 0);
     }
+
+    public Color emitted(Ray rIn, IntersectRecord rec, double u, double v, Point3D p) {
+        return new Color(0, 0, 0);
+    }
+
+    public double scatteringPdf(Ray rIn, IntersectRecord rec, Ray scattered) {
+        return 0;
+    }
 }
