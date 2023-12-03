@@ -2,14 +2,17 @@ package floor.planner.util.math;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Matrix class defines convenience methods for matrices.
  * 
  * @author jphillips3
  * @version November 9, 2023
  */
-
 public class Matrix {
+    private static final Logger logger = LoggerFactory.getLogger(Matrix.class);
 	
     /*
      * Creates and returns a copy of given matrix.
@@ -105,24 +108,34 @@ public class Matrix {
     }
 
     public static float[][] rotate(float[][] matrix, float degrees, int coord1, int coord2) {
-        float[][] copy = copy(matrix);
+        float[][] copy = new float[matrix.length][matrix[0].length];
         double radians = Math.toRadians(degrees);
         double sinTheta = Math.sin(radians);
         double cosTheta = Math.cos(radians);
         for (int i = 0; i < copy.length; i++) {
             if (coord1 == 0 && coord2 == 2) {
                 // rotate y
-                copy[i][coord1] = (float) (cosTheta * copy[i][coord1] + sinTheta * copy[i][coord2]);
-                copy[i][coord2] = (float) (-sinTheta * copy[i][coord1] + cosTheta * copy[i][coord2]);
+                copy[i][coord1] = (float) (cosTheta * matrix[i][coord1] + sinTheta * matrix[i][coord2]);
+                copy[i][1] = matrix[i][1];
+                copy[i][coord2] = (float) (-sinTheta * matrix[i][coord1] + cosTheta * matrix[i][coord2]);
             } else {
                 // rotate x or z (formulas are same for both; just different coordinates...)
-                copy[i][coord1] = (float) (cosTheta * copy[i][coord1] - sinTheta * copy[i][coord2]);
-                copy[i][coord2] = (float) (sinTheta * copy[i][coord1] + cosTheta * copy[i][coord2]);
+                int coord3;
+                if (coord1 == 1) {
+                    // we are rotating z
+                    coord3 = 0;
+                } else {
+                    // we are rotating x
+                    coord3 = 2;
+                }
+
+                copy[i][coord1] = (float) (cosTheta * matrix[i][coord1] - sinTheta * matrix[i][coord2]);
+                copy[i][coord2] = (float) (sinTheta * matrix[i][coord1] + cosTheta * matrix[i][coord2]);
+                copy[i][coord3] = matrix[i][coord3];
             }
         }
         return copy;
     }
-
 
     public static float[][] scaleX(float[][] matrix, float delta) {
         return scale(matrix, delta, 0);

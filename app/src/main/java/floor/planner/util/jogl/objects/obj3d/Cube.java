@@ -31,6 +31,17 @@ import org.slf4j.LoggerFactory;
  *   +----+-------->x
  *   0    3
  * 
+ *         z
+ *   y       ^          
+ *   ^      / 
+ *   | 5   /6
+ *   | +----+
+ *   |/| / /|
+ *  1+--/-+2|
+ *   |4+--|-+7
+ *   |/   |/
+ *   +----+-------->x
+ *   0    3
  */
 public class Cube extends DrawableElement3D {
     private static Logger logger = LoggerFactory.getLogger(Cube.class);
@@ -72,6 +83,8 @@ public class Cube extends DrawableElement3D {
 
     private float[][] vertices;
     private Quad[] quads;
+    private Point3D min;
+    private Point3D max;
     protected Material mat;
 
     public Cube(float[][] vertices) {
@@ -85,6 +98,24 @@ public class Cube extends DrawableElement3D {
     public Cube(float[][] vertices, Material mat) {
         this.vertices = vertices;
         this.mat = mat;
+    }
+
+    public Cube(Point3D a, Point3D b, Material material) {
+        this.mat = material;
+        // Construct the two opposite vertices with the minimum and maximum coordinates
+        this.min = new Point3D((float) Math.min(a.getX(), b.getX()), (float) Math.min(a.getY(), b.getY()), (float) Math.min(a.getZ(), b.getZ()));
+        this.max = new Point3D((float) Math.max(a.getX(), b.getX()), (float) Math.max(a.getY(), b.getY()), (float) Math.max(a.getZ(), b.getZ()));
+
+        this.vertices = new float[][] {
+            { min.getX(), min.getY(), min.getZ() },
+            { min.getX(), max.getY(), min.getZ() },
+            { max.getX(), max.getY(), min.getZ() },
+            { max.getX(), min.getY(), min.getZ() },
+            { min.getX(), min.getY(), max.getZ() },
+            { min.getX(), max.getY(), max.getZ() },
+            { max.getX(), max.getY(), max.getZ() },
+            { max.getX(), min.getY(), max.getZ() }
+        };
     }
 
     public Quad[] getQuads() {
@@ -113,6 +144,54 @@ public class Cube extends DrawableElement3D {
         this.quads[3] = new Quad(vertices[4], vertices[0], vertices[5], mat); // left
         this.quads[4] = new Quad(vertices[1], vertices[2], vertices[5], mat); // top
         this.quads[5] = new Quad(vertices[4], vertices[0], vertices[7], mat); // bottom
+
+        this.boundingBox = new Aabb();
+        for (Quad quad : this.quads) {
+            this.boundingBox = new Aabb(this.boundingBox, quad.boundingBox());
+        }
+    }
+
+    public void initQuadsYUp() {
+         /*           z
+            *   y       ^          
+            *   ^      / 
+            *   | 5   /6
+            *   | +----+
+            *   |/| / /|
+            *  1+--/-+2|
+            *   |4+--|-+7
+            *   |/   |/
+            *   +----+-------->x
+            *   0    3
+            */
+
+        /*.
+    
+    sides->add(make_shared<quad>(point3(min.x(), min.y(), max.z()),  dx,  dy, mat)); // front
+    sides->add(make_shared<quad>(point3(max.x(), min.y(), max.z()), -dz,  dy, mat)); // right
+    sides->add(make_shared<quad>(point3(max.x(), min.y(), min.z()), -dx,  dy, mat)); // back
+    sides->add(make_shared<quad>(point3(min.x(), min.y(), min.z()),  dz,  dy, mat)); // left
+    sides->add(make_shared<quad>(point3(min.x(), max.y(), max.z()),  dx, -dz, mat)); // top
+    
+    sides->add(make_shared<quad>(point3(min.x(), min.y(), min.z()),  dx,  dz, mat)); // bottom
+    */
+        Vector dx = new Vector(this.max.getX() - this.min.getX(), 0, 0);
+        Vector dy = new Vector(0, this.max.getY() - this.min.getY(), 0);
+        Vector dz = new Vector(0, 0, this.max.getZ() - this.min.getZ());
+
+        this.quads = new Quad[6];
+        // this.quads[0] = new Quad(new Point3D(this.min.getX(), this.min.getY(), this.max.getZ()), dx, dy, mat);
+        // this.quads[1] = new Quad(new Point3D(this.max.getX(), this.min.getY(), this.max.getZ()), dz.multiply(-1), dy, mat);
+        // this.quads[2] = new Quad(new Point3D(this.max.getX(), this.min.getY(), this.min.getZ()), dx.multiply(-1), dy, mat);
+        // this.quads[3] = new Quad(new Point3D(this.min.getX(), this.min.getY(), this.min.getZ()), dz, dy, mat);
+        // this.quads[4] = new Quad(new Point3D(this.min.getX(), this.max.getY(), this.max.getZ()), dx, dz.multiply(-1), mat);
+        // this.quads[5] = new Quad(new Point3D(this.min.getX(), this.min.getY(), this.min.getZ()), dx, dz, mat);
+        this.quads[0] = new Quad(vertices[7], vertices[4], vertices[6], mat); // front
+        this.quads[1] = new Quad(vertices[4], vertices[0], vertices[5], mat); // right
+        this.quads[2] = new Quad(vertices[0], vertices[3], vertices[1], mat); // back
+        this.quads[3] = new Quad(vertices[3], vertices[7], vertices[2], mat); // left
+        this.quads[4] = new Quad(vertices[6], vertices[5], vertices[2], mat); // top
+        this.quads[5] = new Quad(vertices[7], vertices[4], vertices[3], mat); // bottom
 
         this.boundingBox = new Aabb();
         for (Quad quad : this.quads) {

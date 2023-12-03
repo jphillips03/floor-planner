@@ -41,36 +41,27 @@ public class RTIOWSeriesService {
         // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), red));
+        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(555, 0, 0), new Vector(0, 0, 555), white));
         world.add(new Quad(new Point3D(555, 555, 555), new Vector(-555, 0, 0), new Vector(0, 0, -555), white));
         world.add(new Quad(new Point3D(0, 0, 555), new Vector(555, 0, 0), new Vector(0, 555, 0), white));
 
-        // add a light
-        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
-
         // box1
-        Cube box1 = new Cube(Cube.DEFAULT_VERTICES_Y_UP, white);
-        box1.setVertices(Matrix.scaleX(box1.getVertices(), 165));
-        box1.setVertices(Matrix.scaleY(box1.getVertices(), 330));
-        box1.setVertices(Matrix.scaleZ(box1.getVertices(), 165));
-        box1.setVertices(Matrix.translateX(box1.getVertices(), 265));
-        box1.setVertices(Matrix.translateZ(box1.getVertices(), 295));
-        box1.setVertices(Matrix.rotateY(box1.getVertices(), 15));
-        box1.initQuads();
+        Cube box1 = new Cube(new Point3D(265, 0, 295), new Point3D(430, 330, 460), white);
+        box1.setVertices(Matrix.rotateY(box1.getVertices(), 18));
+        box1.setVertices(Matrix.translateX(box1.getVertices(), -65));
+        box1.setVertices(Matrix.translateZ(box1.getVertices(), 65));
+        box1.initQuadsYUp();
         Arrays.sort(box1.getQuads(), comparator);
         world.add(box1);
 
         // box 2
-        Cube box2 = new Cube(Cube.DEFAULT_VERTICES_Y_UP, white);
-        box2.setVertices(Matrix.scaleX(box2.getVertices(), 165));
-        box2.setVertices(Matrix.scaleY(box2.getVertices(), 165));
-        box2.setVertices(Matrix.scaleZ(box2.getVertices(), 165));
-        box2.setVertices(Matrix.translateX(box2.getVertices(), 130));
-        box2.setVertices(Matrix.translateZ(box2.getVertices(), 65));
+        Cube box2 = new Cube(new Point3D(130, 0, 65), new Point3D(295, 165, 230), white);
         box2.setVertices(Matrix.rotateY(box2.getVertices(), -18));
-        box2.initQuads();
+        box2.setVertices(Matrix.translateX(box2.getVertices(), 45));
+        box2.setVertices(Matrix.translateZ(box2.getVertices(), -85));
+        box2.initQuadsYUp();
         Arrays.sort(box2.getQuads(), comparator);
-
         world.add(box2);
 
         return world;
