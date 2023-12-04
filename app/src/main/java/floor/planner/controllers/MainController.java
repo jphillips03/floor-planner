@@ -214,7 +214,7 @@ public class MainController implements Initializable {
         // height * width rays are sent through screen, we do this 
         // samplesPerPixel times for each ray and run through each element each
         // time...
-        int max = height * width * (sqrtSpp * 2);
+        int max = height * width * (sqrtSpp * sqrtSpp);
 
         RayTraceTask task;
         if (type.equals(RayTraceTaskType.THREE_D)) {
