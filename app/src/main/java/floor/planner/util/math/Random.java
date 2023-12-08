@@ -40,7 +40,14 @@ public class Random {
         return ThreadLocalRandom.current().nextDouble();
     }
 
+    /**
+     * Returns a random int in [min, max].
+     *
+     * @param min
+     * @param max
+     * @return
+     */
     public static int randomInt(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max);
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }

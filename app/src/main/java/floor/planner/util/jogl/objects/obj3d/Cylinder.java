@@ -10,6 +10,7 @@ import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
+import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -44,7 +45,7 @@ public class Cylinder extends DrawableElement3D {
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
             float angle = 0.0f;
-            while(angle < 2 * Math.PI) {
+            while(angle < 2 * MathUtil.PI) {
                 float x = radius * (float) Math.cos(angle) + this.x;
                 float y = radius * (float) Math.sin(angle) + this.y;
                 gl.glNormal3f(x, y, 0f);
@@ -66,7 +67,7 @@ public class Cylinder extends DrawableElement3D {
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
             angle = 0.0f;
-            while(angle < 2 * Math.PI) {
+            while(angle < 2 * MathUtil.PI) {
                 float x = radius * (float) Math.cos(angle) + this.x;
                 float y = radius * (float) Math.sin(angle) + this.y;
                 gl.glVertex3f(x, y , (float) height);

@@ -18,7 +18,7 @@ public class DiffuseLight extends Material {
         this(new SolidColor(c));
     }
 
-    public ScatterAttenuation scatter(Ray rIn, IntersectRecord rec) {
+    public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
         return null;
     }
 

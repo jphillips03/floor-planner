@@ -13,9 +13,13 @@ import floor.planner.util.FileUtil;
 import floor.planner.util.jogl.material.DiffuseLight;
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.material.ScatterAttenuation;
+import floor.planner.util.jogl.material.ScatterRecord;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.objects.obj3d.Quad;
 import floor.planner.util.jogl.objects.obj3d.Sphere;
+import floor.planner.util.jogl.raytracer.pdf.CosPdf;
+import floor.planner.util.jogl.raytracer.pdf.IntersectablePdf;
+import floor.planner.util.jogl.raytracer.pdf.MixturePdf;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
@@ -40,6 +44,7 @@ public class RayTracer {
     private Color background;
 
     private IntersectableList world;
+    private IntersectableList lights;
 
     /**
      * Initializes the ray tracer for the current view of the 3D floor plan.
@@ -54,7 +59,7 @@ public class RayTracer {
         this.world = floorPlan.getIntersectableList();
         this.camera.setFocusDist(Point3D.distanceBetween(new Point3D(this.camera.getLookFrom()), floorPlan.getMidPoint()));
         this.background = new Color(0, 0, 0);
-        
+
         // add a light to the world so we can see stuff...
         Material diffuseLight = new DiffuseLight(new Color(15, 15, 15));
         Point3D midPoint = floorPlan.getMidPoint();
@@ -96,7 +101,14 @@ public class RayTracer {
         this.recipSqrtSpp = (double) 1 / (double) this.sqrtSpp;
     }
 
+    private class CustomMateral extends Material {
+        public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
+            return null;
+        }
+    }
+
     private void initWorld(RayTraceTaskType type) {
+        Material m = new CustomMateral();
         switch(type) {
             case CORNELL_BOX:
                 this.camera.setVFov(40);
@@ -105,6 +117,7 @@ public class RayTracer {
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setDefocusAngle(0);
                 this.world = service.cornellBox(camera);
+                this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
                 this.background = new Color(0, 0, 0); 
                 break;
             case CUBE:
@@ -156,7 +169,7 @@ public class RayTracer {
                 for (int sI = 0; sI < this.sqrtSpp; ++sI) {
                     for (int sJ = 0; sJ < this.sqrtSpp; ++sJ) {
                         Ray r = getRay(j, i, sJ, sI);
-                        Color rayColor = this.rayColor(r, maxDepth, world);
+                        Color rayColor = this.rayColor(r, maxDepth, world, lights);
                         pixelColor.setColor(
                             Vector.add(pixelColor.getColor(), rayColor.getColor())
                         );
@@ -164,7 +177,6 @@ public class RayTracer {
                     }
                 }
                 image[i][j] = pixelColor;
-                
             }
         }
         logger.info("Ray trace done, saving image to disk...");
@@ -206,7 +218,7 @@ public class RayTracer {
         );
     }
 
-    public Color rayColor(Ray r, int depth, IntersectableList world) {
+    public Color rayColor(Ray r, int depth, IntersectableList world, IntersectableList lights) {
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0) {
             return new Color(0,0,0);
@@ -218,41 +230,33 @@ public class RayTracer {
         }
 
         Ray scattered;
-        Color colorFromEmission = rec.mat.emitted(rec.getU(), rec.getV(), new Point3D(rec.getP()));
-
-        ScatterAttenuation sa = rec.mat.scatter(r, rec);
-        if (sa == null) {
+        double pdfVal;
+        Color colorFromEmission = rec.mat.emitted(r, rec, rec.getU(), rec.getV(), new Point3D(rec.getP()));
+        ScatterRecord srec = rec.mat.scatter(r, rec);
+        if (srec == null) {
             return colorFromEmission;
         }
 
-        Point3D onLight = new Point3D(
-            (float) Random.randomDouble(213, 343),
-            554,
-            (float) Random.randomDouble(227, 332)
-        );
-        Point3D toLight = new Point3D(onLight.getVector().subtract(rec.getP().getValues()));
-        double distanceSquared = toLight.getVector().lengthSqrd();
-        toLight = new Point3D(Vector.unit(toLight.getVector()));
-
-        if (Vector.dot(toLight.getVector(), rec.getNormal()) < 0) {
-            return colorFromEmission;
+        if (srec.skipPdf) {
+            return new Color(Vector.multiply(
+                srec.attenuation.getColor(),
+                this.rayColor(srec.skipPdfRay, depth - 1, world, lights).getColor()
+            ));
         }
 
-        double lightArea = (343 - 213) * (332 - 227);
-        double lightCosine = Math.abs(toLight.getVector().getY());
-        if (lightCosine < 0.000001) {
-            return colorFromEmission;
-        }
-        double pdf = distanceSquared / (lightCosine * lightArea);
-        scattered = new Ray(rec.getP(), toLight.getVector(), r.getTime());
+        IntersectablePdf lightPdf = new IntersectablePdf(lights, new Point3D(rec.getP()));
+        MixturePdf mixedPdf = new MixturePdf(lightPdf, srec.pdf);
+        scattered = new Ray(rec.getP(), mixedPdf.generate(), r.getTime());
+        pdfVal = mixedPdf.value(scattered.getDirection());
+
         double scatteringPdf = rec.mat.scatteringPdf(r, rec, scattered);
 
+        Color sampleColor = this.rayColor(scattered, depth - 1, world, lights);
         Color colorFromScatter = new Color(
         Vector.multiply(
-            sa.getAttenuation().getColor().multiply(scatteringPdf),
-            rayColor(scattered, depth - 1, world)
-                .getColor()
-        ).divide(pdf));
+            srec.attenuation.getColor().multiply(scatteringPdf),
+            sampleColor.getColor()
+        ).divide(pdfVal));
         return new Color(
             Vector.add(
                 colorFromEmission.getColor(),

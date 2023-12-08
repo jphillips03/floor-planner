@@ -15,7 +15,7 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
-public abstract class DrawableElement3D extends DrawableElement implements Intersectable {
+public abstract class DrawableElement3D extends Intersectable implements DrawableElement {
     public Aabb boundingBox;
     public float[] materialColor = { 0.5f, 0.5f, 0.5f, 1.0f };
     public float[] specularColor = { 1f, 1f, 1f, 1f };

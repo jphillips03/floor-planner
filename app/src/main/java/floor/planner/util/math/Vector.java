@@ -330,7 +330,7 @@ public class Vector {
     public static Vector randomeCosineDirection() {
         double r1 = Random.randomDouble();
         double r2 = Random.randomDouble();
-        double phi = 2 * Math.PI * r1;
+        double phi = 2 * MathUtil.PI * r1;
         double x = Math.cos(phi) * Math.sqrt(r2);
         double y = Math.sin(phi) * Math.sqrt(r2);
         double z = Math.sqrt(1 - r2);

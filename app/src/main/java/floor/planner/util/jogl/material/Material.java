@@ -6,7 +6,7 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 
 public abstract class Material {
-    public abstract ScatterAttenuation scatter(Ray rIn, IntersectRecord rec);
+    public abstract ScatterRecord scatter(Ray rIn, IntersectRecord rec);
 
     /**
      * Color emitted from the material. This allows materials to act as lights.

@@ -1,5 +1,8 @@
 package floor.planner.util.jogl.objects.obj3d;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
@@ -7,10 +10,12 @@ import floor.planner.util.jogl.raytracer.Intersectable;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
+import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
-public class Quad implements Intersectable {
+public class Quad extends Intersectable {
+    private static final Logger logger = LoggerFactory.getLogger(Quad.class);
     private Aabb boundingBox;
     private Point3D Q;
     private Vector u;
@@ -19,6 +24,7 @@ public class Quad implements Intersectable {
     private Vector normal;
     private double D;
     private Vector w;
+    private double area;
 
     public Quad(Point3D q, Vector u, Vector v, Material mat) {
         this.Q = q;
@@ -49,6 +55,7 @@ public class Quad implements Intersectable {
         this.normal = Vector.unit(n);
         this.D = Vector.dot(this.normal, Q.getVector());
         this.w = n.divide(Vector.dot(n, n));
+        this.area = n.length();
         this.setBoundingBox();
     }
 
@@ -116,6 +123,30 @@ public class Quad implements Intersectable {
     @Override
     public Aabb boundingBox() {
         return this.boundingBox;
+    }
+
+    @Override
+    public double pdfValue(Point3D origin, Vector v) {
+        IntersectRecord rec = new IntersectRecord();
+        if (!this.intersect(new Ray(origin.getVector(), v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
+            return 0;
+        }
+
+        double distanceSquared = rec.getT() * rec.getT() * v.lengthSqrd();
+        double cos = Math.abs(Vector.dot(v, rec.getNormal()) / v.length());
+        return distanceSquared / (cos * this.area);
+    }
+
+    public Vector random(Point3D origin) {
+        return this.random(origin.getVector());
+    }
+
+    public Vector random(Vector origin) {
+        Vector p = Vector.add(
+            Vector.add(this.Q.getVector(), this.u.multiply(Random.randomDouble())),
+            this.v.multiply(Random.randomDouble())
+        );
+        return Vector.subtract(p, origin);
     }
 
     public Point3D getMidPoint() {

@@ -14,7 +14,7 @@ public class Dielectric extends Material {
         this.ir = ir;
     }
 
-    public ScatterAttenuation scatter(Ray rIn, IntersectRecord rec) {
+    public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
         Color attenuation = new Color(1f, 1f, 1f);
         double refractionRatio = rec.isFrontFace() ? (1 / this.ir) : this.ir;
 
@@ -30,8 +30,14 @@ public class Dielectric extends Material {
             direction = Vector.refract(unitDirection, rec.getNormal(), refractionRatio);
         }
 
-        Ray scattered = new Ray(rec.getP(), direction);
-        return new ScatterAttenuation(attenuation, scattered);
+        Ray scattered = new Ray(rec.getP(), direction, rIn.getTime());
+        return new ScatterRecord(
+            attenuation,
+            null,
+            true,
+            scattered
+        );
+        //return new ScatterAttenuation(attenuation, scattered);
     }
 
     /**

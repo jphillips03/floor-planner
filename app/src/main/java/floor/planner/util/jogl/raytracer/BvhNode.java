@@ -9,7 +9,7 @@ import floor.planner.util.math.Interval;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 
-public class BvhNode implements Intersectable {
+public class BvhNode extends Intersectable {
     private Intersectable left;
     private Intersectable right;
     private Aabb boundingBox;

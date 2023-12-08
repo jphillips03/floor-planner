@@ -11,7 +11,7 @@ import floor.planner.util.math.Point2D;
 /**
  * 
  */
-public abstract class DrawableElement2D extends DrawableElement {
+public abstract class DrawableElement2D implements DrawableElement {
     protected Orientation orientation;
     protected Point2D point;
     protected List<Point2D> points;

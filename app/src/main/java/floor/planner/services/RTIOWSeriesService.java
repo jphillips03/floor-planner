@@ -41,10 +41,12 @@ public class RTIOWSeriesService {
         // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), red));
-        world.add(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), light));
         world.add(new Quad(new Point3D(0, 0, 0), new Vector(555, 0, 0), new Vector(0, 0, 555), white));
         world.add(new Quad(new Point3D(555, 555, 555), new Vector(-555, 0, 0), new Vector(0, 0, -555), white));
         world.add(new Quad(new Point3D(0, 0, 555), new Vector(555, 0, 0), new Vector(0, 555, 0), white));
+
+        // light
+        world.add(new Quad(new Point3D(213,554,227), new Vector(130, 0, 0), new Vector(0, 0, 105), light));
 
         // box1
         Cube box1 = new Cube(new Point3D(265, 0, 295), new Point3D(430, 330, 460), white);

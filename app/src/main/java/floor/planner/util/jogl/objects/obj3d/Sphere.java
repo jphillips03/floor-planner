@@ -96,10 +96,38 @@ public class Sphere extends DrawableElement3D {
 
     private void getSphereUv(Vector normal, IntersectRecord rec) {
         double theta = Math.acos(-normal.getY());
-        double phi = Math.atan2(-normal.getZ(), normal.getX()) + Math.PI;
+        double phi = Math.atan2(-normal.getZ(), normal.getX()) + MathUtil.PI;
 
-        rec.setU(phi / (2 * Math.PI));
-        rec.setV(theta / Math.PI);
+        rec.setU(phi / (2 * MathUtil.PI));
+        rec.setV(theta / MathUtil.PI);
+    }
+
+    @Override
+    public double pdfValue(Point3D origin, Vector v) {
+        /*
+         * hit_record rec;
+        if (!this->hit(ray(o, v), interval(0.001, infinity), rec))
+            return 0;
+
+        auto cos_theta_max = sqrt(1 - radius*radius/(center1 - o).length_squared());
+        auto solid_angle = 2*pi*(1-cos_theta_max);
+
+        return  1 / solid_angle;
+         */
+        IntersectRecord rec = new IntersectRecord();
+        if (!this.intersect(new Ray(origin.getVector(), v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
+            return 0;
+        }
+
+        double cosThetaMax = Math.sqrt(
+            1 - this.radius * this.radius / 
+            (Vector.subtract(
+                this.center,
+                origin.getVector()
+            ).lengthSqrd())
+        );
+        double solidAngle = 2 * MathUtil.PI * (1 - cosThetaMax);
+        return 1 / solidAngle;
     }
 
     public Point3D getMidPoint() {
