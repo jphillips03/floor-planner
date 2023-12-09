@@ -205,8 +205,12 @@ public class MainController implements Initializable {
         String data = (String) menuItem.getUserData();
         RayTraceTaskType type = RayTraceTaskType.valueOf(data);
 
-        int height = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 225; // this.glWindow.getHeight();
-        int width = type.equals(RayTraceTaskType.CORNELL_BOX) ? 600 : 400; // this.glWindow.getWidth();
+        int height = type.equals(RayTraceTaskType.CORNELL_BOX) ? 
+            600 : type.equals(RayTraceTaskType.THREE_D) ?
+            450 : 225; // this.glWindow.getHeight()
+        int width = type.equals(RayTraceTaskType.CORNELL_BOX) ?
+            600 : type.equals(RayTraceTaskType.THREE_D) ?
+            800 : 400; // this.glWindow.getWidth()
         int samplesPerPixel = 10;
         int sqrtSpp = (int) Math.sqrt(samplesPerPixel);
         int maxDepth = 50;
