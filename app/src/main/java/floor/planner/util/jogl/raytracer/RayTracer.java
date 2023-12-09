@@ -67,11 +67,14 @@ public class RayTracer {
         // world.add(
         //     new Sphere(midPoint.getX(), midPoint.getY(), 10, floorPlan.getWidth() / 2, diffuseLight)
         // );
-        Vector dx = new Vector(imageWidth, 0, 0);
-        Vector dy = new Vector(0, imageHeight, 0);
+        Vector dx = new Vector(1, 0, 0);
+        Vector dy = new Vector(0, -1, 0);
         world.add(
-            new Quad(new Point3D(midPoint.getX(), midPoint.getY(), 10), dx, dy, diffuseLight)
+            new Quad(new Point3D(midPoint.getX() - 0.5f, midPoint.getY() - 0.5f, 3), dx, dy, diffuseLight)
         );
+
+        Material m = new CustomMateral();
+        this.lights = new IntersectableList(new Quad(new Point3D(midPoint.getX() - 0.5f, midPoint.getY() - 0.5f, 3), dx, dy, m));
 
         this.initRayTracer();
     }
