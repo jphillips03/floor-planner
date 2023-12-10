@@ -107,7 +107,7 @@ public class Cylinder extends DrawableElement3D {
             }
         }
 
-        Vector point = Vector.add(r.getOrigin(), r.getDirection().multiply(root));
+        Vector point = r.getOrigin().add(r.getDirection().multiply(root));
         if (point.getZ() < 0.05 || point.getZ() > 1) {
             return false;
         }
@@ -130,8 +130,8 @@ public class Cylinder extends DrawableElement3D {
         float[] vf = new float[]{ this.x - 0.5f, this.y + 1, 1 };
         Quad q = new Quad(originf, uf, vf, mat);
         if (q.intersect(r, rayT, rec)) {
-            Vector p = Vector.add(r.getOrigin(), r.getDirection().multiply(rec.getT()));
-            Vector v1 = Vector.subtract(p, new Vector(this.x, this.y, 1));
+            Vector p = r.getOrigin().add(r.getDirection().multiply(rec.getT()));
+            Vector v1 = p.subtract(new Vector(this.x, this.y, 1));
             double d = Vector.dot(v1, v1);
             return Math.sqrt(d) <= radius;
         } else {

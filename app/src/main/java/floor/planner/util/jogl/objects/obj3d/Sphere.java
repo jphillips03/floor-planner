@@ -32,8 +32,8 @@ public class Sphere extends DrawableElement3D {
 
         Vector rvec = new Vector(radius, radius, radius);
         this.boundingBox = new Aabb(
-            new Point3D(Vector.subtract(pos, rvec)),
-            new Point3D(Vector.add(pos, rvec))
+            new Point3D(pos.subtract(rvec)),
+            new Point3D(pos.add(rvec))
         );
     }
 
@@ -47,8 +47,8 @@ public class Sphere extends DrawableElement3D {
 
         Vector rvec = new Vector(radius, radius, radius);
         this.boundingBox = new Aabb(
-            new Point3D(Vector.subtract(this.center, rvec)),
-            new Point3D(Vector.add(this.center, rvec))
+            new Point3D(this.center.subtract(rvec)),
+            new Point3D(this.center.add(rvec))
         );
     }
 

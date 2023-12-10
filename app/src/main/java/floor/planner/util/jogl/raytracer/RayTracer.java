@@ -174,7 +174,7 @@ public class RayTracer {
                         Ray r = getRay(j, i, sJ, sI);
                         Color rayColor = this.rayColor(r, maxDepth, world, lights);
                         pixelColor.setColor(
-                            Vector.add(pixelColor.getColor(), rayColor.getColor())
+                            pixelColor.getColor().add(rayColor.getColor())
                         );
                         task.updateProgress(task.workDone++);
                     }
@@ -195,19 +195,19 @@ public class RayTracer {
     // get a randomly sampled camera ray for pixel at location i,j originating
     // from camera defocus disk
     private Ray getRay(int i, int j, int sI, int sJ) {
-        Vector pc1 = Vector.add(this.camera.getPixelDeltaU().multiply(i), this.camera.getPixelDeltaV().multiply(j));
-        Vector pixelCenter = Vector.add(this.camera.getPixel00Loc(), pc1);
-        Vector pixelSample = Vector.add(pixelCenter, this.pixelSampleSquare(sI, sJ));
+        Vector pc1 = this.camera.getPixelDeltaU().multiply(i).add(this.camera.getPixelDeltaV().multiply(j));
+        Vector pixelCenter = this.camera.getPixel00Loc().add(pc1);
+        Vector pixelSample = pixelCenter.add(this.pixelSampleSquare(sI, sJ));
 
         Vector rayOrigin = this.camera.getDefocusAngle() <= 0 ? this.camera.getCenter() : defocusDiskSample();
-        Vector rayDirection = Vector.subtract(pixelSample, rayOrigin);
+        Vector rayDirection = pixelSample.subtract(rayOrigin);
         return new Ray(rayOrigin, rayDirection);
     }
 
     private Vector defocusDiskSample() {
         Vector p = Vector.randomInUnitDisk();
-        return Vector.add(
-            Vector.add(this.camera.getCenter(), this.camera.getDefocusDiskU().multiply(p.getX())),
+        return 
+            this.camera.getCenter().add(this.camera.getDefocusDiskU().multiply(p.getX())).add(
             this.camera.getDefocusDiskV().multiply(p.getY())
         );
     }
@@ -215,8 +215,8 @@ public class RayTracer {
     private Vector pixelSampleSquare(int sI, int sJ) {
         double px = -0.5 + this.recipSqrtSpp * (sI + Random.randomDouble());
         double py = -0.5 + this.recipSqrtSpp * (sJ + Random.randomDouble());
-        return Vector.add(
-            this.camera.getPixelDeltaU().multiply(px),
+        return
+            this.camera.getPixelDeltaU().multiply(px).add(
             this.camera.getPixelDeltaV().multiply(py)
         );
     }
@@ -241,8 +241,8 @@ public class RayTracer {
         }
 
         if (srec.skipPdf) {
-            return new Color(Vector.multiply(
-                srec.attenuation.getColor(),
+            return new Color(
+                srec.attenuation.getColor().multiply(
                 this.rayColor(srec.skipPdfRay, depth - 1, world, lights).getColor()
             ));
         }
@@ -256,13 +256,11 @@ public class RayTracer {
 
         Color sampleColor = this.rayColor(scattered, depth - 1, world, lights);
         Color colorFromScatter = new Color(
-        Vector.multiply(
-            srec.attenuation.getColor().multiply(scatteringPdf),
+            srec.attenuation.getColor().multiply(scatteringPdf).multiply(
             sampleColor.getColor()
         ).divide(pdfVal));
         return new Color(
-            Vector.add(
-                colorFromEmission.getColor(),
+            colorFromEmission.getColor().add(
                 colorFromScatter.getColor()
             )
         );
@@ -276,7 +274,7 @@ public class RayTracer {
             double a = 0.5f * (unitDirection.getY() + 1);
             Vector c1 = new Vector(new double[]{ 1, 1, 1 });
             Vector c2 = new Vector(new double[]{ 0.5, 0.7, 1 });
-            Vector color = Vector.add(c1.multiply(1 - a), c2.multiply(a));
+            Vector color = c1.multiply(1 - a).add(c2.multiply(a));
             return new Color(color.getFloatValues());
         }
     }

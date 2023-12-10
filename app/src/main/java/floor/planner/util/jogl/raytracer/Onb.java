@@ -26,11 +26,9 @@ public class Onb {
     }
 
     public Vector local(double a, double b, double c) {
-        return Vector.add(
-            Vector.add(
-                this.u().multiply(a),
-                this.v().multiply(b)
-            ),
+        return this.u().multiply(a).add(
+            this.v().multiply(b)
+        ).add(
             this.w().multiply(c)
         );
     }

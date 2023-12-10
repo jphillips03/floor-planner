@@ -211,12 +211,12 @@ public class Camera {
         this.pixelDeltaV = this.viewportV.divide((double) imageHeight);
 
         // calculate location of upper left pixel
-        Vector v1 = Vector.subtract(this.getCenter(), w.multiply(focusDist));
-        Vector v2 = Vector.subtract(v1, this.viewportU.divide(2));
-        this.viewportUpperLeft = Vector.subtract(v2, this.viewportV.divide(2));
+        Vector v1 = this.getCenter().subtract(w.multiply(focusDist));
+        Vector v2 = v1.subtract(this.viewportU.divide(2));
+        this.viewportUpperLeft = v2.subtract(this.viewportV.divide(2));
 
-        Vector pixelDelta = Vector.add(this.pixelDeltaU, this.pixelDeltaV);
-        this.pixel00Loc = Vector.add(this.viewportUpperLeft, pixelDelta.multiply(0.5f));
+        Vector pixelDelta = this.pixelDeltaU.add(this.pixelDeltaV);
+        this.pixel00Loc = this.viewportUpperLeft.add(pixelDelta.multiply(0.5f));
 
         // calculate camera defocus disk basis vectors
         double defocusRadius = focusDist * Math.tan(Math.toRadians(defocusAngle / 2));

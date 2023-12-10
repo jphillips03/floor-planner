@@ -76,6 +76,10 @@ public class Vector {
         return res;
     }
 
+    public Vector add(Vector v) {
+        return this.add(v.values);
+    }
+
     public Vector subtract(double[] vals) {
         Vector res = copy(this);
         for (int i = 0; i < this.values.length; i++) {
@@ -83,6 +87,10 @@ public class Vector {
         }
 
         return res;
+    }
+
+    public Vector subtract(Vector v) {
+        return this.subtract(v.values);
     }
 
     public Vector multiply(double x) {
@@ -94,8 +102,26 @@ public class Vector {
         return res;
     }
 
+    public Vector multiply(Vector v) {
+        Vector res = copy(this);
+        for (int i = 0; i < this.values.length; i++) {
+            res.values[i] *= v.values[i];
+        }
+
+        return res;
+    }
+
     public Vector divide(double x) {
         return this.multiply(1 / x);
+    }
+
+    public Vector divide(Vector v) {
+        Vector res = copy(this);
+        for (int i = 0; i < this.values.length; i++) {
+            res.values[i] /= v.values[i];
+        }
+
+        return res;
     }
 
     public double length() {
@@ -318,9 +344,9 @@ public class Vector {
 
     public static Vector refract(Vector v, Vector n, double etaiOverEtat) {
         double cosTheta = Math.min(dot(v.multiply(-1), n), 1);
-        Vector rOutPerp = Vector.add(v, n.multiply(cosTheta)).multiply(etaiOverEtat);
+        Vector rOutPerp = v.add(n.multiply(cosTheta)).multiply(etaiOverEtat);
         Vector rOutParallel = n.multiply(- Math.sqrt(Math.abs(1 - rOutPerp.lengthSqrd())));
-        return Vector.add(rOutPerp, rOutParallel);
+        return rOutPerp.add(rOutParallel);
     }
 
     private static Vector copy(Vector v) {

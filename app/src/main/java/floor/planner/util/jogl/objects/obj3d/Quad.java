@@ -62,12 +62,7 @@ public class Quad extends Intersectable {
     private void setBoundingBox() {
         this.boundingBox = new Aabb(
             Q,
-            new Point3D(
-                Vector.add(
-                    Vector.add(Q.getVector(), u),
-                    v
-                )
-            )
+            new Point3D(Q.getVector().add(u).add(v))
         ).pad();
     }
 
@@ -92,7 +87,7 @@ public class Quad extends Intersectable {
 
         // determine hit point lies within planar shape using plane coordinates
         Vector intersection = r.at(t);
-        Vector planar = Vector.subtract(intersection, Q.getVector());
+        Vector planar = intersection.subtract(Q.getVector());
         double alpha = Vector.dot(this.w, Vector.cross(planar, v));
         double beta = Vector.dot(this.w, Vector.cross(u, planar));
 
@@ -142,17 +137,15 @@ public class Quad extends Intersectable {
     }
 
     public Vector random(Vector origin) {
-        Vector p = Vector.add(
-            Vector.add(this.Q.getVector(), this.u.multiply(Random.randomDouble())),
+        Vector p = this.Q.getVector().add(this.u.multiply(Random.randomDouble())).add(
             this.v.multiply(Random.randomDouble())
         );
-        return Vector.subtract(p, origin);
+        return p.subtract(origin);
     }
 
     public Point3D getMidPoint() {
         Point3D diagPoint = new Point3D(
-            Vector.add(
-                Vector.add(this.Q.getVector(), this.u),
+            this.Q.getVector().add(this.u).add(
                 this.v
             )
         );

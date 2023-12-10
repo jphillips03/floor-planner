@@ -29,7 +29,7 @@ public class Metal extends Material {
     public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
         ScatterRecord res = new ScatterRecord(albedo.value(rec.getU(), rec.getV(), new Point3D(rec.getP())));
         Vector reflected = Vector.reflect(Vector.unit(rIn.getDirection()), rec.getNormal());
-        Ray scattered = new Ray(rec.getP(), Vector.add(reflected, Vector.randomInUnitSphere().multiply(fuzz)));
+        Ray scattered = new Ray(rec.getP(), reflected.add(Vector.randomInUnitSphere().multiply(fuzz)));
         res.skipPdf = true;
         res.skipPdfRay = scattered;
         return res;
