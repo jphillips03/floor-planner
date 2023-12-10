@@ -62,8 +62,8 @@ public class GLEventListener3D implements GLEventListener {
 
         gl.glMatrixMode(GLMatrixFunc.GL_PROJECTION);
         gl.glLoadIdentity();
-        final float h = width / height;
-        glu.gluPerspective(50, h, 0.1, 100.0);
+        final double aspect = (double) width / (double) height;
+        glu.gluPerspective(40, aspect, 0.1, height + 1);
     }
 
     public void display(final GLAutoDrawable drawable) {
