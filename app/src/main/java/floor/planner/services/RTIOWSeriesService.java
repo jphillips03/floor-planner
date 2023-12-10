@@ -37,6 +37,7 @@ public class RTIOWSeriesService {
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
         Material green = new Lambertian(new Color(0.12, 0.45, 0.15));
         Material light = new DiffuseLight(new Color(15, 15, 15));
+        Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);
 
         // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
@@ -49,7 +50,7 @@ public class RTIOWSeriesService {
         world.add(new Quad(new Point3D(213,554,227), new Vector(130, 0, 0), new Vector(0, 0, 105), light));
 
         // box1
-        Cube box1 = new Cube(new Point3D(265, 0, 295), new Point3D(430, 330, 460), white);
+        Cube box1 = new Cube(new Point3D(265, 0, 295), new Point3D(430, 330, 460), aluminum);
         box1.setVertices(Matrix.rotateY(box1.getVertices(), 18));
         box1.setVertices(Matrix.translateX(box1.getVertices(), -65));
         box1.setVertices(Matrix.translateZ(box1.getVertices(), 65));
