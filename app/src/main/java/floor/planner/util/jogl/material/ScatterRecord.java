@@ -6,6 +6,7 @@ import floor.planner.util.math.Ray;
 
 public class ScatterRecord {
     public Color attenuation;
+    public Ray scatterRay;
     public Pdf pdf;
     public boolean skipPdf;
     public Ray skipPdfRay;
@@ -20,6 +21,11 @@ public class ScatterRecord {
         this.skipPdf = false;
         // skipPdfRay will be null...
     }
+
+    public ScatterRecord(Color att, Pdf pdf, Ray scatterRay) {
+        this(att, pdf);
+        this.scatterRay = scatterRay;
+    } 
 
     public ScatterRecord(Color att, Pdf pdf, boolean skip, Ray r) {
         this(att, pdf);

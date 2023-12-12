@@ -247,18 +247,39 @@ public class RayTracer {
             ));
         }
 
-        IntersectablePdf lightPdf = new IntersectablePdf(lights, new Point3D(rec.getP()));
-        MixturePdf mixedPdf = new MixturePdf(lightPdf, srec.pdf);
-        scattered = new Ray(rec.getP(), mixedPdf.generate(), r.getTime());
-        pdfVal = mixedPdf.value(scattered.getDirection());
+        Color colorFromScatter;
+        // not all scenes use lights
+        if (this.lights != null) {
+            // calculate color including lights
+            IntersectablePdf lightPdf = new IntersectablePdf(lights, new Point3D(rec.getP()));
+            MixturePdf mixedPdf = new MixturePdf(lightPdf, srec.pdf);
+            scattered = new Ray(rec.getP(), mixedPdf.generate(), r.getTime());
+            pdfVal = mixedPdf.value(scattered.getDirection());
 
-        double scatteringPdf = rec.mat.scatteringPdf(r, rec, scattered);
+            double scatteringPdf = rec.mat.scatteringPdf(r, rec, scattered);
 
-        Color sampleColor = this.rayColor(scattered, depth - 1, world, lights);
-        Color colorFromScatter = new Color(
-            srec.attenuation.getColor().multiply(scatteringPdf).multiply(
-            sampleColor.getColor()
-        ).divide(pdfVal));
+            Color sampleColor = this.rayColor(scattered, depth - 1, world, lights);
+            colorFromScatter = new Color(
+                srec.attenuation.getColor().multiply(scatteringPdf).multiply(
+                sampleColor.getColor()
+            ).divide(pdfVal));
+        } else {
+            // calculate color without lights; scatter is either defined by scatter
+            // ray or using existing skipPdfRay (lambertian is only material that
+            // currently calculates separate scatterRay, all others just use the
+            // skipPdfRay which seems to be same as what scatterRay would have been
+            // from ScatterAttentuation...)
+            Ray scatter = srec.scatterRay != null ? srec.scatterRay : srec.skipPdfRay;
+
+            colorFromScatter = new Color(
+                Vector.multiply(
+                    srec.attenuation.getColor(),
+                    rayColor(scatter, depth - 1, world, null)
+                        .getColor()
+                )
+            );
+        }
+
         return new Color(
             colorFromEmission.getColor().add(
                 colorFromScatter.getColor()

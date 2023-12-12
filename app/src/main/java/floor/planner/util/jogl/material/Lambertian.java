@@ -27,9 +27,16 @@ public class Lambertian extends Material {
     }
 
     public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
+        // calculate scattered ray for scenes without lighting... 
+        Onb uvw = new Onb();
+        uvw.buildFromW(rec.getNormal());
+        Vector scatterDirection = uvw.local(Vector.randomeCosineDirection());
+        Ray scattered = new Ray(rec.getP(), Vector.unit(scatterDirection), rIn.getTime());
+
         return new ScatterRecord(
             albedo.value(rec.getU(), rec.getV(), new Point3D(rec.getP())),
-            new CosPdf(rec.getNormal())
+            new CosPdf(rec.getNormal()),
+            scattered
         );
     }
 
