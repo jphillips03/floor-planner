@@ -235,20 +235,20 @@ public class Cube extends DrawableElement3D {
     // added to world as individual object; otherwise the ray traced image
     // results in some faces of cube not rendering correctly...
     // @Override
-    // public boolean intersect(
-    //     Ray r,
-    //     Interval rayT,
-    //     IntersectRecord rec
-    // ) {
-    //     // there is an intersect if any of the quads that make up the cube are
-    //     // intersected
-    //     for (Quad quad : this.quads) {
-    //         if (quad.intersect(r, rayT, rec)) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
+    public boolean intersect(
+        Ray r,
+        Interval rayT,
+        IntersectRecord rec
+    ) {
+        // // there is an intersect if any of the quads that make up the cube are
+        // // intersected
+        // for (Quad quad : this.quads) {
+        //     if (quad.intersect(r, rayT, rec)) {
+        //         return true;
+        //     }
+        // }
+        return false;
+    }
 
     @Override
     public Aabb boundingBox() {
