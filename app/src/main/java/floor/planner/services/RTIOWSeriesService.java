@@ -54,18 +54,16 @@ public class RTIOWSeriesService {
         box1.setVertices(Matrix.rotateY(box1.getVertices(), 18));
         box1.setVertices(Matrix.translateX(box1.getVertices(), -65));
         box1.setVertices(Matrix.translateZ(box1.getVertices(), 65));
-        box1.initQuadsYUp();
-        Arrays.sort(box1.getQuads(), comparator);
-        world.add(box1);
+        box1.initQuads();
+        world.addAll(box1.getIntersectableList());
 
         // box 2
         Cube box2 = new Cube(new Point3D(130, 0, 65), new Point3D(295, 165, 230), white);
         box2.setVertices(Matrix.rotateY(box2.getVertices(), -18));
         box2.setVertices(Matrix.translateX(box2.getVertices(), 45));
         box2.setVertices(Matrix.translateZ(box2.getVertices(), -85));
-        box2.initQuadsYUp();
-        Arrays.sort(box2.getQuads(), comparator);
-        world.add(box2);
+        box2.initQuads();
+        world.addAll(box2.getIntersectableList());
 
         return world;
     }
@@ -74,7 +72,7 @@ public class RTIOWSeriesService {
         IntersectableList world = new IntersectableList();
         Cube cube = new Cube(Cube.DEFAULT_VERTICES);
         cube.initQuads();
-        world.add(cube);
+        world.addAll(cube.getIntersectableList());
         return world;
     }
 
