@@ -21,6 +21,10 @@ public class Vector {
         this.values = values;        
     }
 
+    public Vector(float[] vals) {
+        this(vals[0], vals[1], vals[2]);
+    }
+
     /**
      * Creates and returns a new Vector based on given start and end points. A
      * vector is found between 2 points by subtracting the start point from the

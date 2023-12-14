@@ -66,6 +66,13 @@ public class Quad extends Intersectable {
         ).pad();
     }
 
+    public Vector getNormal() {
+        return this.normal;
+    }
+    public void setNormal(Vector n) {
+        this.normal = n;
+    }
+
     @Override
     public boolean intersect(
         Ray r,
