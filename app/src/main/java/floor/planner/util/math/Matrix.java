@@ -121,12 +121,12 @@ public class Matrix {
             } else {
                 // rotate x or z (formulas are same for both; just different coordinates...)
                 int coord3;
-                if (coord1 == 1) {
+                if (coord1 == 0) {
                     // we are rotating z
-                    coord3 = 0;
+                    coord3 = 2;
                 } else {
                     // we are rotating x
-                    coord3 = 2;
+                    coord3 = 0;
                 }
 
                 copy[i][coord1] = (float) (cosTheta * matrix[i][coord1] - sinTheta * matrix[i][coord2]);
