@@ -201,7 +201,7 @@ public class RayTracer {
 
         Vector rayOrigin = this.camera.getDefocusAngle() <= 0 ? this.camera.getCenter() : defocusDiskSample();
         Vector rayDirection = pixelSample.subtract(rayOrigin);
-        return new Ray(rayOrigin, rayDirection);
+        return new Ray(rayOrigin, rayDirection, Random.randomDouble());
     }
 
     private Vector defocusDiskSample() {
