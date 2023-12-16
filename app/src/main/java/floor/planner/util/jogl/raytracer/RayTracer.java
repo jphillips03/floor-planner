@@ -123,6 +123,16 @@ public class RayTracer {
                 this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
                 this.background = new Color(0, 0, 0); 
                 break;
+            case CORNELL_BOX_METAL:
+                this.camera.setVFov(40);
+                this.camera.setLookFrom(278, 278, -800);
+                this.camera.setLookAt(278, 278, 0);
+                this.camera.setVUp(0, 1, 0);
+                this.camera.setDefocusAngle(0);
+                this.world = service.cornellBoxMetal();
+                this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+                this.background = new Color(0, 0, 0); 
+                break;
             case CUBE:
                 this.world = service.cube();
                 this.camera.setVFov(40);

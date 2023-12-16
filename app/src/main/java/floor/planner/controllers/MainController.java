@@ -204,11 +204,15 @@ public class MainController implements Initializable {
         MenuItem menuItem = (MenuItem) event.getSource();
         String data = (String) menuItem.getUserData();
         RayTraceTaskType type = RayTraceTaskType.valueOf(data);
+        List<RayTraceTaskType> cornellBoxes = Arrays.asList(
+            RayTraceTaskType.CORNELL_BOX,
+            RayTraceTaskType.CORNELL_BOX_METAL
+        );
 
-        int height = type.equals(RayTraceTaskType.CORNELL_BOX) ? 
+        int height = cornellBoxes.contains(type) ? 
             600 : type.equals(RayTraceTaskType.THREE_D) ?
             450 : 225; // this.glWindow.getHeight()
-        int width = type.equals(RayTraceTaskType.CORNELL_BOX) ?
+        int width = cornellBoxes.contains(type) ?
             600 : type.equals(RayTraceTaskType.THREE_D) ?
             800 : 400; // this.glWindow.getWidth()
         int samplesPerPixel = 10;

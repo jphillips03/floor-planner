@@ -3,6 +3,7 @@ package floor.planner.services;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.checkerframework.checker.units.qual.m;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,13 +32,90 @@ public class RTIOWSeriesService {
     private static final Logger logger = LoggerFactory.getLogger(RTIOWSeriesService.class);
     
     public IntersectableList cornellBox() {
+        IntersectableList world = this.emptyCornellBox();
+        Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
+
+        // box 1
+        world.addAll(
+            this.getCube1(
+                new Point3D(0, 0, 0),
+                new Point3D(165, 330, 165),
+                15, 
+                265,
+                295,
+                white
+            ).getIntersectableList()
+        );
+
+        // box 2
+        world.addAll(
+            this.getCube1(
+                new Point3D(0, 0, 0),
+                new Point3D(165, 165, 165),
+                -18, 
+                130,
+                65,
+                white
+            ).getIntersectableList()
+        );
+
+        return world;
+    }
+
+    public IntersectableList cornellBoxMetal() {
+        IntersectableList world = this.emptyCornellBox();
+        Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);
+        Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
+
+        // box 1
+        world.addAll(
+            this.getCube1(
+                new Point3D(0, 0, 0),
+                new Point3D(165, 330, 165),
+                15, 
+                265,
+                295,
+                aluminum
+            ).getIntersectableList()
+        );
+
+        // box 2
+        world.addAll(
+            this.getCube1(
+                new Point3D(0, 0, 0),
+                new Point3D(165, 165, 165),
+                -18, 
+                130,
+                65,
+                white
+            ).getIntersectableList()
+        );
+
+        return world;
+    }
+
+    private Cube getCube1(
+        Point3D p1,
+        Point3D p2,
+        float rotateY,
+        float translateX,
+        float translateZ,
+        Material m
+    ) {
+        Cube box = new Cube(p1, p2, m);
+        box.setVertices(Matrix.rotateY(box.getVertices(), rotateY));
+        box.setVertices(Matrix.translateX(box.getVertices(), translateX));
+        box.setVertices(Matrix.translateZ(box.getVertices(), translateZ));
+        box.initQuads();
+        return box;
+    }
+
+    private IntersectableList emptyCornellBox() {
         IntersectableList world = new IntersectableList();
         Material red = new Lambertian(new Color(0.65, 0.05, 0.05));
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
         Material green = new Lambertian(new Color(0.12, 0.45, 0.15));
         Material light = new DiffuseLight(new Color(15, 15, 15));
-        Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);
-        Material glass = new Dielectric(1.5);
 
         // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
@@ -48,23 +126,6 @@ public class RTIOWSeriesService {
 
         // light
         world.add(new Quad(new Point3D(213,554,227), new Vector(130, 0, 0), new Vector(0, 0, 105), light));
-
-        // box1
-        Cube box1 = new Cube(new Point3D(0, 0, 0), new Point3D(165, 330, 165), aluminum);
-        box1.setVertices(Matrix.rotateY(box1.getVertices(), 15));
-        box1.setVertices(Matrix.translateX(box1.getVertices(), 265));
-        box1.setVertices(Matrix.translateZ(box1.getVertices(), 295));
-        box1.initQuads();
-        world.addAll(box1.getIntersectableList());
-
-        // box 2
-        Cube box2 = new Cube(new Point3D(0, 0, 0), new Point3D(165, 165, 165), white);
-        box2.setVertices(Matrix.rotateY(box2.getVertices(), -18));
-        box2.setVertices(Matrix.translateX(box2.getVertices(), 130));
-        box2.setVertices(Matrix.translateZ(box2.getVertices(), 65));
-        box2.initQuads();
-        world.addAll(box2.getIntersectableList());
-        // world.add(new Sphere(new Vector(190, 90, 190), 90, glass));
 
         return world;
     }
