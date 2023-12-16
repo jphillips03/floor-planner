@@ -343,7 +343,7 @@ public class Vector {
     }
 
     public static Vector reflect(Vector v, Vector n) {
-        return subtract(v, n.multiply(2 * dot(v, n)));
+        return v.subtract(n.multiply(2 * dot(v, n)));
     }
 
     public static Vector refract(Vector v, Vector n, double etaiOverEtat) {
