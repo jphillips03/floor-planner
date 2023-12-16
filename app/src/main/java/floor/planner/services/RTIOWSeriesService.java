@@ -30,14 +30,14 @@ import floor.planner.util.math.Vector;
 public class RTIOWSeriesService {
     private static final Logger logger = LoggerFactory.getLogger(RTIOWSeriesService.class);
     
-    public IntersectableList cornellBox(Camera camera) {
-        QuadComparator comparator = new QuadComparator(camera);
+    public IntersectableList cornellBox() {
         IntersectableList world = new IntersectableList();
         Material red = new Lambertian(new Color(0.65, 0.05, 0.05));
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
         Material green = new Lambertian(new Color(0.12, 0.45, 0.15));
         Material light = new DiffuseLight(new Color(15, 15, 15));
         Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);
+        Material glass = new Dielectric(1.5);
 
         // create the "background" box sides
         world.add(new Quad(new Point3D(555, 0, 0), new Vector(0, 555, 0), new Vector(0, 0, 555), green));
@@ -64,6 +64,7 @@ public class RTIOWSeriesService {
         box2.setVertices(Matrix.translateZ(box2.getVertices(), 65));
         box2.initQuads();
         world.addAll(box2.getIntersectableList());
+        // world.add(new Sphere(new Vector(190, 90, 190), 90, glass));
 
         return world;
     }
