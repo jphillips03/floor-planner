@@ -14,6 +14,7 @@ public enum ObjectType {
     COLUMN("x"),
     POLE("."),
     HOLE("o"),
+    SPHERE("s"),
     EMPTY_SPACE(" ");
 
     public String value;

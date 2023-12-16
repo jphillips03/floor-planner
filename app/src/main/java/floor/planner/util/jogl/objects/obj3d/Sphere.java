@@ -3,9 +3,13 @@ package floor.planner.util.jogl.objects.obj3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
+import com.jogamp.opengl.util.gl2.GLUT;
 
+import floor.planner.util.jogl.material.Lambertian;
 import floor.planner.util.jogl.material.Material;
+import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
 import floor.planner.util.math.Interval;
@@ -52,12 +56,61 @@ public class Sphere extends DrawableElement3D {
         );
     }
 
+    public Sphere(double x, double y, double z, double radius) {
+        this.radius = radius;
+        // move x, y coordinates to middle of tile (i.e. + 0.5)
+        this.center = new Vector(new double[]{ x + 0.5, y + 0.5, z });
+        this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
+        this.color = new Color(new Vector(this.materialColor));
+        this.mat = new Lambertian(new Color(this.materialColor));
+
+        Vector rvec = new Vector(radius, radius, radius);
+        this.boundingBox = new Aabb(
+            new Point3D(this.center.subtract(rvec)),
+            new Point3D(this.center.add(rvec))
+        );
+    }
+
     public Vector getCenter() {
         return this.center;
     }
 
     @Override
-    public void draw(GL2 gl) {}
+    public void draw(GL2 gl) {
+        // below code based on following https://stackoverflow.com/a/7687413
+        int lats = 50;
+        int longs = 50;
+        gl.glColor3f(this.color.getRed(), this.color.getGreen(), this.color.getBlue());
+        for (int i = 0; i <= lats; i++) {
+            double lat0 = Math.PI * (-0.5 + (double) (i - 1) / lats);
+            double z0 = Math.sin(lat0);
+            double zr0 = Math.cos(lat0);
+
+            double lat1 = Math.PI * (-0.5 + (double) i / lats);
+            double z1 = Math.sin(lat1);
+            double zr1 = Math.cos(lat1);
+
+            gl.glBegin(GL2.GL_QUAD_STRIP);
+            for (int j = 0; j <= longs; j++) {
+                double lng = 2 * Math.PI * (double) (j - 1) / longs;
+                double x = Math.cos(lng);
+                double y = Math.sin(lng);
+
+                gl.glNormal3d(x * zr0, y * zr0, z0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
+                gl.glVertex3d((radius * x * zr0) + this.center.getX(), (radius * y * zr0) + this.center.getY(), (radius * z0) + this.center.getZ());
+
+                gl.glNormal3d(x * zr1, y * zr1, z1);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
+                gl.glVertex3d((radius * x * zr1) + this.center.getX(), (radius * y * zr1) + this.center.getY(), (radius * z1) + this.center.getZ());
+            }
+            gl.glEnd();
+        }
+    }
 
     @Override
     public boolean intersect(

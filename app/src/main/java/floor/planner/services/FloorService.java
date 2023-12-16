@@ -16,6 +16,7 @@ import floor.planner.util.jogl.objects.obj3d.Cube;
 import floor.planner.util.jogl.objects.obj3d.Cylinder;
 import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
 import floor.planner.util.jogl.objects.obj3d.FloorTile;
+import floor.planner.util.jogl.objects.obj3d.Sphere;
 import floor.planner.util.jogl.objects.obj3d.Stairs3D;
 import floor.planner.util.jogl.objects.obj3d.Wall3D;
 import floor.planner.util.jogl.objects.obj3d.Window3D;
@@ -311,6 +312,18 @@ public class FloorService {
             case HOLE:
                 elements2D = new DrawableElement2D[]{};
                 elements3D = new DrawableElement3D[]{};
+                break;
+            case SPHERE:
+                // TODO stack circles and vary color like steps to give
+                // appearance of depth in 2D; so spheres don't just look
+                // like larger poles...
+                elements2D = new DrawableElement2D[]{
+                    new Pole(new Point2D(j, r), null, 0.25)
+                };
+                elements3D = new DrawableElement3D[]{
+                    new FloorTile(Matrix.translateX(vertices, j)),
+                    new Sphere(j, r, 0.5, 0.25)
+                };
                 break;
             case EMPTY_SPACE:
                 elements2D = new DrawableElement2D[]{};

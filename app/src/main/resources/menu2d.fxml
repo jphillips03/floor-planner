@@ -34,6 +34,7 @@
                 <MenuItem text="Column ('x')" onAction="#onMenuItemClick" userData="x"/>
                 <MenuItem text="Pole ('.')" onAction="#onMenuItemClick" userData="."/>
                 <MenuItem text="Hole ('o')" onAction="#onMenuItemClick" userData="o"/>
+                <MenuItem text="Sphere ('s')" onAction="#onMenuItemClick" userData="s"/>
                 <SeparatorMenuItem />
                 <Menu text="Material Properties">
                     <items/>
