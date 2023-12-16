@@ -16,7 +16,7 @@ public class Dielectric extends Material {
 
     public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
         Color attenuation = new Color(1f, 1f, 1f);
-        double refractionRatio = rec.isFrontFace() ? (1 / this.ir) : this.ir;
+        double refractionRatio = rec.isFrontFace() ? (1.0 / this.ir) : this.ir;
 
         Vector unitDirection = Vector.unit(rIn.getDirection());
         double cosTheta = Math.min(Vector.dot(unitDirection.multiply(-1), rec.getNormal()), 1);

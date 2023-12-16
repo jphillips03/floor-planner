@@ -95,7 +95,7 @@ public class IntersectableList extends Intersectable {
 
     @Override
     public double pdfValue(Point3D o, Vector v) {
-        double weight = 1 / this.elements.size();
+        double weight = 1.0 / this.elements.size();
         double sum = 0;
         for (Intersectable object : this.elements) {
             if (object instanceof Cube) {
