@@ -90,6 +90,21 @@ public class Color {
         double green = this.green;
         double blue = this.blue;
 
+        // checks for NaN or infinite components, added in section 12.6 from
+        // book 3 (so far nothing; maybe something in upstream code not right...)
+        if (Double.isNaN(red) || Double.isInfinite(red)) {
+            red = 0;
+            logger.warn("Infinite or NaN red");
+        }
+        if (Double.isNaN(blue) || Double.isInfinite(blue)) {
+            blue = 0;
+            logger.warn("Infinite or NaN blue");
+        }
+        if (Double.isNaN(green) || Double.isInfinite(green)) {
+            green = 0;
+            logger.warn("Infinite or NaN green");
+        }
+
         // Divide the color by the number of samples
         double scale = 1.0 / (double) samplesPerPixel;
         red *= scale;
