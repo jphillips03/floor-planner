@@ -50,18 +50,18 @@ public class RTIOWSeriesService {
         world.add(new Quad(new Point3D(213,554,227), new Vector(130, 0, 0), new Vector(0, 0, 105), light));
 
         // box1
-        Cube box1 = new Cube(new Point3D(265, 0, 295), new Point3D(430, 330, 460), aluminum);
-        box1.setVertices(Matrix.rotateY(box1.getVertices(), 18));
-        box1.setVertices(Matrix.translateX(box1.getVertices(), -65));
-        box1.setVertices(Matrix.translateZ(box1.getVertices(), 65));
+        Cube box1 = new Cube(new Point3D(0, 0, 0), new Point3D(165, 330, 165), aluminum);
+        box1.setVertices(Matrix.rotateY(box1.getVertices(), 15));
+        box1.setVertices(Matrix.translateX(box1.getVertices(), 265));
+        box1.setVertices(Matrix.translateZ(box1.getVertices(), 295));
         box1.initQuads();
         world.addAll(box1.getIntersectableList());
 
         // box 2
-        Cube box2 = new Cube(new Point3D(130, 0, 65), new Point3D(295, 165, 230), white);
+        Cube box2 = new Cube(new Point3D(0, 0, 0), new Point3D(165, 165, 165), white);
         box2.setVertices(Matrix.rotateY(box2.getVertices(), -18));
-        box2.setVertices(Matrix.translateX(box2.getVertices(), 45));
-        box2.setVertices(Matrix.translateZ(box2.getVertices(), -85));
+        box2.setVertices(Matrix.translateX(box2.getVertices(), 130));
+        box2.setVertices(Matrix.translateZ(box2.getVertices(), 65));
         box2.initQuads();
         world.addAll(box2.getIntersectableList());
 
