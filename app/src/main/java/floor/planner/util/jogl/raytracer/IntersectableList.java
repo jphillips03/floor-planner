@@ -98,13 +98,7 @@ public class IntersectableList extends Intersectable {
         double weight = 1.0 / this.elements.size();
         double sum = 0;
         for (Intersectable object : this.elements) {
-            if (object instanceof Cube) {
-                logger.info("PDF of Cube");
-                Cube c = (Cube) object;
-                sum += weight * c.getIntersectableList().pdfValue(o, v);
-            } else {
-                sum += weight * object.pdfValue(o, v);
-            }
+            sum += weight * object.pdfValue(o, v);
         }
 
         return sum;
