@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Vector;
 import floor.planner.util.objects.obj2d.ClippingPlane;
-import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.intersectable.IntersectableList;
 
 public class FloorPlan {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlan.class);

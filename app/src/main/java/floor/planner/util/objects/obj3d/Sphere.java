@@ -12,8 +12,8 @@ import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.raytracer.Aabb;
-import floor.planner.util.raytracer.IntersectRecord;
-import floor.planner.util.raytracer.Onb;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.Onb;
 import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.material.Metal;
 

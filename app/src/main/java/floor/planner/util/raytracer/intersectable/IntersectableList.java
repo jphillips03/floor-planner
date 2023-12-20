@@ -1,4 +1,4 @@
-package floor.planner.util.raytracer;
+package floor.planner.util.raytracer.intersectable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
+import floor.planner.util.raytracer.Aabb;
 
 public class IntersectableList extends Intersectable {
     private static final Logger logger = LoggerFactory.getLogger(IntersectableList.class);

@@ -4,7 +4,7 @@ import floor.planner.util.math.Color;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.raytracer.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
 
 public class Dielectric extends Material {
     /** Index of refraction. */

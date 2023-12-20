@@ -1,4 +1,4 @@
-package floor.planner.util.raytracer;
+package floor.planner.util.raytracer.intersectable;
 
 import floor.planner.util.math.Vector;
 

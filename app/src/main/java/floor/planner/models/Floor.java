@@ -11,7 +11,7 @@ import floor.planner.util.math.Vector;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
 import floor.planner.util.objects.obj3d.Cube;
 import floor.planner.util.objects.obj3d.DrawableElement3D;
-import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.intersectable.IntersectableList;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);

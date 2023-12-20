@@ -10,8 +10,8 @@ import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.raytracer.Aabb;
-import floor.planner.util.raytracer.IntersectRecord;
-import floor.planner.util.raytracer.Intersectable;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.Intersectable;
 import floor.planner.util.raytracer.material.Material;
 
 public class Quad extends Intersectable {

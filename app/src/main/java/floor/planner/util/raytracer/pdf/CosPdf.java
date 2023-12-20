@@ -2,7 +2,7 @@ package floor.planner.util.raytracer.pdf;
 
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Vector;
-import floor.planner.util.raytracer.Onb;
+import floor.planner.util.raytracer.intersectable.Onb;
 
 public class CosPdf extends Pdf{
     private Onb uvw;

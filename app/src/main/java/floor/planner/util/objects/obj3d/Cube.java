@@ -9,8 +9,8 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.raytracer.Aabb;
-import floor.planner.util.raytracer.IntersectRecord;
-import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.IntersectableList;
 import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
 

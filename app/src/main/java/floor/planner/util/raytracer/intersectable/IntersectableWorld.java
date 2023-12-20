@@ -1,4 +1,4 @@
-package floor.planner.util.raytracer;
+package floor.planner.util.raytracer.intersectable;
 
 public class IntersectableWorld {
     private IntersectableList elements;

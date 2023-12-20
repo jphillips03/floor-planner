@@ -3,7 +3,7 @@ package floor.planner.util.raytracer.material;
 import floor.planner.util.math.Color;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
-import floor.planner.util.raytracer.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
 
 public abstract class Material {
     public abstract ScatterRecord scatter(Ray rIn, IntersectRecord rec);

@@ -1,4 +1,4 @@
-package floor.planner.util.raytracer;
+package floor.planner.util.raytracer.intersectable;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,6 +8,7 @@ import java.util.List;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
+import floor.planner.util.raytracer.Aabb;
 
 public class BvhNode extends Intersectable {
     private Intersectable left;

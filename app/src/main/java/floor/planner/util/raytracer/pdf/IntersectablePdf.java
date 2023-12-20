@@ -2,7 +2,7 @@ package floor.planner.util.raytracer.pdf;
 
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Vector;
-import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.intersectable.IntersectableList;
 
 public class IntersectablePdf extends Pdf {
     private IntersectableList objects;

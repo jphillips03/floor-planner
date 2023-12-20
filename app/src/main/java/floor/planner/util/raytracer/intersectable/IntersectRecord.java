@@ -1,4 +1,4 @@
-package floor.planner.util.raytracer;
+package floor.planner.util.raytracer.intersectable;
 
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
@@ -10,8 +10,9 @@ public class IntersectRecord {
     private double t;
     private double u; 
     private double v;
-    boolean frontFace;
-    Material mat;
+
+    public boolean frontFace;
+    public Material mat;
     
     public IntersectRecord() {}
 

@@ -5,7 +5,7 @@ import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.raytracer.IntersectRecord;
+import floor.planner.util.raytracer.intersectable.IntersectRecord;
 import floor.planner.util.raytracer.pdf.SpherePdf;
 import floor.planner.util.raytracer.texture.SolidColor;
 import floor.planner.util.raytracer.texture.Texture;

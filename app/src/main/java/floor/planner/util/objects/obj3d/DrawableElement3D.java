@@ -10,7 +10,7 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Vector;
 import floor.planner.util.objects.DrawableElement;
 import floor.planner.util.raytracer.Aabb;
-import floor.planner.util.raytracer.Intersectable;
+import floor.planner.util.raytracer.intersectable.Intersectable;
 
 public abstract class DrawableElement3D extends Intersectable implements DrawableElement {
     public Aabb boundingBox;
