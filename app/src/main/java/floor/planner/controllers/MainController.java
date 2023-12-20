@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -53,6 +54,9 @@ public class MainController implements Initializable {
     private Menu2DController menu2DController;
 
     @FXML
+    Button center3D;
+
+    @FXML
     VBox mainBox;
 
     @FXML
@@ -69,10 +73,24 @@ public class MainController implements Initializable {
     @FXML
     MenuBar menuBar;
 
+    @FXML
+    MenuItem rayTraceFloorPlanMenuItem;
+
+    @FXML
+    MenuItem saveAsMenuItem;
+
+    @FXML
+    MenuItem saveMenuItem;
+
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.dimensionMenu.setDisable(true);
         this.floorMenu.setDisable(true);
+        this.center3D.setDisable(true);
+        this.rayTraceFloorPlanMenuItem.setDisable(true);
+        this.saveAsMenuItem.setDisable(true);
+        this.saveMenuItem.setDisable(true);
 
         // wait until initialization is complete to run the following otherwise
         // scene will be null
@@ -91,6 +109,11 @@ public class MainController implements Initializable {
     private void initializeMenus(int floors) {
         this.dimensionMenu.setDisable(false);
         this.initializeFloorsMenu(floors);
+
+        this.center3D.setDisable(false);
+        this.rayTraceFloorPlanMenuItem.setDisable(false);
+        this.saveAsMenuItem.setDisable(false);
+        this.saveMenuItem.setDisable(false);
     }
 
     /**

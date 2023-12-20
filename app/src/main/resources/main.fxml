@@ -26,8 +26,8 @@
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onMenuNewFile" text="New File" />
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Open File" />
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save As..." />
-                        <MenuItem mnemonicParsing="false" onAction="#onMenuSave" text="Save" />
+                        <MenuItem fx:id="saveAsMenuItem" mnemonicParsing="false" onAction="#onMenuOpenFile" text="Save As..." />
+                        <MenuItem fx:id="saveMenuItem" mnemonicParsing="false" onAction="#onMenuSave" text="Save" />
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Exit" />
                     </items>
                 </Menu>
@@ -40,7 +40,7 @@
                 <Menu fx:id="floorMenu" mnemonicParsing="false" text="Floor"></Menu>
                 <Menu fx:id="rayTraceMenu" mnemonicParsing="false" text="Ray Trace">
                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="THREE_D" text="3D Rendering" />
+                        <MenuItem fx:id="rayTraceFloorPlanMenuItem" mnemonicParsing="false" onAction="#onRayTrace" userData="THREE_D" text="3D Rendering" />
                         <Menu fx:id="rtiowSeriesMenu" mnemonicParsing="false" text="RTIOW Series Scenes">
                             <items>
                                 <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CUBE" text="Cube" />
