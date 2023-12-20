@@ -11,14 +11,12 @@ import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.objects.obj3d.Cube;
 
 public class IntersectableList extends Intersectable {
     private static final Logger logger = LoggerFactory.getLogger(IntersectableList.class);
 
     private Aabb boundingBox;
     private List<Intersectable> elements;
-    private RayTraceTask task;
 
     public IntersectableList() {
         this.elements = new ArrayList<Intersectable>();
@@ -42,10 +40,6 @@ public class IntersectableList extends Intersectable {
 
     public List<Intersectable> getElements() {
         return this.elements;
-    }
-
-    public void setTask(RayTraceTask task) {
-        this.task = task;
     }
 
     public void add(Intersectable element) {

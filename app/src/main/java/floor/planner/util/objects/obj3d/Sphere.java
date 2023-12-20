@@ -3,21 +3,17 @@ package floor.planner.util.objects.obj3d;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.util.gl2.GLUT;
-
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.objects.Color;
 import floor.planner.util.raytracer.Aabb;
 import floor.planner.util.raytracer.IntersectRecord;
 import floor.planner.util.raytracer.Onb;
-import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.material.Metal;
 

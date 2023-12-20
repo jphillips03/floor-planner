@@ -17,13 +17,10 @@ import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.objects.obj3d.Quad;
-import floor.planner.util.objects.obj3d.Sphere;
 import floor.planner.util.raytracer.material.DiffuseLight;
 import floor.planner.util.raytracer.material.Material;
-import floor.planner.util.raytracer.material.ScatterAttenuation;
 import floor.planner.util.raytracer.material.ScatterRecord;
 import floor.planner.util.raytracer.material.SimpleMaterial;
-import floor.planner.util.raytracer.pdf.CosPdf;
 import floor.planner.util.raytracer.pdf.IntersectablePdf;
 import floor.planner.util.raytracer.pdf.MixturePdf;
 
@@ -176,8 +173,6 @@ public class RayTracer {
     }
 
     public void render(RayTraceTask task) {
-        this.world.setTask(task); // so we can track progress in intersect()...
-
         // generate a matrix of colors for the image; currently just a
         // placeholder for the actual ray trace algorithm...
         Color[][] image = new Color[this.imageHeight][this.imageWidth];

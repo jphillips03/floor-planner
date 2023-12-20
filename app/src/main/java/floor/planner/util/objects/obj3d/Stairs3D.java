@@ -11,7 +11,6 @@ import com.jogamp.opengl.GL2;
 import floor.planner.constants.Orientation;
 import floor.planner.util.math.Color;
 import floor.planner.util.math.Matrix;
-import floor.planner.util.math.Vector;
 import floor.planner.util.raytracer.IntersectableList;
 import floor.planner.util.raytracer.material.Lambertian;
 

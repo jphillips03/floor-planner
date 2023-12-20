@@ -1,22 +1,17 @@
 package floor.planner.services;
 
-import java.util.Comparator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import floor.planner.models.Camera;
 import floor.planner.util.math.Color;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
-import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.objects.obj3d.Cube;
 import floor.planner.util.objects.obj3d.Quad;
 import floor.planner.util.objects.obj3d.Sphere;
 import floor.planner.util.raytracer.BvhNode;
-import floor.planner.util.raytracer.IntersectRecord;
 import floor.planner.util.raytracer.IntersectableList;
 import floor.planner.util.raytracer.IntersectableWorld;
 import floor.planner.util.raytracer.material.Dielectric;
@@ -24,7 +19,6 @@ import floor.planner.util.raytracer.material.DiffuseLight;
 import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.material.Metal;
-import floor.planner.util.raytracer.material.ScatterRecord;
 import floor.planner.util.raytracer.material.SimpleMaterial;
 
 /**
@@ -265,30 +259,5 @@ public class RTIOWSeriesService {
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
         return new IntersectableWorld(world);
-    }
-
-    /**
-     * The QuadComparator defines a convenience compare method for 2 quads,
-     * comparing them in distance from the defined camera. This is needed for
-     * the cubes rendered in this series, because as defined the quads do not
-     * render correctly when included in ray traced image. This is true even
-     * though the quads for the cube are defined in the same order they are in
-     * the series. Without this the cubes can appear inside out when viewed at
-     * different angles. Perhaps there is an issue with how vertices and quads
-     * are defined, but this seems to at least get the desired image we are
-     * going for...
-     */
-    private class QuadComparator implements Comparator<Quad> {
-        private Camera camera;
-    
-        public QuadComparator(Camera camera) {
-            this.camera = camera;
-        }
-
-        public int compare(Quad q1, Quad q2) {
-            double d1 = Point3D.distanceBetween(q1.getMidPoint(), new Point3D(camera.getCenter()));
-            double d2 = Point3D.distanceBetween(q2.getMidPoint(), new Point3D(camera.getCenter()));
-            return Double.compare(d1, d2);
-        }
     }
 }
