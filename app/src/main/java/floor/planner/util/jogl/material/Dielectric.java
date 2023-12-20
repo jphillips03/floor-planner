@@ -48,7 +48,7 @@ public class Dielectric extends Material {
      * @return
      */
     private static double reflectance(double cos, double refIdx) {
-        double r0 = (1 - refIdx) / (1 + refIdx);
+        double r0 = (1.0 - refIdx) / (1.0 + refIdx);
         r0 = r0 * r0;
         return r0 * (1 - r0) * Math.pow((1 - cos), 5);
     }
