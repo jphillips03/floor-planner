@@ -3,6 +3,7 @@ package floor.planner.constants;
 public enum RayTraceTaskType {
     THREE_D,
     CORNELL_BOX,
+    CORNELL_BOX_GLASS,
     CORNELL_BOX_METAL,
     CUBE,
     QUADS,

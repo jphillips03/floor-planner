@@ -206,6 +206,7 @@ public class MainController implements Initializable {
         RayTraceTaskType type = RayTraceTaskType.valueOf(data);
         List<RayTraceTaskType> cornellBoxes = Arrays.asList(
             RayTraceTaskType.CORNELL_BOX,
+            RayTraceTaskType.CORNELL_BOX_GLASS,
             RayTraceTaskType.CORNELL_BOX_METAL
         );
 

@@ -12,9 +12,11 @@ import floor.planner.util.jogl.material.Material;
 import floor.planner.util.jogl.objects.Color;
 import floor.planner.util.jogl.raytracer.Aabb;
 import floor.planner.util.jogl.raytracer.IntersectRecord;
+import floor.planner.util.jogl.raytracer.Onb;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
+import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 
@@ -181,6 +183,29 @@ public class Sphere extends DrawableElement3D {
         );
         double solidAngle = 2 * MathUtil.PI * (1 - cosThetaMax);
         return 1 / solidAngle;
+    }
+
+    public Vector random(Point3D p) {
+        return this.random(p.getVector());
+    }
+
+    public Vector random(Vector v) {
+        Vector direction = this.center.subtract(v);
+        double distSqrd = direction.lengthSqrd();
+        Onb uvw = new Onb();
+        uvw.buildFromW(direction);
+        return uvw.local(this.randomToSphere(radius, distSqrd));
+    }
+
+    private Vector randomToSphere(double radius, double distSqrd) {
+        double r1 = Random.randomDouble();
+        double r2 = Random.randomDouble();
+        double z = 1 + r2 * (Math.sqrt(1 - radius * radius / distSqrd) - 1);
+
+        double phi = 2 * MathUtil.PI * r1;
+        double x = Math.cos(phi) * Math.sqrt(1 - z * z);
+        double y = Math.sin(phi) * Math.sqrt(1 - z * z);
+        return new Vector(x, y, z);
     }
 
     public Point3D getMidPoint() {

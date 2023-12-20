@@ -62,6 +62,29 @@ public class RTIOWSeriesService {
         return world;
     }
 
+    public IntersectableList cornellBoxGlass() {
+        IntersectableList world = this.emptyCornellBox();
+        Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
+        Material glass = new Dielectric(1.5);
+
+        // box
+        world.addAll(
+            this.getCube1(
+                new Point3D(0, 0, 0),
+                new Point3D(165, 330, 165),
+                15, 
+                265,
+                295,
+                white
+            ).getIntersectableList()
+        );
+
+        // glass sphere
+        world.add(new Sphere(new Vector(190, 90, 190), 90, glass));
+
+        return world;
+    }
+
     public IntersectableList cornellBoxMetal() {
         IntersectableList world = this.emptyCornellBox();
         Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);

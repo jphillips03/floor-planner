@@ -49,6 +49,7 @@
                                 <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="SPHERES" text="Spheres... Lots of Spheres" />
                                 <Menu fx:id="cornellBoxMenu" mnemonicParsing="false" text="Cornell Box">
                                     <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CORNELL_BOX" text="Flat Cubes" />
+                                    <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CORNELL_BOX_GLASS" text="Glass Sphere" />
                                     <MenuItem mnemonicParsing="false" onAction="#onRayTrace" userData="CORNELL_BOX_METAL" text="Metal Cube" />
                                 </Menu>
                             </items>
