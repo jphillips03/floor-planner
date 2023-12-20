@@ -1,7 +1,7 @@
 package floor.planner.util.raytracer.material;
 
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Ray;
-import floor.planner.util.objects.Color;
 import floor.planner.util.raytracer.pdf.Pdf;
 
 public class ScatterRecord {

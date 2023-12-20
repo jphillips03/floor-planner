@@ -1,7 +1,7 @@
 package floor.planner.util.raytracer.texture;
 
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Point3D;
-import floor.planner.util.objects.Color;
 
 public class SolidColor implements Texture {
     private Color colorValue;

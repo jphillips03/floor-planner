@@ -1,10 +1,10 @@
 package floor.planner.util.raytracer.material;
 
+import floor.planner.util.math.Color;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.objects.Color;
 import floor.planner.util.raytracer.IntersectRecord;
 import floor.planner.util.raytracer.Onb;
 import floor.planner.util.raytracer.pdf.CosPdf;

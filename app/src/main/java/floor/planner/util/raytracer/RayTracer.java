@@ -10,12 +10,12 @@ import floor.planner.models.Camera;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.RTIOWSeriesService;
 import floor.planner.util.FileUtil;
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Interval;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.objects.Color;
 import floor.planner.util.objects.obj3d.Quad;
 import floor.planner.util.objects.obj3d.Sphere;
 import floor.planner.util.raytracer.material.DiffuseLight;
@@ -189,7 +189,7 @@ public class RayTracer {
                         Ray r = getRay(j, i, sJ, sI);
                         Color rayColor = this.rayColor(r, maxDepth, world, lights);
                         pixelColor.setColor(
-                            pixelColor.getColor().add(rayColor.getColor())
+                            pixelColor.add(rayColor)
                         );
                         task.updateProgress(task.workDone++);
                     }
@@ -257,8 +257,8 @@ public class RayTracer {
 
         if (srec.skipPdf) {
             return new Color(
-                srec.attenuation.getColor().multiply(
-                this.rayColor(srec.skipPdfRay, depth - 1, world, lights).getColor()
+                srec.attenuation.multiply(
+                this.rayColor(srec.skipPdfRay, depth - 1, world, lights)
             ));
         }
 
@@ -275,8 +275,8 @@ public class RayTracer {
 
             Color sampleColor = this.rayColor(scattered, depth - 1, world, lights);
             colorFromScatter = new Color(
-                srec.attenuation.getColor().multiply(scatteringPdf).multiply(
-                sampleColor.getColor()
+                srec.attenuation.multiply(scatteringPdf).multiply(
+                sampleColor
             ).divide(pdfVal));
         } else {
             // calculate color without lights; scatter is either defined by scatter
@@ -288,16 +288,15 @@ public class RayTracer {
 
             colorFromScatter = new Color(
                 Vector.multiply(
-                    srec.attenuation.getColor(),
+                    srec.attenuation,
                     rayColor(scatter, depth - 1, world, null)
-                        .getColor()
                 )
             );
         }
 
         return new Color(
-            colorFromEmission.getColor().add(
-                colorFromScatter.getColor()
+            colorFromEmission.add(
+                colorFromScatter
             )
         );
     }

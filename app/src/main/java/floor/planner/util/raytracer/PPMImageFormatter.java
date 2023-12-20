@@ -1,6 +1,6 @@
 package floor.planner.util.raytracer;
 
-import floor.planner.util.objects.Color;
+import floor.planner.util.math.Color;
 
 public class PPMImageFormatter {
 

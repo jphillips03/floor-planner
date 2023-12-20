@@ -1,42 +1,38 @@
-package floor.planner.util.objects;
+package floor.planner.util.math;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import floor.planner.util.math.Interval;
-import floor.planner.util.math.Vector;
-
-public class Color {
+public final class Color extends Vector {
     private static Logger logger = LoggerFactory.getLogger(Color.class);
 
     private float red;
     private float green;
     private float blue;
-    private Vector color;
 
     public Color(double red, double green, double blue) {
+        super(red, green, blue);
         this.red = (float) red;
         this.green = (float) green;
         this.blue = (float) blue;
-        this.color = new Vector(new double[]{ red, green, blue });
     }
 
     public Color(float red, float green, float blue) {
+        super(red, green, blue);
         this.red = red;
         this.green = green;
         this.blue = blue;
-        this.color = new Vector(new double[]{ red, green, blue });
     }
 
     public Color(float[] color) {
+        super(new double[]{ color[0], color[1], color[2] });
         this.red = color[0];
         this.green = color[1];
         this.blue = color[2];
-        this.color = new Vector(new double[]{ this.red, this.green, this.blue });
     }
 
     public Color(Vector color) {
-        this.color = color;
+        super(color);
         this.red = (float) color.getX();
         this.green = (float) color.getY();
         this.blue = (float) color.getZ();
@@ -47,7 +43,7 @@ public class Color {
     }
     public void setRed(float val) {
         this.red = val;
-        this.color.setValues(new double[] { this.red, this.green, this.blue });
+        this.setValues(new double[] { this.red, this.green, this.blue });
     }
 
     public float getGreen() {
@@ -55,7 +51,7 @@ public class Color {
     }
     public void setGreen(float val) {
         this.green = val;
-        this.color.setValues(new double[] { this.red, this.green, this.blue });
+        this.setValues(new double[] { this.red, this.green, this.blue });
     }
 
     public float getBlue() {
@@ -63,17 +59,14 @@ public class Color {
     }
     public void setBlue(float val) {
         this.blue = val;
-        this.color.setValues(new double[] { this.red, this.green, this.blue });
+        this.setValues(new double[] { this.red, this.green, this.blue });
     }
 
-    public Vector getColor() {
-        return this.color;
-    }
     public void setColor(Vector v) {
         this.red = (float) v.getX();
         this.green = (float) v.getY();
         this.blue = (float) v.getZ();
-        this.color.setValues(v.getValues());
+        this.setValues(v.getValues());
     }
 
     public String toRGBTripletString() {

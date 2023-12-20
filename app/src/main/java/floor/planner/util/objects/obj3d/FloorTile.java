@@ -1,7 +1,7 @@
 package floor.planner.util.objects.obj3d;
 
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Matrix;
-import floor.planner.util.objects.Color;
 import floor.planner.util.raytracer.material.Lambertian;
 
 public class FloorTile extends Cube {

@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.models.Camera;
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
-import floor.planner.util.objects.Color;
 import floor.planner.util.objects.obj3d.Cube;
 import floor.planner.util.objects.obj3d.Quad;
 import floor.planner.util.objects.obj3d.Sphere;
