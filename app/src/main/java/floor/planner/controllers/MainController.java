@@ -34,7 +34,7 @@ import floor.planner.util.jogl.event.KeyListenerMove3D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
 import floor.planner.util.jogl.gleventlisteners.GLEventListener3D;
 import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
-import floor.planner.util.jogl.raytracer.RayTraceTask;
+import floor.planner.util.raytracer.RayTraceTask;
 
 public class MainController implements Initializable {
     /** The logger for the class. */

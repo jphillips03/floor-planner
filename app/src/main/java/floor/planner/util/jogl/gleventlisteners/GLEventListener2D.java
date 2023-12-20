@@ -12,7 +12,7 @@ import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.FloorPlan;
 import floor.planner.util.jogl.drawers.Drawer2D;
-import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
+import floor.planner.util.objects.obj2d.ClippingPlane;
 
 public class GLEventListener2D implements GLEventListener {
     private static final Logger logger = LoggerFactory.getLogger(GLEventListener2D.class);

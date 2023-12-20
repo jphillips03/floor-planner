@@ -6,12 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.constants.ObjectType;
-import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
-import floor.planner.util.jogl.objects.obj3d.Cube;
-import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
-import floor.planner.util.jogl.raytracer.IntersectableList;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Vector;
+import floor.planner.util.objects.obj2d.DrawableElement2D;
+import floor.planner.util.objects.obj3d.Cube;
+import floor.planner.util.objects.obj3d.DrawableElement3D;
+import floor.planner.util.raytracer.IntersectableList;
 
 public class Floor {
     private static final Logger logger = LoggerFactory.getLogger(Floor.class);

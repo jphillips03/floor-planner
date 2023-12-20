@@ -8,7 +8,7 @@ import com.jogamp.opengl.glu.GLU;
 
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
-import floor.planner.util.jogl.objects.obj3d.DrawableElement3D;
+import floor.planner.util.objects.obj3d.DrawableElement3D;
 
 public class Drawer3D {
     private static final Logger logger = LoggerFactory.getLogger(Drawer3D.class);

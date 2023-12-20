@@ -8,21 +8,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.models.Camera;
-import floor.planner.util.jogl.material.Dielectric;
-import floor.planner.util.jogl.material.DiffuseLight;
-import floor.planner.util.jogl.material.Lambertian;
-import floor.planner.util.jogl.material.Material;
-import floor.planner.util.jogl.material.Metal;
-import floor.planner.util.jogl.objects.Color;
-import floor.planner.util.jogl.objects.obj3d.Cube;
-import floor.planner.util.jogl.objects.obj3d.Quad;
-import floor.planner.util.jogl.objects.obj3d.Sphere;
-import floor.planner.util.jogl.raytracer.BvhNode;
-import floor.planner.util.jogl.raytracer.IntersectableList;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
 import floor.planner.util.math.Vector;
+import floor.planner.util.objects.Color;
+import floor.planner.util.objects.obj3d.Cube;
+import floor.planner.util.objects.obj3d.Quad;
+import floor.planner.util.objects.obj3d.Sphere;
+import floor.planner.util.raytracer.BvhNode;
+import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.material.Dielectric;
+import floor.planner.util.raytracer.material.DiffuseLight;
+import floor.planner.util.raytracer.material.Lambertian;
+import floor.planner.util.raytracer.material.Material;
+import floor.planner.util.raytracer.material.Metal;
 
 /**
  * The Ray Tracing in One Weekend (RTIOW) Series service separates out logic

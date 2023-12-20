@@ -9,7 +9,7 @@ import floor.planner.constants.AspectRatio;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.FileUtil;
-import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
+import floor.planner.util.objects.obj2d.ClippingPlane;
 
 public class FloorPlanService {
     private static final Logger logger = LoggerFactory.getLogger(FloorPlanService.class);

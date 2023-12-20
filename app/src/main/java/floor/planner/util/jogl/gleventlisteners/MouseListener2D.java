@@ -9,7 +9,7 @@ import com.jogamp.newt.opengl.GLWindow;
 
 import floor.planner.controllers.Menu2DController;
 import floor.planner.models.FloorPlan;
-import floor.planner.util.jogl.objects.obj2d.ClippingPlane;
+import floor.planner.util.objects.obj2d.ClippingPlane;
 
 public class MouseListener2D implements MouseListener {
     private static final Logger logger = LoggerFactory.getLogger(MouseListener2D.class);

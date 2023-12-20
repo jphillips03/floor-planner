@@ -4,8 +4,8 @@ import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
-import floor.planner.util.jogl.objects.obj2d.DrawableElement2D;
 import floor.planner.util.math.Point2D;
+import floor.planner.util.objects.obj2d.DrawableElement2D;
 
 import java.util.Arrays;
 import java.util.List;
