@@ -1,9 +1,7 @@
 package floor.planner.services;
 
-import java.util.Arrays;
 import java.util.Comparator;
 
-import org.checkerframework.checker.units.qual.m;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,18 +9,23 @@ import floor.planner.models.Camera;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Random;
+import floor.planner.util.math.Ray;
 import floor.planner.util.math.Vector;
 import floor.planner.util.objects.Color;
 import floor.planner.util.objects.obj3d.Cube;
 import floor.planner.util.objects.obj3d.Quad;
 import floor.planner.util.objects.obj3d.Sphere;
 import floor.planner.util.raytracer.BvhNode;
+import floor.planner.util.raytracer.IntersectRecord;
 import floor.planner.util.raytracer.IntersectableList;
+import floor.planner.util.raytracer.IntersectableWorld;
 import floor.planner.util.raytracer.material.Dielectric;
 import floor.planner.util.raytracer.material.DiffuseLight;
 import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.material.Metal;
+import floor.planner.util.raytracer.material.ScatterRecord;
+import floor.planner.util.raytracer.material.SimpleMaterial;
 
 /**
  * The Ray Tracing in One Weekend (RTIOW) Series service separates out logic
@@ -30,8 +33,9 @@ import floor.planner.util.raytracer.material.Metal;
  */
 public class RTIOWSeriesService {
     private static final Logger logger = LoggerFactory.getLogger(RTIOWSeriesService.class);
+    private Material m = new SimpleMaterial();
     
-    public IntersectableList cornellBox() {
+    public IntersectableWorld cornellBox() {
         IntersectableList world = this.emptyCornellBox();
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
 
@@ -59,10 +63,12 @@ public class RTIOWSeriesService {
             ).getIntersectableList()
         );
 
-        return world;
+        IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+
+        return new IntersectableWorld(world, lights);
     }
 
-    public IntersectableList cornellBoxGlass() {
+    public IntersectableWorld cornellBoxGlass() {
         IntersectableList world = this.emptyCornellBox();
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
         Material glass = new Dielectric(1.5);
@@ -82,10 +88,13 @@ public class RTIOWSeriesService {
         // glass sphere
         world.add(new Sphere(new Vector(190, 90, 190), 90, glass));
 
-        return world;
+        IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+        lights.add(new Sphere(new Vector(190, 90, 190), 90, m));
+
+        return new IntersectableWorld(world, lights);
     }
 
-    public IntersectableList cornellBoxMetal() {
+    public IntersectableWorld cornellBoxMetal() {
         IntersectableList world = this.emptyCornellBox();
         Material aluminum = new Metal(new Color(0.8, 0.85, 0.88), 0.0);
         Material white = new Lambertian(new Color(0.73, 0.73, 0.73));
@@ -114,7 +123,9 @@ public class RTIOWSeriesService {
             ).getIntersectableList()
         );
 
-        return world;
+        IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+
+        return new IntersectableWorld(world, lights);
     }
 
     private Cube getCube1(
@@ -153,15 +164,15 @@ public class RTIOWSeriesService {
         return world;
     }
 
-    public IntersectableList cube() {
+    public IntersectableWorld cube() {
         IntersectableList world = new IntersectableList();
         Cube cube = new Cube(Cube.DEFAULT_VERTICES);
         cube.initQuads();
         world.addAll(cube.getIntersectableList());
-        return world;
+        return new IntersectableWorld(world);
     }
 
-    public IntersectableList quads() {
+    public IntersectableWorld quads() {
         IntersectableList world = new IntersectableList();
         Material red = new Lambertian(new Color(1f, 0.2f, 0.2f));
         Material green = new Lambertian(new Color(0.2f, 1f, 0.2f));
@@ -195,10 +206,10 @@ public class RTIOWSeriesService {
             new Vector(0, 0, -4), teal)
         );
 
-        return world;
+        return new IntersectableWorld(world);
     }
 
-    public IntersectableList someSpheres() {
+    public IntersectableWorld someSpheres() {
         IntersectableList world = new IntersectableList();
         Material mat1 = new Dielectric(1.5);
         Material mat2 = new Lambertian(new Color(0.4f, 0.2f, 0.1f));
@@ -209,10 +220,10 @@ public class RTIOWSeriesService {
         world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
-        return world;
+        return new IntersectableWorld(world);
     }
 
-    public IntersectableList spheres() {
+    public IntersectableWorld spheres() {
         IntersectableList world = new IntersectableList();
         Material ground = new Lambertian(new Color(0.5f, 0.5f, 0.5f));
         world.add(new Sphere(new Vector(0.0, -1000, 0), 1000, ground));
@@ -253,7 +264,7 @@ public class RTIOWSeriesService {
 
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
-        return world;
+        return new IntersectableWorld(world);
     }
 
     /**

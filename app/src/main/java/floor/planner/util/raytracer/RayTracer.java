@@ -22,6 +22,7 @@ import floor.planner.util.raytracer.material.DiffuseLight;
 import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.material.ScatterAttenuation;
 import floor.planner.util.raytracer.material.ScatterRecord;
+import floor.planner.util.raytracer.material.SimpleMaterial;
 import floor.planner.util.raytracer.pdf.CosPdf;
 import floor.planner.util.raytracer.pdf.IntersectablePdf;
 import floor.planner.util.raytracer.pdf.MixturePdf;
@@ -73,7 +74,7 @@ public class RayTracer {
             new Quad(new Point3D(midPoint.getX() - 0.5f, midPoint.getY() - 0.5f, 3), dx, dy, diffuseLight)
         );
 
-        Material m = new CustomMateral();
+        Material m = new SimpleMaterial();
         this.lights = new IntersectableList(new Quad(new Point3D(midPoint.getX() - 0.5f, midPoint.getY() - 0.5f, 3), dx, dy, m));
 
         this.initRayTracer();
@@ -104,14 +105,8 @@ public class RayTracer {
         this.recipSqrtSpp = (double) 1 / (double) this.sqrtSpp;
     }
 
-    private class CustomMateral extends Material {
-        public ScatterRecord scatter(Ray rIn, IntersectRecord rec) {
-            return null;
-        }
-    }
-
     private void initWorld(RayTraceTaskType type) {
-        Material m = new CustomMateral();
+        IntersectableWorld world;
         switch(type) {
             case CORNELL_BOX:
                 this.camera.setVFov(40);
@@ -119,8 +114,7 @@ public class RayTracer {
                 this.camera.setLookAt(278, 278, 0);
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setDefocusAngle(0);
-                this.world = service.cornellBox();
-                this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+                world = service.cornellBox();
                 this.background = new Color(0, 0, 0); 
                 break;
             case CORNELL_BOX_GLASS:
@@ -129,9 +123,7 @@ public class RayTracer {
                 this.camera.setLookAt(278, 278, 0);
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setDefocusAngle(0);
-                this.world = service.cornellBoxGlass();
-                this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
-                this.lights.add(new Sphere(new Vector(190, 90, 190), 90, m));
+                world = service.cornellBoxGlass();
                 this.background = new Color(0, 0, 0); 
                 break;
             case CORNELL_BOX_METAL:
@@ -140,19 +132,18 @@ public class RayTracer {
                 this.camera.setLookAt(278, 278, 0);
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setDefocusAngle(0);
-                this.world = service.cornellBoxMetal();
-                this.lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
+                world = service.cornellBoxMetal();
                 this.background = new Color(0, 0, 0); 
                 break;
             case CUBE:
-                this.world = service.cube();
+                world = service.cube();
                 this.camera.setVFov(40);
                 this.camera.setLookFrom(2, 2, 2);
                 this.camera.setLookAt(0, 0, 0);
                 this.camera.setDefocusAngle(0);
                 break;
             case QUADS:
-                this.world = service.quads();
+                world = service.quads();
                 this.camera.setVFov(80);
                 this.camera.setLookFrom(0, 0, 9);
                 this.camera.setLookAt(0, 0, 0);
@@ -160,7 +151,7 @@ public class RayTracer {
                 this.camera.setDefocusAngle(0);
                 break;
             case SOME_SPHERES:
-                this.world = service.someSpheres();
+                world = service.someSpheres();
                 // ray tracing spheres so use "default" settings...
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setVFov(20);
@@ -170,7 +161,7 @@ public class RayTracer {
                 this.camera.setFocusDist(10);
                 break;
             default:
-                this.world = service.spheres();
+                world = service.spheres();
                 this.camera.setVUp(0, 1, 0);
                 this.camera.setVFov(20);
                 this.camera.setLookFrom(13, 2, 3);
@@ -179,6 +170,9 @@ public class RayTracer {
                 this.camera.setFocusDist(10);
                 break;
         }
+
+        this.world = world.getElements();
+        this.lights = world.getLights();
     }
 
     public void render(RayTraceTask task) {
