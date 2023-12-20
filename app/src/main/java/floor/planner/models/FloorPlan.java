@@ -178,7 +178,7 @@ public class FloorPlan {
     public Point3D getMidPoint() {
         Vector midPoint = new Vector(0, 0, 0);
         for (Floor floor : this.floors) {
-            midPoint = midPoint.add(floor.getMidPoint().getVector().getValues());
+            midPoint = midPoint.add(floor.getMidPoint().getValues());
         }
         midPoint = midPoint.divide(this.floors.size());
         return new Point3D(midPoint);

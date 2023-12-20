@@ -20,6 +20,6 @@ public class IntersectablePdf extends Pdf {
 
     @Override
     public Vector generate() {
-        return objects.random(this.origin.getVector());
+        return objects.random(this.origin);
     }
 }

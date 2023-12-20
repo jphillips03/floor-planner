@@ -103,18 +103,18 @@ public class Cube extends DrawableElement3D {
     public Cube(Point3D a, Point3D b, Material material) {
         this.mat = material;
         // Construct the two opposite vertices with the minimum and maximum coordinates
-        this.min = new Point3D((float) Math.min(a.getX(), b.getX()), (float) Math.min(a.getY(), b.getY()), (float) Math.min(a.getZ(), b.getZ()));
-        this.max = new Point3D((float) Math.max(a.getX(), b.getX()), (float) Math.max(a.getY(), b.getY()), (float) Math.max(a.getZ(), b.getZ()));
+        this.min = new Point3D(Math.min(a.getX(), b.getX()), Math.min(a.getY(), b.getY()), Math.min(a.getZ(), b.getZ()));
+        this.max = new Point3D(Math.max(a.getX(), b.getX()), Math.max(a.getY(), b.getY()), Math.max(a.getZ(), b.getZ()));
 
         this.vertices = new float[][] {
-            { min.getX(), min.getY(), min.getZ() },
-            { min.getX(), max.getY(), min.getZ() },
-            { max.getX(), max.getY(), min.getZ() },
-            { max.getX(), min.getY(), min.getZ() },
-            { min.getX(), min.getY(), max.getZ() },
-            { min.getX(), max.getY(), max.getZ() },
-            { max.getX(), max.getY(), max.getZ() },
-            { max.getX(), min.getY(), max.getZ() }
+            { (float) min.getX(), (float) min.getY(), (float) min.getZ() },
+            { (float) min.getX(), (float) max.getY(), (float) min.getZ() },
+            { (float) max.getX(), (float) max.getY(), (float) min.getZ() },
+            { (float) max.getX(), (float) min.getY(), (float) min.getZ() },
+            { (float) min.getX(), (float) min.getY(), (float) max.getZ() },
+            { (float) min.getX(), (float) max.getY(), (float) max.getZ() },
+            { (float) max.getX(), (float) max.getY(), (float) max.getZ() },
+            { (float) max.getX(), (float) min.getY(), (float) max.getZ() }
         };
     }
 

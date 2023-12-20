@@ -53,7 +53,7 @@ public class Quad extends Intersectable {
     private void init() {
         Vector n = Vector.cross(u, v);
         this.normal = Vector.unit(n);
-        this.D = Vector.dot(this.normal, Q.getVector());
+        this.D = Vector.dot(this.normal, Q);
         this.w = n.divide(Vector.dot(n, n));
         this.area = n.length();
         this.setBoundingBox();
@@ -62,7 +62,7 @@ public class Quad extends Intersectable {
     private void setBoundingBox() {
         this.boundingBox = new Aabb(
             Q,
-            new Point3D(Q.getVector().add(u).add(v))
+            new Point3D(Q.add(u).add(v))
         ).pad();
     }
 
@@ -94,7 +94,7 @@ public class Quad extends Intersectable {
 
         // determine hit point lies within planar shape using plane coordinates
         Vector intersection = r.at(t);
-        Vector planar = intersection.subtract(Q.getVector());
+        Vector planar = intersection.subtract(Q);
         double alpha = Vector.dot(this.w, Vector.cross(planar, v));
         double beta = Vector.dot(this.w, Vector.cross(u, planar));
 
@@ -130,7 +130,7 @@ public class Quad extends Intersectable {
     @Override
     public double pdfValue(Point3D origin, Vector v) {
         IntersectRecord rec = new IntersectRecord();
-        if (!this.intersect(new Ray(origin.getVector(), v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
+        if (!this.intersect(new Ray(origin, v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
             return 0;
         }
 
@@ -140,11 +140,11 @@ public class Quad extends Intersectable {
     }
 
     public Vector random(Point3D origin) {
-        return this.random(origin.getVector());
+        return this.random(origin);
     }
 
     public Vector random(Vector origin) {
-        Vector p = this.Q.getVector().add(this.u.multiply(Random.randomDouble())).add(
+        Vector p = this.Q.add(this.u.multiply(Random.randomDouble())).add(
             this.v.multiply(Random.randomDouble())
         );
         return p.subtract(origin);
@@ -152,7 +152,7 @@ public class Quad extends Intersectable {
 
     public Point3D getMidPoint() {
         Point3D diagPoint = new Point3D(
-            this.Q.getVector().add(this.u).add(
+            this.Q.add(this.u).add(
                 this.v
             )
         );

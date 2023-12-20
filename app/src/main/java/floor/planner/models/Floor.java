@@ -163,7 +163,7 @@ public class Floor {
         DrawableElement3D[] elements = this.elements3D[midRow][midCol];
         Vector midPoint = new Vector(0, 0, 0);
         for (DrawableElement3D element : elements) {
-            midPoint = midPoint.add(element.getMidPoint().getVector().getValues());
+            midPoint = midPoint.add(element.getMidPoint().getValues());
         }
         midPoint = midPoint.divide(elements.length);
         return new Point3D(midPoint);

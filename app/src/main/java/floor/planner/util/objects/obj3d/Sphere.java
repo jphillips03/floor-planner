@@ -19,6 +19,7 @@ import floor.planner.util.raytracer.IntersectRecord;
 import floor.planner.util.raytracer.Onb;
 import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
+import floor.planner.util.raytracer.material.Metal;
 
 public class Sphere extends DrawableElement3D {
     private static final Logger logger = LoggerFactory.getLogger(Sphere.class);
@@ -170,7 +171,7 @@ public class Sphere extends DrawableElement3D {
         return  1 / solid_angle;
          */
         IntersectRecord rec = new IntersectRecord();
-        if (!this.intersect(new Ray(origin.getVector(), v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
+        if (!this.intersect(new Ray(origin, v), new Interval(0.001, Double.POSITIVE_INFINITY), rec)) {
             return 0;
         }
 
@@ -178,7 +179,7 @@ public class Sphere extends DrawableElement3D {
             1 - this.radius * this.radius / 
             (Vector.subtract(
                 this.center,
-                origin.getVector()
+                origin
             ).lengthSqrd())
         );
         double solidAngle = 2 * MathUtil.PI * (1 - cosThetaMax);
@@ -186,7 +187,7 @@ public class Sphere extends DrawableElement3D {
     }
 
     public Vector random(Point3D p) {
-        return this.random(p.getVector());
+        return this.random(p);
     }
 
     public Vector random(Vector v) {

@@ -6,7 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Vector {
+public sealed class Vector permits Point3D {
     private static final Logger logger = LoggerFactory.getLogger(Vector.class);
 
     private double[] values;
@@ -19,6 +19,10 @@ public class Vector {
 
     public Vector(double[] values) {
         this.values = values;        
+    }
+
+    public Vector(Vector v) {
+        this.values = v.values;
     }
 
     public Vector(float[] vals) {

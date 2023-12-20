@@ -260,21 +260,21 @@ public class Camera {
 
     private void setLookAt(int i) {
         Point3D lookAtPoint = this.pointsOnLookAtCircle.get(i);
-        this.lookAtX = lookAtPoint.getX();
-        this.lookAtY = lookAtPoint.getY();
-        this.lookAtZ = this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
+        this.lookAtX = (float) lookAtPoint.getX();
+        this.lookAtY = (float) lookAtPoint.getY();
+        this.lookAtZ = (float) this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
     }
 
     public void lookUp() {
         this.changeCurrentZPoint(-1);
-        this.lookAtX = this.pointsOnTiltCircle.get(this.currentZPoint).getX();
-        this.lookAtZ = this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
+        this.lookAtX = (float) this.pointsOnTiltCircle.get(this.currentZPoint).getX();
+        this.lookAtZ = (float) this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
     }
 
     public void lookDown() {
         this.changeCurrentZPoint(1);
-        this.lookAtX = this.pointsOnTiltCircle.get(this.currentZPoint).getX();
-        this.lookAtZ = this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
+        this.lookAtX = (float) this.pointsOnTiltCircle.get(this.currentZPoint).getX();
+        this.lookAtZ = (float) this.pointsOnTiltCircle.get(this.currentZPoint).getZ();
     }
 
     public void moveIn() {
