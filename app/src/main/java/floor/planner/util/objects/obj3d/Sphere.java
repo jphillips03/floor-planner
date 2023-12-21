@@ -59,9 +59,9 @@ public class Sphere extends DrawableElement3D {
         this.radius = radius;
         // move x, y coordinates to middle of tile (i.e. + 0.5)
         this.center = new Vector(new double[]{ x + 0.5, y + 0.5, z });
-        this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
+        this.materialColor = new float[]{ 0.8f, 0.85f, 0.88f };
         this.color = new Color(new Vector(this.materialColor));
-        this.mat = new Lambertian(new Color(this.materialColor));
+        this.mat = new Metal(color, 0); //new Lambertian(new Color(this.materialColor));
 
         Vector rvec = new Vector(radius, radius, radius);
         this.boundingBox = new Aabb(
