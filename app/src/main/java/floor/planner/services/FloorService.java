@@ -9,8 +9,9 @@ import floor.planner.constants.Orientation;
 import floor.planner.models.Floor;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
+import floor.planner.util.objects.obj2d.Disk;
+import floor.planner.util.objects.obj2d.DiskStack;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
-import floor.planner.util.objects.obj2d.Pole;
 import floor.planner.util.objects.obj2d.Stairs;
 import floor.planner.util.objects.obj2d.Wall;
 import floor.planner.util.objects.obj2d.Window;
@@ -301,7 +302,7 @@ public class FloorService {
                 break;
             case POLE:
                 elements2D = new DrawableElement2D[]{
-                    new Pole(new Point2D(j, r), null)
+                    new Disk(new Point2D(j, r), null)
                 };
 
                 elements3D = new DrawableElement3D[] {
@@ -314,11 +315,8 @@ public class FloorService {
                 elements3D = new DrawableElement3D[]{};
                 break;
             case SPHERE:
-                // TODO stack circles and vary color like steps to give
-                // appearance of depth in 2D; so spheres don't just look
-                // like larger poles...
                 elements2D = new DrawableElement2D[]{
-                    new Pole(new Point2D(j, r), null, 0.25)
+                    new DiskStack(new Point2D(j, r), null, 0.25)
                 };
                 elements3D = new DrawableElement3D[]{
                     new FloorTile(Matrix.translateX(vertices, j)),
