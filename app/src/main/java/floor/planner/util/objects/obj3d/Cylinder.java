@@ -84,10 +84,13 @@ public class Cylinder extends DrawableElement3D {
         Interval rayT,
         IntersectRecord rec
     ) {
+        // TODO fix me: top of cylinder is not included in image right now
+        // because as is the entire quad where top sits is rendered instead of
+        // just the disk...
         // check if we intersected the top of cylinder first...
-        if (this.intersectDisk(r, rayT, rec)) {
-            return true;
-        }
+        // if (this.intersectDisk(r, rayT, rec)) {
+        //     return true;
+        // }
 
         double a = (r.getDirection().getX() * r.getDirection().getX()) + (r.getDirection().getY() * r.getDirection().getY());
         double b = 2 * r.getDirection().getX() * (r.getOrigin().getX() - this.center.getX()) + 2 * r.getDirection().getY() * (r.getOrigin().getY() - this.center.getY());
