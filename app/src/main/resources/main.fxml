@@ -2,13 +2,21 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="mainBox"
+<BorderPane fx:id="mainBox"
     maxHeight="-Infinity"
     maxWidth="-Infinity"
     minHeight="-Infinity"
@@ -19,7 +27,7 @@
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="floor.planner.controllers.MainController"
 >
-    <children>
+    <top>
         <MenuBar fx:id="menuBar">
             <menus>
                 <Menu mnemonicParsing="false" text="File">
@@ -58,11 +66,37 @@
                 </Menu>
             </menus>
         </MenuBar>
-        <StackPane fx:id="openGLPane" VBox.vgrow="ALWAYS" />
-        <ButtonBar style="-fx-padding: 10 10 10 10;">
-            <buttons>
-                <Button fx:id="center3D" mnemonicParsing="false" onAction="#onCenter3D" text="Re-Center"></Button>
-            </buttons>
-        </ButtonBar>
-    </children>
-</VBox>
+    </top>
+    <right>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
+            <VBox>
+                <TitledPane text="Floor Plan Element">
+                    <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+                        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
+                        <Label text="Color:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <ComboBox fx:id="colorCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Select Color"/>
+                    </GridPane>
+                </TitledPane>
+                <TitledPane text="Light">
+                    <VBox>
+                        <Label text="Ambient Light:" />
+                        <Slider fx:id="redAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
+                        <Slider fx:id="greenAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
+                        <Slider fx:id="blueAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
+                    </VBox>
+                </TitledPane>
+            </VBox>
+        </ScrollPane>
+    </right>
+    <center><StackPane fx:id="openGLPane" /></center>
+    <bottom>
+        <StackPane>
+            <ButtonBar style="-fx-padding: 10 10 10 10;">
+                <buttons>
+                    <Button fx:id="center3D" mnemonicParsing="false" onAction="#onCenter3D" text="Re-Center"></Button>
+                </buttons>
+            </ButtonBar>
+        </StackPane>
+    </bottom>
+</BorderPane>

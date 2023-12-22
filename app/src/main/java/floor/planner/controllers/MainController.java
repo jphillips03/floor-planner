@@ -6,17 +6,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jogamp.newt.opengl.GLWindow;
 
+import floor.planner.constants.ObjectType;
 import floor.planner.constants.RayTraceTaskType;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
@@ -57,7 +58,7 @@ public class MainController implements Initializable {
     Button center3D;
 
     @FXML
-    VBox mainBox;
+    BorderPane mainBox;
 
     @FXML
     StackPane openGLPane;
@@ -82,6 +83,11 @@ public class MainController implements Initializable {
     @FXML
     MenuItem saveMenuItem;
 
+    @FXML
+    private ComboBox<ObjectType> objectTypeCombo;
+
+    @FXML
+    private ComboBox<String> colorCombo;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -92,12 +98,8 @@ public class MainController implements Initializable {
         this.saveAsMenuItem.setDisable(true);
         this.saveMenuItem.setDisable(true);
 
-        // wait until initialization is complete to run the following otherwise
-        // scene will be null
-        Platform.runLater(() -> {
-            this.scene = this.mainBox.getScene();
-            this.window = this.scene.getWindow();
-        });
+        this.objectTypeCombo.getItems().setAll(ObjectType.values());
+        this.colorCombo.getItems().setAll("Red", "Green", "Blue");
     }
 
     /**
@@ -275,6 +277,10 @@ public class MainController implements Initializable {
         this.menu2DController = controller;
     }
 
+    public void setScene(Scene scene) {
+        this.scene = scene;
+    }
+
     public void setStage(Stage stage) {
         this.stage = stage;
     }
@@ -289,5 +295,8 @@ public class MainController implements Initializable {
 
     public Window getWindow() {
         return this.window;
+    }
+    public void setWindow(Window window) {
+        this.window = window;
     }
 }

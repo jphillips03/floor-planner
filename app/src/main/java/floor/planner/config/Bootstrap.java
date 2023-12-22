@@ -13,7 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
@@ -23,7 +23,7 @@ public class Bootstrap extends Application {
 
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
     private JOGLConfig joglConfig;
-    private VBox parent;
+    private BorderPane parent;
     private MainController main;
     private Menu2DController menu2d;
 
@@ -36,7 +36,8 @@ public class Bootstrap extends Application {
             this.initializeScene(stage);
             this.initializeControllerConfigs();
             logger.info("Application Initialized");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
+            logger.error("Exception starting app", ex);
             this.stop();
         }
     }
@@ -83,6 +84,8 @@ public class Bootstrap extends Application {
         stage.show();
 
         this.main.setStage(stage);
+        this.main.setScene(scene);
+        this.main.setWindow(scene.getWindow());
 
         // setup listeners for screen resizing
         ChangeListener<Number> widthListener = (ObservableValue<? extends Number> observable, Number oldValue, Number newValue) -> {
