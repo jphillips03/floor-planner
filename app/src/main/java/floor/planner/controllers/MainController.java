@@ -54,8 +54,10 @@ public class MainController implements Initializable {
     private GLEventListener2D eventListener2D;
     private GLEventListener3D eventListener3D;
     private KeyListenerMove3D keyListener3D;
-    private ObjectTypeChangeListener objectTypeChangeListener;
     private Menu2DController menu2DController;
+
+    @FXML
+    ElementController elementController;
 
     @FXML
     Button center3D;
@@ -86,12 +88,6 @@ public class MainController implements Initializable {
     @FXML
     MenuItem saveMenuItem;
 
-    @FXML
-    private ComboBox<ObjectType> objectTypeCombo;
-
-    @FXML
-    private ComboBox<String> colorCombo;
-
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.dimensionMenu.setDisable(true);
@@ -100,12 +96,6 @@ public class MainController implements Initializable {
         this.rayTraceFloorPlanMenuItem.setDisable(true);
         this.saveAsMenuItem.setDisable(true);
         this.saveMenuItem.setDisable(true);
-
-        this.objectTypeCombo.getItems().setAll(ObjectType.values());
-        this.colorCombo.getItems().setAll("Red", "Green", "Blue");
-
-        this.objectTypeChangeListener = new ObjectTypeChangeListener();
-        this.objectTypeCombo.getSelectionModel().selectedItemProperty().addListener(this.objectTypeChangeListener);
     }
 
     /**
@@ -134,8 +124,8 @@ public class MainController implements Initializable {
         this.floorMenu.setDisable(false);
         this.floorMenu.getItems().clear();
 
-        // update current floor for objectTypeChangeListener
-        this.objectTypeChangeListener.setFloor(this.currentFloorPlan.getFloor(0));
+        // update current floor for ElementController
+        this.elementController.setFloor(this.currentFloorPlan.getFloor(0));
 
         // add a MenuItem for each floor
         for (int i = 0; i < floors; i++) {
@@ -151,7 +141,7 @@ public class MainController implements Initializable {
                 // display method renders the correct floor (since it uses the
                 // currentFloor property from FloorPlan)
                 this.currentFloorPlan.setCurrentFloor(floor);
-                this.objectTypeChangeListener.setFloor(this.currentFloorPlan.getFloor(floor));
+                this.elementController.setFloor(this.currentFloorPlan.getFloor(floor));
             });
         }
     }
@@ -220,24 +210,7 @@ public class MainController implements Initializable {
     private void init2D() {
         this.eventListener2D = new GLEventListener2D(this.currentFloorPlan, this.glWindow);
         this.glWindow.addGLEventListener(this.eventListener2D);
-        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this));
-    }
-
-    public void setElementDetails(int row, int col) {
-        // set programmaticChange to true so change listener does not fire,
-        // otherwise the previous element selected (if it exists) will change
-        // based on the new element selected when the combo box value is set
-        // below...
-        this.objectTypeChangeListener.setProgrammaticChange(true);
-        this.objectTypeChangeListener.setCol(col);
-        this.objectTypeChangeListener.setRow(row);
-
-        Floor floor = this.currentFloorPlan.getFloor(this.currentFloorPlan.getCurrentFloor());
-        this.objectTypeCombo.setValue(floor.getElementByRowAndCol(row, col));
-
-        // reset programmaticChange to false so user can change element at
-        // selected row x col using the combo box
-        this.objectTypeChangeListener.setProgrammaticChange(false);
+        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.elementController));
     }
 
     @FXML

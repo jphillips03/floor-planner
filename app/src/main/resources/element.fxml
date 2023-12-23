@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+
+<TitledPane
+    text="Floor Plan Element"
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="floor.planner.controllers.ElementController">
+    <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
+        <Label text="Color:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <ComboBox fx:id="colorCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Select Color"/>
+    </GridPane>
+</TitledPane>

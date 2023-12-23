@@ -70,14 +70,7 @@
     <right>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
             <VBox>
-                <TitledPane text="Floor Plan Element">
-                    <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
-                        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
-                        <Label text="Color:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <ComboBox fx:id="colorCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Select Color"/>
-                    </GridPane>
-                </TitledPane>
+                <fx:include fx:id="element" source="element.fxml"/>
                 <TitledPane text="Light">
                     <VBox>
                         <Label text="Ambient Light:" />

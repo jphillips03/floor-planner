@@ -7,8 +7,7 @@ import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.opengl.GLWindow;
 
-import floor.planner.controllers.MainController;
-import floor.planner.controllers.Menu2DController;
+import floor.planner.controllers.ElementController;
 import floor.planner.models.FloorPlan;
 import floor.planner.util.objects.obj2d.ClippingPlane;
 
@@ -17,12 +16,12 @@ public class MouseListener2D implements MouseListener {
 
     private FloorPlan floorPlan;
     private GLWindow glWindow;
-    private MainController main;
+    private ElementController elementController;
 
-    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, MainController main) {
+    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, ElementController eController) {
         this.floorPlan = floorPlan;
         this.glWindow = glWindow;
-        this.main = main;
+        this.elementController = eController;
     }
 
     @Override
@@ -56,8 +55,7 @@ public class MouseListener2D implements MouseListener {
         logger.info("Floor Plan Row x Col: " + row + " x " + col);
 
         if (col >= 0 && row >= 0) {
-            //this.menu2D.initialize((double) mouseX, (double) mouseY, col, row);
-            this.main.setElementDetails(row, col);
+            this.elementController.setElementDetails(row, col);
         }
     }
 
