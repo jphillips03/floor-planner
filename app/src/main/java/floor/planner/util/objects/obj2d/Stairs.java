@@ -51,7 +51,7 @@ public class Stairs extends DrawableElement2D {
 
     @Override
     public void draw(GL2 gl) {
-        Color color = this.colorStart; //new Color(this.colorStart, this.colorStart, this.colorStart);
+        Color color = this.colorStart;
         for (float i = 0; i <= 0.875; i+= 0.125) {
             List<Point2D> points = new ArrayList<Point2D>();
             for (int j = 0; j < this.points.size(); j++) {

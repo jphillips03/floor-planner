@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
@@ -27,10 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.jogamp.newt.opengl.GLWindow;
 
-import floor.planner.constants.ObjectType;
 import floor.planner.constants.RayTraceTaskType;
-import floor.planner.listeners.ObjectTypeChangeListener;
-import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;

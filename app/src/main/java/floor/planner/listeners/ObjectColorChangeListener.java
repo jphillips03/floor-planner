@@ -1,6 +1,5 @@
 package floor.planner.listeners;
 
-import floor.planner.constants.ObjectType;
 import floor.planner.models.Floor;
 import floor.planner.util.math.Color;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
