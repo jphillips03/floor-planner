@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.GridPane?>
 
 <TitledPane
@@ -13,7 +14,11 @@
     <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
         <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
         <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
-        <Label text="Color:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <ComboBox fx:id="colorCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Select Color"/>
+        <Label text="Red:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Slider fx:id="redSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label text="Green:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Slider fx:id="greenSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label text="Blue:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Slider fx:id="blueSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     </GridPane>
 </TitledPane>

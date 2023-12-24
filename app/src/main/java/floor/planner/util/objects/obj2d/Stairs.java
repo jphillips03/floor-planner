@@ -7,21 +7,22 @@ import java.util.List;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Point2D;
 
 public class Stairs extends DrawableElement2D {
     private static final List<Orientation> eastWest = Arrays.asList(Orientation.EAST_WEST, Orientation.WEST_EAST);
     private float colorDelta;
-    private float colorStart;
+    private Color colorStart;
 
     public Stairs (Point2D point, Orientation orientation) {
         super(point, orientation);
         if (this.orientation.equals(Orientation.EAST_WEST) || this.orientation.equals(Orientation.NORTH_SOUTH)) {
             this.colorDelta = -0.125f;
-            this.colorStart = 1f;
+            this.colorStart = this.color;
         } else {
             this.colorDelta = 0.125f;
-            this.colorStart = 0.125f;
+            this.colorStart = new Color(this.color.multiply(0.125));
         }
     }
 
@@ -50,7 +51,7 @@ public class Stairs extends DrawableElement2D {
 
     @Override
     public void draw(GL2 gl) {
-        float color = this.colorStart;
+        Color color = this.colorStart; //new Color(this.colorStart, this.colorStart, this.colorStart);
         for (float i = 0; i <= 0.875; i+= 0.125) {
             List<Point2D> points = new ArrayList<Point2D>();
             for (int j = 0; j < this.points.size(); j++) {
@@ -64,7 +65,11 @@ public class Stairs extends DrawableElement2D {
                 }
             }
             this.drawUtil(gl, points, color);
-            color += this.colorDelta;
+            color = new Color(
+                (color.getRed() + this.colorDelta) * this.color.getRed(),
+                (color.getGreen() + this.colorDelta) * this.color.getGreen(),
+                (color.getBlue() + this.colorDelta) * this.color.getBlue()
+            );
         }
     }
 }
