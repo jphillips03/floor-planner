@@ -27,6 +27,12 @@ public class Window3D extends Cube {
     private Wall3D window;
     private float windowWidth = 0.75f;
 
+    @Override
+    public void setColor(Color c) {
+        this.topWall.setColor(c);
+        this.bottomWall.setColor(c);
+    }
+
     public Window3D(float[][] vertices, Orientation orientation) {
         super(vertices);
 

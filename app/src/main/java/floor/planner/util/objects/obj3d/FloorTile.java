@@ -11,7 +11,8 @@ public class FloorTile extends Cube {
         this.scaleCube();
 
         // default grey
-        this.mat = new Lambertian(new Color(this.materialColor));
+        this.color = new Color(0.5, 0.5, 0.5);
+        this.mat = new Lambertian(new Color(this.color));
         this.initQuads();
     }
 

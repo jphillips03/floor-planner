@@ -24,6 +24,13 @@ public class Stairs3D extends Cube {
     /** List of cubes that represent each stair in list of stairs. */
     List<Cube> stairs;
 
+    @Override
+    public void setColor(Color c) {
+        for (Cube s : stairs) {
+            s.setColor(c);
+        }
+    }
+
     public Stairs3D(float[][] vertices, Orientation orientation) {
         super(vertices);
         this.orientation = orientation;

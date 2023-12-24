@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import floor.planner.constants.ObjectType;
 import floor.planner.constants.Orientation;
 import floor.planner.models.Floor;
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Matrix;
 import floor.planner.util.math.Point2D;
 import floor.planner.util.objects.obj2d.Disk;
@@ -169,6 +170,7 @@ public class FloorService {
     ) {
         DrawableElement2D[] elements2D;
         DrawableElement3D[] elements3D;
+        Color color;
         switch (objectType) {
             case EAST_WEST_WALL:
                 elements2D = new DrawableElement2D[] {
@@ -337,6 +339,15 @@ public class FloorService {
                 break;
         }
 
+        if (elements2D.length > 0) {
+            color = elements2D[0].getColor();
+
+            for (DrawableElement3D element : elements3D) {
+                if (!(element instanceof FloorTile)) {
+                    element.setColor(color);
+                }
+            }
+        }
         return new Elements(elements2D, elements3D);
     }
 
