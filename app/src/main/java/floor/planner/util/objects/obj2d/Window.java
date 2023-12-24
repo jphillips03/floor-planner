@@ -6,6 +6,7 @@ import java.util.List;
 import com.jogamp.opengl.GL2;
 
 import floor.planner.constants.Orientation;
+import floor.planner.util.math.Color;
 import floor.planner.util.math.Point2D;
 
 /**
@@ -20,6 +21,12 @@ public class Window extends DrawableElement2D {
     private List<Point2D> triangle2Points;
     /** The wall that helps orient the window. */
     private Wall wall;
+
+    @Override
+    public void setColor(Color color) {
+        super.setColor(color);
+        this.wall.setColor(color);
+    }
 
     public Window(Point2D point, Orientation orientation, Wall wall) {
         super(point, orientation);

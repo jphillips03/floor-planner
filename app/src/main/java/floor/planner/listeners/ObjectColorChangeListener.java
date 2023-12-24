@@ -38,7 +38,8 @@ public class ObjectColorChangeListener implements ChangeListener<Number> {
         if (!this.programmaticChange && oldType != null && !oldType.equals(newType)) {
             DrawableElement2D[] elements = this.floor.getElements()[this.row][this.col];
             for (int i = 0; i < elements.length; i++) {
-                Color color = this.floor.getElements()[this.row][this.col][i].getColor();
+                DrawableElement2D element = this.floor.getElements()[this.row][this.col][i];
+                Color color = element.getColor();
                 switch(this.colorIndex) {
                     case 0:
                         color.setRed(newType.floatValue());
@@ -50,6 +51,7 @@ public class ObjectColorChangeListener implements ChangeListener<Number> {
                         color.setBlue(newType.floatValue());
                         break;
                 }
+                element.setColor(color);
             }
         }
     }
