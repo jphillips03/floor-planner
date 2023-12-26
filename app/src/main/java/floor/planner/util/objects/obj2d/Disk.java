@@ -22,7 +22,7 @@ public class Disk extends DrawableElement2D {
 
     @Override
     public void draw(GL2 gl) {
-        gl.glColor3f(1f, 0f, 0f);
+        gl.glColor3f(this.color.getRed(), this.color.getGreen(), this.color.getBlue());
         this.drawUtil(gl, this.radius);
     }
 
