@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.controllers.MainController;
-import floor.planner.controllers.Menu2DController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -25,7 +24,6 @@ public class Bootstrap extends Application {
     private JOGLConfig joglConfig;
     private BorderPane parent;
     private MainController main;
-    private Menu2DController menu2d;
 
     @Override
     public void start(Stage stage) {
@@ -48,13 +46,6 @@ public class Bootstrap extends Application {
             FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
             this.parent = loader.load();
             this.main = (MainController) loader.getController();
-
-            // load 2D menu controller
-            loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("menu2d.fxml"));
-            loader.load(); // we don't need the BorderPane here, just load...
-            this.menu2d = (Menu2DController) loader.getController();
-            this.menu2d.getBorderPane();
-            this.main.setMenu2DController(this.menu2d);
         } catch (IOException ex) {
             logger.error("Fatal Error: Issue loading main panel; Shutting down...", ex);
             throw ex;
@@ -84,7 +75,6 @@ public class Bootstrap extends Application {
         stage.show();
 
         this.main.setStage(stage);
-        this.main.setScene(scene);
         this.main.setWindow(scene.getWindow());
 
         // setup listeners for screen resizing
@@ -118,10 +108,6 @@ public class Bootstrap extends Application {
 
     private void initializeControllerConfigs() {
         this.main.setGLWindow(this.joglConfig.getGlWindow());
-
-        Platform.runLater(() -> {
-            this.menu2d.setWindow(this.main.getWindow());
-        });
     }
 
     @Override

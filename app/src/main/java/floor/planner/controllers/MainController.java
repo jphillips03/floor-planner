@@ -43,14 +43,12 @@ public class MainController implements Initializable {
     private File currentFile;
     private FloorPlan currentFloorPlan;
     private GLWindow glWindow;
-    private Scene scene;
     private Stage stage;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
     private GLEventListener2D eventListener2D;
     private GLEventListener3D eventListener3D;
     private KeyListenerMove3D keyListener3D;
-    private Menu2DController menu2DController;
 
     @FXML
     ElementController elementController;
@@ -161,7 +159,6 @@ public class MainController implements Initializable {
         if (floorPlan.isPresent()) {
             this.currentFloorPlan = floorPlan.get();
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
-            this.menu2DController.setCurrentFloorPlan(currentFloorPlan);
             this.init2D();
         }
     }
@@ -184,7 +181,6 @@ public class MainController implements Initializable {
             String contents = FileUtil.read(currentFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
-            this.menu2DController.setCurrentFloorPlan(currentFloorPlan);
             this.init2D();
         }
     }
@@ -267,14 +263,6 @@ public class MainController implements Initializable {
 
     public void setGLWindow(GLWindow window) {
         this.glWindow = window;
-    }
-
-    public void setMenu2DController(Menu2DController controller) {
-        this.menu2DController = controller;
-    }
-
-    public void setScene(Scene scene) {
-        this.scene = scene;
     }
 
     public void setStage(Stage stage) {
