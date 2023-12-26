@@ -16,18 +16,14 @@ public class Wall3D extends Cube {
     public Wall3D(float[][] vertices, Orientation orientation) {
         super(vertices);
         this.orientation = orientation;
-        this.color = new Color(0, 0, 1);
-        this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
         this.scaleCube();
-        this.mat = new Lambertian(new Color(this.materialColor));
+        this.mat = new Lambertian(this.color);
         this.initQuads();
     }
 
     public Wall3D(float[][] vertices, Orientation orientation, Material mat) {
         super(vertices);
         this.orientation = orientation;
-        this.color = new Color(0, 0, 1);
-        this.materialColor = new float[]{ 0.0f, 0.1f, 0.7f, 1f };
         this.scaleCube();
         this.mat = mat;
         this.initQuads();

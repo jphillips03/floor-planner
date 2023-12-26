@@ -14,7 +14,6 @@ import floor.planner.util.math.Vector;
 import floor.planner.util.raytracer.Aabb;
 import floor.planner.util.raytracer.intersectable.IntersectRecord;
 import floor.planner.util.raytracer.material.Lambertian;
-import floor.planner.util.raytracer.material.Material;
 
 public class Cylinder extends DrawableElement3D {
     private static final Logger logger = LoggerFactory.getLogger(Cylinder.class);
@@ -25,16 +24,20 @@ public class Cylinder extends DrawableElement3D {
     private Vector center;
     private float x;
     private float y;
-    private Material mat;
+
+    @Override
+    public void setColor(Color c) {
+        super.setColor(c);
+        if (this.mat instanceof Lambertian) {
+            this.mat = new Lambertian(c);
+        }
+    }
 
     public Cylinder(float x, float y) {
         this.x = x + 0.5f; // move to middle of tile where cylinder drawn
         this.y = y + 0.5f; // move to middle of tile where cylinder drawn
         this.center = new Vector(this.x, this.y, 0.5);
-        // default to red for now...
-        this.color = new Color(1f, 0f, 0f);
-        this.materialColor = new float[]{ 0.0f, 0.7f, 0.0f, 1f };
-        this.mat = new Lambertian(new Color(this.materialColor));
+        this.mat = new Lambertian(this.color);
         this.boundingBox = new Aabb();
     }
 

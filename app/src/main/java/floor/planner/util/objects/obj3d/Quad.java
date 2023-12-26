@@ -26,6 +26,10 @@ public class Quad extends Intersectable {
     private Vector w;
     private double area;
 
+    public void setMaterial(Material m) {
+        this.mat = m;
+    }
+
     public Quad(Point3D q, Vector u, Vector v, Material mat) {
         this.Q = q;
         this.u = u;

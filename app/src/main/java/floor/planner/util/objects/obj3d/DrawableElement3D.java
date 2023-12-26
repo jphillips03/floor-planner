@@ -11,9 +11,13 @@ import floor.planner.util.math.Vector;
 import floor.planner.util.objects.DrawableElement;
 import floor.planner.util.raytracer.Aabb;
 import floor.planner.util.raytracer.intersectable.Intersectable;
+import floor.planner.util.raytracer.material.Lambertian;
+import floor.planner.util.raytracer.material.Material;
+import floor.planner.util.raytracer.texture.SolidColor;
 
 public abstract class DrawableElement3D extends Intersectable implements DrawableElement {
     protected Color color;
+    protected Material mat;
 
     public Aabb boundingBox;
     public float[] materialColor = { 0.5f, 0.5f, 0.5f, 1.0f };
@@ -22,8 +26,9 @@ public abstract class DrawableElement3D extends Intersectable implements Drawabl
 
     public void setColor(Color c) {
         this.color = c;
-        // this.materialColor = c.getFloatValues();
-        // this.specularColor = c.getFloatValues();
+        if (this.mat instanceof Lambertian) {
+            this.mat = new Lambertian(new SolidColor(c));
+        }
     }
 
     public void drawPolygon(GL2 gl, List<float[]> points) {

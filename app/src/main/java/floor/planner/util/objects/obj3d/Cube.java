@@ -73,14 +73,18 @@ public class Cube extends DrawableElement3D {
     private Quad[] quads;
     private Point3D min;
     private Point3D max;
-    protected Material mat;
+
+    @Override
+    public void setColor(Color c) {
+        super.setColor(c);
+        for (Quad quad : quads) {
+            quad.setMaterial(this.mat);
+        }
+    }
 
     public Cube(float[][] vertices) {
         this.vertices = vertices;
-
-        // default to diffuse red for now...
-        this.color = new Color(1f, 0f, 0f);
-        this.mat = new Lambertian(new Color(Vector.random()));
+        this.mat = new Lambertian(this.color);
     }
 
     public Cube(float[][] vertices, Material mat) {

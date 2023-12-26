@@ -26,7 +26,6 @@ public class Sphere extends DrawableElement3D {
     // private double z;
     private double radius;
     private Vector center;
-    private Material mat;
 
     public Sphere(Vector pos, double radius, Material mat) {
         this.radius = radius;

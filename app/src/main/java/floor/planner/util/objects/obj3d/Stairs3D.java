@@ -34,9 +34,7 @@ public class Stairs3D extends Cube {
     public Stairs3D(float[][] vertices, Orientation orientation) {
         super(vertices);
         this.orientation = orientation;
-        this.color = new Color(0, 0, 1);
-        this.materialColor = new float[]{ 0.7f, 0f, 0f, 1f };
-        this.mat = new Lambertian(new Color(this.materialColor));
+        this.mat = new Lambertian(this.color);
         this.initStairs();
     }
 
@@ -44,7 +42,7 @@ public class Stairs3D extends Cube {
      * Initializes the list of cubes to be rendered for each stair.
      */
     private void initStairs() {
-        this.color = new Color(0, 0, 1f);
+        //this.color = new Color(0, 0, 1f);
         this.stairs = new ArrayList<Cube>();
         if (this.orientation.equals(Orientation.EAST_WEST)) {
             for (float i = 0; i <= 0.875; i += 0.125) {
