@@ -23,6 +23,52 @@ public enum ObjectType {
         this.value = val;
     }
 
+    public String toString() {
+        String s;
+        switch(this) {
+            case EAST_WEST_WALL:
+                s = "East-West Wall";
+                break;
+            case NORTH_SOUTH_WALL:
+                s = "North-South Wall";
+                break;
+            case CORNER_WALL:
+                s = "Corner Wall";
+                break;
+            case WINDOW:
+                s = "Window";
+                break;
+            case EAST_WEST_STAIRS:
+                s = "East-West Stairs";
+                break;
+            case WEST_EAST_STAIRS:
+                s = "West-East Stairs";
+                break;
+            case NORTH_SOUTH_STAIRS:
+                s = "North-South Stairs";
+                break;
+            case SOUTH_NORTH_STAIRS:
+                s = "South-North Stairs";
+                break;
+            case COLUMN:
+                s = "Column";
+                break;
+            case POLE:
+                s = "Pole";
+                break;
+            case HOLE:
+                s = "Hole";
+                break;
+            case SPHERE:
+                s = "Sphere";
+                break;
+            default:
+                s = "Empty Space";
+                break;
+        }
+        return s + " (\"" + this.value + "\")";
+    }
+
     /**
      * Returns the enum based on given string value (if it exists), otherwise
      * the default EMPTY_SPACE is returned.
