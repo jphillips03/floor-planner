@@ -15,6 +15,16 @@ public class Stairs extends DrawableElement2D {
     private float colorDelta;
     private Color colorStart;
 
+    @Override
+    public void setColor(Color c) {
+        if (this.orientation.equals(Orientation.EAST_WEST) || this.orientation.equals(Orientation.NORTH_SOUTH)) {
+            this.colorStart = this.color;
+        }
+        else {
+            this.colorStart = new Color(c.multiply(colorDelta));
+        }
+    }
+
     public Stairs (Point2D point, Orientation orientation) {
         super(point, orientation);
         if (this.orientation.equals(Orientation.EAST_WEST) || this.orientation.equals(Orientation.NORTH_SOUTH)) {
