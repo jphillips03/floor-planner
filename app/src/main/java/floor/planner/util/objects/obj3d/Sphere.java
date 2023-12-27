@@ -96,13 +96,13 @@ public class Sphere extends DrawableElement3D {
 
                 gl.glNormal3d(x * zr0, y * zr0, z0);
                 gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
-                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, this.getSpecular(), 0);
                 gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
                 gl.glVertex3d((radius * x * zr0) + this.center.getX(), (radius * y * zr0) + this.center.getY(), (radius * z0) + this.center.getZ());
 
                 gl.glNormal3d(x * zr1, y * zr1, z1);
                 gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
-                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, specularColor, 0);
+                gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, this.getSpecular(), 0);
                 gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
                 gl.glVertex3d((radius * x * zr1) + this.center.getX(), (radius * y * zr1) + this.center.getY(), (radius * z1) + this.center.getZ());
             }

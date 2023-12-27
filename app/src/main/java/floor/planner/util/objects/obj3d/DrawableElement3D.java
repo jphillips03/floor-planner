@@ -16,12 +16,13 @@ import floor.planner.util.raytracer.material.Material;
 import floor.planner.util.raytracer.texture.SolidColor;
 
 public abstract class DrawableElement3D extends Intersectable implements DrawableElement {
+    private float[] specularColor = { 1f, 1f, 1f, 1f };
+
     protected Color color;
     protected Material mat;
 
     public Aabb boundingBox;
     public float[] materialColor = { 0.5f, 0.5f, 0.5f, 1.0f };
-    public float[] specularColor = { 1f, 1f, 1f, 1f };
     public float[] shininess = { 5.0f }; // this is low apparently...
 
     public void setColor(Color c) {
@@ -29,6 +30,13 @@ public abstract class DrawableElement3D extends Intersectable implements Drawabl
         if (this.mat instanceof Lambertian) {
             this.mat = new Lambertian(new SolidColor(c));
         }
+    }
+
+    public float[] getSpecular() {
+        return this.specularColor;
+    }
+    public void setSpecular(float[] c) {
+        this.specularColor = c;
     }
 
     public void drawPolygon(GL2 gl, List<float[]> points) {

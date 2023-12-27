@@ -9,6 +9,7 @@ import floor.planner.listeners.ObjectTypeChangeListener;
 import floor.planner.models.Floor;
 import floor.planner.util.math.Color;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
+import floor.planner.util.objects.obj3d.DrawableElement3D;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
@@ -23,19 +24,32 @@ public class ElementController implements Initializable {
     private ObjectColorChangeListener objectRedChangeListener;
     private ObjectColorChangeListener objectGreenChangeListener;
     private ObjectColorChangeListener objectBlueChangeListener;
+    private ObjectColorChangeListener objectRedSpecularChangeListener;
+    private ObjectColorChangeListener objectGreenSpecularChangeListener;
+    private ObjectColorChangeListener objectBlueSpecularChangeListener;
+    private ObjectMaterialChangeListener objectMaterialChangeListener;
     private ObjectTypeChangeListener objectTypeChangeListener;
 
     @FXML
     private ComboBox<ObjectType> objectTypeCombo;
 
     @FXML
-    private Slider redSlider;
+    private Slider redSliderAmbientDiffuse;
 
     @FXML
-    private Slider greenSlider;
+    private Slider greenSliderAmbientDiffuse;
 
     @FXML
-    private Slider blueSlider;
+    private Slider blueSliderAmbientDiffuse;
+
+    @FXML
+    private Slider redSliderSpecular;
+
+    @FXML
+    private Slider greenSliderSpecular;
+
+    @FXML
+    private Slider blueSliderSpecular;
 
     public void setFloor(Floor f) {
         this.floor = f;
@@ -43,6 +57,9 @@ public class ElementController implements Initializable {
         this.objectRedChangeListener.setFloor(f);
         this.objectGreenChangeListener.setFloor(f);
         this.objectBlueChangeListener.setFloor(f);
+        this.objectRedSpecularChangeListener.setFloor(f);
+        this.objectGreenSpecularChangeListener.setFloor(f);
+        this.objectBlueSpecularChangeListener.setFloor(f);
     }
 
     @Override
@@ -53,13 +70,22 @@ public class ElementController implements Initializable {
         this.objectTypeCombo.getSelectionModel().selectedItemProperty().addListener(this.objectTypeChangeListener);
 
         this.objectRedChangeListener = new ObjectColorChangeListener(0);
-        this.redSlider.valueProperty().addListener(this.objectRedChangeListener);
+        this.redSliderAmbientDiffuse.valueProperty().addListener(this.objectRedChangeListener);
 
         this.objectGreenChangeListener = new ObjectColorChangeListener(1);
-        this.greenSlider.valueProperty().addListener(this.objectGreenChangeListener);
+        this.greenSliderAmbientDiffuse.valueProperty().addListener(this.objectGreenChangeListener);
 
         this.objectBlueChangeListener = new ObjectColorChangeListener(2);
-        this.blueSlider.valueProperty().addListener(this.objectBlueChangeListener);
+        this.blueSliderAmbientDiffuse.valueProperty().addListener(this.objectBlueChangeListener);
+
+        this.objectRedSpecularChangeListener = new ObjectColorChangeListener(0, true);
+        this.redSliderSpecular.valueProperty().addListener(this.objectRedSpecularChangeListener);
+
+        this.objectGreenSpecularChangeListener = new ObjectColorChangeListener(1, true);
+        this.greenSliderSpecular.valueProperty().addListener(this.objectGreenSpecularChangeListener);
+
+        this.objectBlueSpecularChangeListener = new ObjectColorChangeListener(2, true);
+        this.blueSliderSpecular.valueProperty().addListener(this.objectBlueSpecularChangeListener);
     }
 
     public void setElementDetails(int row, int col) {
@@ -96,17 +122,47 @@ public class ElementController implements Initializable {
 
         if (this.elements2D.length > 0) {
             Color color = this.elements2D[0].getColor();
-            this.redSlider.setValue(color.getRed());
-            this.greenSlider.setValue(color.getGreen());
-            this.blueSlider.setValue(color.getBlue());
+            this.redSliderAmbientDiffuse.setValue(color.getRed());
+            this.greenSliderAmbientDiffuse.setValue(color.getGreen());
+            this.blueSliderAmbientDiffuse.setValue(color.getBlue());
         } else {
-            this.redSlider.setValue(0);
-            this.greenSlider.setValue(0);
-            this.blueSlider.setValue(0);
+            this.redSliderAmbientDiffuse.setValue(0);
+            this.greenSliderAmbientDiffuse.setValue(0);
+            this.blueSliderAmbientDiffuse.setValue(0);
         }
 
         this.objectRedChangeListener.setProgrammaticChange(false);
         this.objectGreenChangeListener.setProgrammaticChange(false);
         this.objectBlueChangeListener.setProgrammaticChange(false);
+
+        this.setSpecularProperties();
+    }
+
+    private void setSpecularProperties() {
+        this.objectRedSpecularChangeListener.setCol(col);
+        this.objectRedSpecularChangeListener.setRow(row);
+        this.objectRedSpecularChangeListener.setProgrammaticChange(true);
+        this.objectGreenSpecularChangeListener.setCol(col);
+        this.objectGreenSpecularChangeListener.setRow(row);
+        this.objectGreenSpecularChangeListener.setProgrammaticChange(true);
+        this.objectBlueSpecularChangeListener.setCol(col);
+        this.objectBlueSpecularChangeListener.setRow(row);
+        this.objectBlueSpecularChangeListener.setProgrammaticChange(true);
+
+        DrawableElement3D[] elements = this.floor.getElements3D()[row][col];
+        if (elements.length > 0) {
+            float[] color = elements[0].getSpecular();
+            this.redSliderSpecular.setValue(color[0]);
+            this.greenSliderSpecular.setValue(color[1]);
+            this.blueSliderSpecular.setValue(color[2]);
+        } else {
+            this.redSliderSpecular.setValue(0);
+            this.greenSliderSpecular.setValue(0);
+            this.blueSliderSpecular.setValue(0);
+        }
+
+        this.objectRedSpecularChangeListener.setProgrammaticChange(false);
+        this.objectGreenSpecularChangeListener.setProgrammaticChange(false);
+        this.objectBlueSpecularChangeListener.setProgrammaticChange(false);
     }
 }

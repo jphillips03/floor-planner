@@ -3,22 +3,51 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
 
 <TitledPane
     text="Floor Plan Element"
     xmlns="http://javafx.com/javafx/8.0.171"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="floor.planner.controllers.ElementController">
-    <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
-        <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
-        <Label text="Red:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Slider fx:id="redSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-        <Label text="Green:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Slider fx:id="greenSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        <Label text="Blue:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-        <Slider fx:id="blueSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    </GridPane>
+    <VBox>
+        <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+            <Label text="Type:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <ComboBox fx:id="objectTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Type"/>
+            <Label text="Material:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <ComboBox fx:id="materialTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="1" promptText="Select Material"/>
+        </GridPane>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <tabs>
+                <Tab text="Diffuse/Ambient">
+                    <content>
+                        <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+                            <Label text="Red:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <Slider fx:id="redSliderAmbientDiffuse" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <Label text="Green:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <Slider fx:id="greenSliderAmbientDiffuse" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label text="Blue:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <Slider fx:id="blueSliderAmbientDiffuse" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        </GridPane>
+                    </content>
+                </Tab>
+                <Tab text="Specular">
+                    <content>
+                        <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+                            <Label text="Red:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <Slider fx:id="redSliderSpecular" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            <Label text="Green:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <Slider fx:id="greenSliderSpecular" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            <Label text="Blue:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <Slider fx:id="blueSliderSpecular" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        </GridPane>
+                    </content>
+                </Tab>
+            </tabs>
+        </TabPane>
+    </VBox>
 </TitledPane>
