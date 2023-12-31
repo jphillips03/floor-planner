@@ -3,8 +3,10 @@ package floor.planner.controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import floor.planner.constants.MaterialType;
 import floor.planner.constants.ObjectType;
 import floor.planner.listeners.ObjectColorChangeListener;
+import floor.planner.listeners.ObjectMaterialChangeListener;
 import floor.planner.listeners.ObjectTypeChangeListener;
 import floor.planner.models.Floor;
 import floor.planner.util.math.Color;
@@ -29,6 +31,9 @@ public class ElementController implements Initializable {
     private ObjectColorChangeListener objectBlueSpecularChangeListener;
     private ObjectMaterialChangeListener objectMaterialChangeListener;
     private ObjectTypeChangeListener objectTypeChangeListener;
+
+    @FXML
+    private ComboBox<MaterialType> materialTypeCombo;
 
     @FXML
     private ComboBox<ObjectType> objectTypeCombo;
@@ -60,10 +65,16 @@ public class ElementController implements Initializable {
         this.objectRedSpecularChangeListener.setFloor(f);
         this.objectGreenSpecularChangeListener.setFloor(f);
         this.objectBlueSpecularChangeListener.setFloor(f);
+        this.objectMaterialChangeListener.setFloor(f);
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        this.materialTypeCombo.getItems().setAll(MaterialType.values());
+
+        this.objectMaterialChangeListener = new ObjectMaterialChangeListener();
+        this.materialTypeCombo.getSelectionModel().selectedItemProperty().addListener(objectMaterialChangeListener);
+
         this.objectTypeCombo.getItems().setAll(ObjectType.values());
 
         this.objectTypeChangeListener = new ObjectTypeChangeListener(this);
@@ -104,6 +115,14 @@ public class ElementController implements Initializable {
         // reset programmaticChange to false so user can change element at
         // selected row x col using the combo box
         this.objectTypeChangeListener.setProgrammaticChange(false);
+
+        this.objectMaterialChangeListener.setProgrammaticChange(true);
+        this.objectMaterialChangeListener.setCol(col);
+        this.objectMaterialChangeListener.setRow(row);
+
+        this.materialTypeCombo.setValue(this.floor.getMaterialTypeByRowAndCol(row, col));
+
+        this.objectMaterialChangeListener.setProgrammaticChange(false);
 
         this.setElementColorDetails();
     }

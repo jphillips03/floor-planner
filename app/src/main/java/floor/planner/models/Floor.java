@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import floor.planner.constants.MaterialType;
 import floor.planner.constants.ObjectType;
 import floor.planner.util.math.Point3D;
 import floor.planner.util.math.Vector;
@@ -155,6 +156,15 @@ public class Floor {
         }
 
         return list;
+    }
+
+    public MaterialType getMaterialTypeByRowAndCol(int row, int col) {
+        DrawableElement3D[] elements = this.elements3D[row][col];
+        if (elements.length > 1) {
+            return elements[1].getMaterialType();
+        } else {
+            return null;
+        }
     }
 
     public Point3D getMidPoint() {

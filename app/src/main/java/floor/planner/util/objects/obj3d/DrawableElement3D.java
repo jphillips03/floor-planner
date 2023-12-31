@@ -4,6 +4,7 @@ import com.jogamp.opengl.GL2;
 
 import java.util.List;
 
+import floor.planner.constants.MaterialType;
 import floor.planner.util.math.Color;
 import floor.planner.util.math.MathUtil;
 import floor.planner.util.math.Point3D;
@@ -11,8 +12,11 @@ import floor.planner.util.math.Vector;
 import floor.planner.util.objects.DrawableElement;
 import floor.planner.util.raytracer.Aabb;
 import floor.planner.util.raytracer.intersectable.Intersectable;
+import floor.planner.util.raytracer.material.Dielectric;
+import floor.planner.util.raytracer.material.Isotropic;
 import floor.planner.util.raytracer.material.Lambertian;
 import floor.planner.util.raytracer.material.Material;
+import floor.planner.util.raytracer.material.Metal;
 import floor.planner.util.raytracer.texture.SolidColor;
 
 public abstract class DrawableElement3D extends Intersectable implements DrawableElement {
@@ -27,8 +31,14 @@ public abstract class DrawableElement3D extends Intersectable implements Drawabl
 
     public void setColor(Color c) {
         this.color = c;
-        if (this.mat instanceof Lambertian) {
+        if (this.mat instanceof Dielectric) {
+            this.mat = new Dielectric(1.5); // glass
+        } else if (this.mat instanceof Isotropic) {
+            this.mat = new Isotropic(this.color);
+        } else if (this.mat instanceof Lambertian) {
             this.mat = new Lambertian(new SolidColor(c));
+        } else {
+            this.mat = new Metal(this.color, 0);
         }
     }
 
@@ -37,6 +47,29 @@ public abstract class DrawableElement3D extends Intersectable implements Drawabl
     }
     public void setSpecular(float[] c) {
         this.specularColor = c;
+    }
+
+    public MaterialType getMaterialType() {
+        if (this.mat instanceof Dielectric) {
+            return MaterialType.DIELECTRIC;
+        } else if (this.mat instanceof Isotropic) {
+            return MaterialType.ISOTROPIC;
+        } else if (this.mat instanceof Lambertian) {
+            return MaterialType.LAMBERTIAN;
+        } else {
+            return MaterialType.METAL;
+        }
+    }
+    public void setMaterialType(MaterialType type) {
+        if (type.equals(MaterialType.DIELECTRIC)) {
+            this.mat = new Dielectric(1.5); // glass
+        } else if (type.equals(MaterialType.ISOTROPIC)) {
+            this.mat = new Isotropic(this.color);
+        } else if (type.equals(MaterialType.LAMBERTIAN)) {
+            this.mat = new Lambertian(new SolidColor(this.color));
+        } else {
+            this.mat = new Metal(this.color, 0);
+        }
     }
 
     public void drawPolygon(GL2 gl, List<float[]> points) {
