@@ -11,6 +11,8 @@
 
 <TitledPane
     text="Floor Plan Element"
+    styleClass="custom-pane"
+    stylesheets="@../styles/dark-theme.css"
     xmlns="http://javafx.com/javafx/8.0.171"
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="floor.planner.controllers.ElementController">

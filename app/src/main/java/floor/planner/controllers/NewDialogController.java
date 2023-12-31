@@ -35,7 +35,7 @@ public class NewDialogController extends Dialog<FloorPlan> {
 
     public NewDialogController(Window owner) {
         try {
-            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("newDialog.fxml"));
+            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("views/newDialog.fxml"));
             loader.setController(this);
             this.dialogPane = loader.load();
 

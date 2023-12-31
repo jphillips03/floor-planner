@@ -43,7 +43,7 @@ public class Bootstrap extends Application {
     private void initializeMainPanel() throws IOException {
         try {
             // load the main panel
-            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("main.fxml"));
+            FXMLLoader loader = new FXMLLoader(ClassLoader.getSystemClassLoader().getResource("views/main.fxml"));
             this.parent = loader.load();
             this.main = (MainController) loader.getController();
         } catch (IOException ex) {
