@@ -1,6 +1,5 @@
 package floor.planner.listeners;
 
-import floor.planner.models.Floor;
 import floor.planner.util.math.Color;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
 import floor.planner.util.objects.obj3d.DrawableElement3D;
@@ -8,41 +7,30 @@ import floor.planner.util.objects.obj3d.FloorTile;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
-public class ObjectColorChangeListener implements ChangeListener<Number> {
-    private boolean programmaticChange;
-    private Floor floor;
-    private int row;
-    private int col;
+public class ObjectColorChangeListener
+    extends ObjectChangeListener
+    implements ChangeListener<Number>
+{
     private int colorIndex;
     private boolean isSpecular;
 
     public ObjectColorChangeListener(int colorIndex) {
+        super();
         this.colorIndex = colorIndex;
         this.isSpecular = false;
     }
 
     public ObjectColorChangeListener(int colorIndex, boolean isSpecular) {
+        super();
         this.colorIndex = colorIndex;
         this.isSpecular = true;
     }
 
-    public void setFloor(Floor floor) {
-        this.floor = floor;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    public void setProgrammaticChange(boolean val) {
-        this.programmaticChange = val;
-    }
-
-    @Override public void changed(ObservableValue<? extends Number> selected, Number oldType, Number newType) {
+    @Override public void changed(
+        ObservableValue<? extends Number> selected,
+        Number oldType,
+        Number newType
+    ) {
         if (!this.programmaticChange && oldType != null && !oldType.equals(newType)) {
             if (this.isSpecular) {
                 this.setSpecular(newType);
