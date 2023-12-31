@@ -70,15 +70,8 @@
     <right>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
             <VBox>
-                <fx:include fx:id="element" source="element.fxml"/>
-                <TitledPane text="Light">
-                    <VBox>
-                        <Label text="Ambient Light:" />
-                        <Slider fx:id="redAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
-                        <Slider fx:id="greenAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
-                        <Slider fx:id="blueAmbientSlider" blockIncrement="0.1" majorTickUnit="0.5" max="1.0" minorTickCount="4" showTickLabels="true" showTickMarks="true" />
-                    </VBox>
-                </TitledPane>
+                <fx:include fx:id="element" source="element.fxml" />
+                <fx:include fx:id="light" source="light.fxml" />
             </VBox>
         </ScrollPane>
     </right>

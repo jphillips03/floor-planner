@@ -26,12 +26,21 @@ public class Light {
     public float[] getAmbient() {
         return this.ambient;
     }
+    public void setAmbient(float[] a) {
+        this.ambient = a;
+    }
 
     public float[] getDiffuse() {
         return this.diffuse;
     }
+    public void setDiffuse(float[] d) {
+        this.diffuse = d;
+    }
 
     public float[] getSpecular() {
         return this.specular;
+    }
+    public void setSpecular(float[] s) {
+        this.specular = s;
     }
 }

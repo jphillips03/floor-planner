@@ -54,6 +54,9 @@ public class MainController implements Initializable {
     ElementController elementController;
 
     @FXML
+    LightController lightController;
+
+    @FXML
     Button center3D;
 
     @FXML
@@ -180,6 +183,7 @@ public class MainController implements Initializable {
         if (currentFile != null) {
             String contents = FileUtil.read(currentFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
+            this.lightController.setLight(this.currentFloorPlan.getLight());
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
             this.init2D();
         }
