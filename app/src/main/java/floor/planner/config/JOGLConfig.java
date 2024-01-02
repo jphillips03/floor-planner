@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class JOGLConfig {
     private static final Logger logger = LoggerFactory.getLogger(JOGLConfig.class);
@@ -25,7 +26,7 @@ public class JOGLConfig {
     private NewtCanvasJFX glCanvas;
     private GLWindow glWindow;
     private double menuBarHeight = 30.0;
-    private StackPane openGLPane;
+    private VBox openGLPane;
     private double scaleX = 1.0;
     private double scaleY = 1.0;
     private Screen screen;
@@ -36,7 +37,7 @@ public class JOGLConfig {
         return this.glWindow;
     }
 
-    public StackPane getOpenGLPane() {
+    public VBox getOpenGLPane() {
         return this.openGLPane;
     }
 
@@ -62,7 +63,7 @@ public class JOGLConfig {
         this.windowHeight = height;
     }
 
-    public JOGLConfig(StackPane pane) throws IOException {
+    public JOGLConfig(VBox pane) throws IOException {
         this.openGLPane = pane;
     }
 

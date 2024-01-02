@@ -16,6 +16,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -63,7 +64,7 @@ public class MainController implements Initializable {
     BorderPane mainBox;
 
     @FXML
-    StackPane openGLPane;
+    VBox openGLPane;
 
     /** The menu for switching between dimensions. */
     @FXML
@@ -277,7 +278,7 @@ public class MainController implements Initializable {
         return this.menuBar;
     }
 
-    public StackPane getOpenGLPane() {
+    public VBox getOpenGLPane() {
         return this.openGLPane;
     }
 

@@ -53,18 +53,158 @@
 
 /*Main Screen CSS Styling starts here*/
 
-/*TablPane styling*/
+/* ComboBox */
+.combo-box{
+    -fx-background-radius: 0;
+    -fx-border-insets: 0 0 -1 0;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-border-color: #222222;
+    border-color: #222222;
+    -fx-background-color: #1A1A1A;
+    background-color: #1A1A1A;
+    -fx-min-height: 25;
+    min-height: 25;
+    -fx-pref-height: 25;
+    -fx-text-fill: -fx-primarytext;
+}
+.combo-box .list-cell:selected{
+    -fx-background-color: #1A1A1A;
+    background-color: #1A1A1A;
+    -fx-text-fill: -fx-primarytext;
+}
+.combo-box .list-cell:hover{
+    -fx-background-color:  #3E3E40;
+    background-color:  #3E3E40;
+}
+.combo-box:hover{
+    -fx-border-color: #222222;
+    border-color: #222222;
+    -fx-background-color: #3E3E40;
+    background-color: #3E3E40;
+    -fx-cursor: HAND;
+    cursor: HAND;
+}
+.combo-box:focused{
+    -fx-border-color: #4e4e4e;
+    border-color: #4e4e4e;
+    -fx-background-color: #1A1A1A;
+    background-color: #1A1A1A;
+}
+.combo-box-base > .arrow-button {
+    -fx-padding: 0 6;
+    padding: 0 6;
+}
+.combo-box-base > .arrow-button > .arrow {
+    -fx-background-color: #555555;
+    background-color: #555555;
+    -fx-background-insets: 0;
+    -fx-padding: 2 4;
+    padding: 2 4;
+    -fx-shape: "M 0 0 H 7 L 3.5 4 z";
+}
+.combo-box .list-view{
+    -fx-background-radius: 0;
+    -fx-background-color: #1A1A1A;
+    background-color: #1A1A1A;
+    -fx-border-width: 0;
+    border-width: 0;
+    -fx-padding: 1;
+    padding: 1;
+}
+
+/* Slider */
+.slider {
+    -fx-text-fill: -fx-primarytext;
+}
+.slider .axis {
+    -fx-tick-label-fill: -fx-primarytext;
+}
+.slider .track {
+    -fx-background-color:
+        -fx-shadow-highlight-color,
+        linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+        linear-gradient(to bottom,
+            derive(-fx-control-inner-background, -9%),
+            derive(-fx-control-inner-background, 0%),
+            derive(-fx-control-inner-background, -5%),
+            derive(-fx-control-inner-background, -12%)
+        );
+    -fx-background-insets: 0 0 -1 0, 0, 1;
+    -fx-background-radius: 0.25em, 0.25em, 0.166667em; /* 3 3 2 */
+    -fx-padding: 0.25em; /* 3 */
+}
+.slider .thumb{
+    -fx-background-color: #B1B1B1;
+    background-color: #B1B1B1;
+    -fx-background-radius: 6;
+    -fx-background-insets: 1 0 1 2;
+    -fx-border-radius: 6;
+    border-radius: 6;
+    -fx-border-insets: 1 0 1 2;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+    -fx-cursor: HAND;
+    cursor: HAND;
+}
+.slider:focused .thumb{
+    -fx-border-color: #4e4e4e;
+    border-color: #4e4e4e;
+}
+.slider .thumb:hover{
+    -fx-background-color: #3E3E40;
+    background-color: #3E3E40;
+}
+.slider .thumb:pressed{
+    -fx-background-color: #4e4e4e;
+    background-color: #4e4e4e;
+}
+
+/* Tab */
+.tab-pane{
+    -fx-background-color: #4e4e4e;
+    background-color: #4e4e4e;
+    -fx-border-width: 1;
+    border-width: 1;
+    -fx-border-color: transparent;
+    border-color: transparent;
+    -fx-background-insets: 25.5 0 0 0;
+}
 .tab{
-    -fx-background-color: -fx-primary;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    border-width: 0;
+    -fx-background-color: #3E3E40;
+    background-color: #3E3E40;
+    -fx-text-fill: #AFB1B3;
+    -fx-min-height: 20;
+    min-height: 20;
+    -fx-pref-height: 20;
 }
-
-.tab-header-background{
-    -fx-background-color: -fx-primary;
+.tab:selected{
+    -fx-background-color: #4e4e4e;
+    background-color: #4e4e4e;
 }
-
-.tab-label{
-    -fx-text-fill: -fx-secondary;
-    -fx-font-size: 10pt; 
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
+    border-color: transparent;
+}
+.tab .tab-close-button {
+    -fx-shape: "M19,6.41L17.59,5 12,10.59 6.41,5 5,6.41 10.59,12 5,17.59 6.41,19 12,13.41 17.59,19 19,17.59 13.41,12z";
+    -fx-background-color: #AFB1B3;
+    background-color: #AFB1B3;
+    -fx-background-insets: 2;
+    -fx-margin: 0 0 -5 2;
+    margin: 0 0 -5 2;
+    -fx-cursor: HAND;
+    cursor: HAND;
+}
+.tab .tab-label {
+    -fx-text-fill: #AFB1B3;
+}
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0.0;
+    opacity: 0.0;
 }
 
 
@@ -72,6 +212,36 @@
     -fx-pref-height : 60;
     -fx-max-height : 60;
 }
+
+/* TitledPane */
+.titled-pane{
+    -fx-text-fill: #AFB1B3;
+    -fx-label-padding: 0 0 -7 0;
+    -fx-background-color: transparent;
+    background-color: transparent;
+}
+.titled-pane .title{
+    -fx-background-color: #3E3E42;
+    background-color: #3E3E42;
+    -fx-background-radius: 0;
+    -fx-border-width: 0;
+    border-width: 0;
+    -fx-pref-height: 14;
+}
+.titled-pane .content{
+    -fx-background-color: #2D2D30;
+    background-color: #2D2D30;
+    -fx-border-color: #3E3E42;
+    border-color: #3E3E42;
+    -fx-border-radius: 0;
+    border-radius: 0;
+    -fx-border-width: 3 2 2 2;
+    border-width: 3 2 2 2;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: -fx-primary;
+ }
 
 .settings-tab{
     -fx-background-color: derive(-fx-primary, 10%);
