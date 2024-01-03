@@ -8,6 +8,7 @@ import floor.planner.constants.ObjectType;
 import floor.planner.listeners.ObjectColorChangeListener;
 import floor.planner.listeners.ObjectMaterialChangeListener;
 import floor.planner.listeners.ObjectTypeChangeListener;
+import floor.planner.listeners.SliderColorListener;
 import floor.planner.models.Floor;
 import floor.planner.util.math.Color;
 import floor.planner.util.objects.obj2d.DrawableElement2D;
@@ -82,21 +83,27 @@ public class ElementController implements Initializable {
 
         this.objectRedChangeListener = new ObjectColorChangeListener(0);
         this.redSliderAmbientDiffuse.valueProperty().addListener(this.objectRedChangeListener);
+        this.redSliderAmbientDiffuse.valueProperty().addListener(new SliderColorListener(this.redSliderAmbientDiffuse));
 
         this.objectGreenChangeListener = new ObjectColorChangeListener(1);
         this.greenSliderAmbientDiffuse.valueProperty().addListener(this.objectGreenChangeListener);
+        this.greenSliderAmbientDiffuse.valueProperty().addListener(new SliderColorListener(this.greenSliderAmbientDiffuse));
 
         this.objectBlueChangeListener = new ObjectColorChangeListener(2);
         this.blueSliderAmbientDiffuse.valueProperty().addListener(this.objectBlueChangeListener);
+        this.blueSliderAmbientDiffuse.valueProperty().addListener(new SliderColorListener(this.blueSliderAmbientDiffuse));
 
         this.objectRedSpecularChangeListener = new ObjectColorChangeListener(0, true);
         this.redSliderSpecular.valueProperty().addListener(this.objectRedSpecularChangeListener);
+        this.redSliderSpecular.valueProperty().addListener(new SliderColorListener(this.redSliderSpecular));
 
         this.objectGreenSpecularChangeListener = new ObjectColorChangeListener(1, true);
         this.greenSliderSpecular.valueProperty().addListener(this.objectGreenSpecularChangeListener);
+        this.greenSliderSpecular.valueProperty().addListener(new SliderColorListener(this.greenSliderSpecular));
 
         this.objectBlueSpecularChangeListener = new ObjectColorChangeListener(2, true);
         this.blueSliderSpecular.valueProperty().addListener(this.objectBlueSpecularChangeListener);
+        this.blueSliderSpecular.valueProperty().addListener(new SliderColorListener(this.blueSliderSpecular));
     }
 
     public void setElementDetails(int row, int col) {

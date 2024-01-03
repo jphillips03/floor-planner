@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Slider;
 import floor.planner.constants.LightType;
 import floor.planner.listeners.LightChangeListener;
+import floor.planner.listeners.SliderColorListener;
 import floor.planner.models.Light;
 
 public class LightController implements Initializable {
@@ -101,29 +102,38 @@ public class LightController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.ambientRedChangeListener = new LightChangeListener(0, LightType.AMBIENT);
         this.redSliderAmbient.valueProperty().addListener(this.ambientRedChangeListener);
+        this.redSliderAmbient.valueProperty().addListener(new SliderColorListener(this.redSliderAmbient));
 
         this.ambientGreenChangeListener = new LightChangeListener(1, LightType.AMBIENT);
         this.greenSliderAmbient.valueProperty().addListener(this.ambientGreenChangeListener);
+        this.greenSliderAmbient.valueProperty().addListener(new SliderColorListener(this.greenSliderAmbient));
 
         this.ambientBlueChangeListener = new LightChangeListener(2, LightType.AMBIENT);
         this.blueSliderAmbient.valueProperty().addListener(this.ambientBlueChangeListener);
+        this.blueSliderAmbient.valueProperty().addListener(new SliderColorListener(this.blueSliderAmbient));
 
         this.diffuseRedChangeListener = new LightChangeListener(0, LightType.DIFFUSE);
         this.redSliderDiffuse.valueProperty().addListener(this.diffuseRedChangeListener);
+        this.redSliderDiffuse.valueProperty().addListener(new SliderColorListener(this.redSliderDiffuse));
 
         this.diffuseGreenChangeListener = new LightChangeListener(1, LightType.DIFFUSE);
         this.greenSliderDiffuse.valueProperty().addListener(this.diffuseGreenChangeListener);
+        this.greenSliderDiffuse.valueProperty().addListener(new SliderColorListener(this.greenSliderDiffuse));
 
         this.diffuseBlueChangeListener = new LightChangeListener(2, LightType.DIFFUSE);
         this.blueSliderDiffuse.valueProperty().addListener(this.diffuseBlueChangeListener);
+        this.blueSliderDiffuse.valueProperty().addListener(new SliderColorListener(this.blueSliderDiffuse));
 
         this.specularRedChangeListener = new LightChangeListener(0, LightType.SPECULAR);
         this.redSliderSpecular.valueProperty().addListener(this.specularRedChangeListener);
+        this.redSliderSpecular.valueProperty().addListener(new SliderColorListener(this.redSliderSpecular));
 
         this.specularGreenChangeListener = new LightChangeListener(1, LightType.SPECULAR);
         this.greenSliderSpecular.valueProperty().addListener(this.specularGreenChangeListener);
+        this.greenSliderSpecular.valueProperty().addListener(new SliderColorListener(this.greenSliderSpecular));
 
         this.specularBlueChangeListener = new LightChangeListener(2, LightType.SPECULAR);
         this.blueSliderSpecular.valueProperty().addListener(this.specularBlueChangeListener);
+        this.blueSliderSpecular.valueProperty().addListener(new SliderColorListener(this.blueSliderSpecular));
     }
 }

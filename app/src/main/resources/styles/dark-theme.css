@@ -115,24 +115,17 @@
 
 /* Slider */
 .slider {
+    -default-track-color: -fx-control-inner-background;
     -fx-text-fill: -fx-primarytext;
+    -track-color: -default-track-color;
 }
 .slider .axis {
     -fx-tick-label-fill: -fx-primarytext;
 }
 .slider .track {
-    -fx-background-color:
-        -fx-shadow-highlight-color,
-        linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-        linear-gradient(to bottom,
-            derive(-fx-control-inner-background, -9%),
-            derive(-fx-control-inner-background, 0%),
-            derive(-fx-control-inner-background, -5%),
-            derive(-fx-control-inner-background, -12%)
-        );
-    -fx-background-insets: 0 0 -1 0, 0, 1;
-    -fx-background-radius: 0.25em, 0.25em, 0.166667em; /* 3 3 2 */
-    -fx-padding: 0.25em; /* 3 */
+    -fx-background-color: -fx-shadow-highlight-color,
+          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+          -track-color;
 }
 .slider .thumb{
     -fx-background-color: #B1B1B1;
@@ -152,12 +145,12 @@
     border-color: #4e4e4e;
 }
 .slider .thumb:hover{
-    -fx-background-color: #3E3E40;
-    background-color: #3E3E40;
+    -fx-background-color: -fx-blue;
+    background-color: -fx-blue;
 }
 .slider .thumb:pressed{
-    -fx-background-color: #4e4e4e;
-    background-color: #4e4e4e;
+    -fx-background-color: -fx-blue;
+    background-color: -fx-blue;
 }
 
 /* Tab */
