@@ -53,7 +53,7 @@ Below is a screenshot of the JavaFX UI showing a loaded floor plan in 2D. The UI
 
 And the same floor plan in 3D.
 
-![3D view](images/3D-view.png)
+![3D view](images/3d-view.png)
 *3D View*
 
 ## Ray Traced Images
