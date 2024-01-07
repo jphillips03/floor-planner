@@ -2,9 +2,25 @@
 
 The FloorPlanner is a basic CAD program for creating and managing floor plans in 2D and 3D. Additionally users can generate a ray traced image of the current view in 3D. It is based on a set of programming assignments I had in one of my graduate school classes a long time ago in a city not to far away...
 
-## Technologies
+## Table of Contents
 
-The application is written using Java 17 and JOGL. The user interface is developed using JavaFX, and the 2D and 3D views of the floor plan are rendered using JOGL.
+* [Prerequisites](#prerequisites)
+* [Features](#features)
+* [Screenshots](#screenshots)
+* [App Structure](#app-structure)
+* [Author](#author)
+* [Acknowledgements](#acknowledgements)
+
+## Prerequisites
+
+The application is written using Java 17 and JOGL. The user interface is developed using JavaFX, and the 2D and 3D views of the floor plan are rendered using JOGL. The application is built using Gradle. Below is the list of technologies and the version used when developing the app.
+
+* Java version 17.0.9-oracle
+* Gradle version 8.0.2
+* JavaFX version 17.0.9
+* JOGL version 2.5.0
+
+> NOTE: I purposely did not go with the latest version of JOGL since the original program I wrote based on these requirements was done with JOGL 1, and I wanted something as close to that as possible.
 
 The ray trace code is based on the [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html) series. I worked through each of the books and implemented most of the functionality from there. I did skip some of the features contained in the book, like motion and volumes (i.e. smoke and fog) since these are not needed in the floor plan. Some of the worlds used in the series are available to generate from the "Ray Tracer" menu item. Selecting anything other than "3D Rendering" will generate the corresponding ray traced image from the series.
 
@@ -79,3 +95,43 @@ Below are images rendered from the Ray Tracing in One Weekend Series.
 
 ![cornell box metal](images/cornell-box-metal.png)
 *[_Ray Tracing: The Rest of Your Life_](https://raytracing.github.io/books/RayTracingTheRestOfYourLife.html) Cornell Box with reflections*
+
+## App Structure
+
+The main source code for the application is found in `src/main`. This directory is split into `java` and `resources` directories. All of the code is located under `java`, while `resources` contains CSS styles and FXML views associated with JavaFX controllers defined in the code. 
+
+### Java Code
+
+The heart of the app starts at `src/main/java/floor/planner`. This directory is split into multiple directories in my attempt to organize the code base. Coming from a lot of web frameworks I structured my app very similar to those that I've worked with. If you have worked with Groovy/Grails, Ruby on Rails, or maybe even some Java Spring projects you should be somewhat familiar with the layout. The directory structure is as follows.
+
+```bash
+src/main/
+├── java/floor/
+│   └── planner/
+│       ├── config
+│       ├── constants
+│       ├── controllers
+│       ├── listeners
+│       ├── models
+│       ├── services
+│       └── util/
+│           ├── jogl
+│           ├── math
+│           ├── objects
+│           └── raytracer
+└── resources
+```
+
+The `config` directory contains all code needed to configure and intialize the app, included JavaFX and JOGL. The `constants` directory contains `enum` values used in the application. `controllers` contains all of the JavaFX controllers associated with the views for the app. `listeners` contains custom JavaFX change listeners for the fields defined in the right pane of the application for controlling things like element type and material, colors, and lighting. The `models` directory contains the main models used by the application (i.e. camera, floor, floor plan, and light). The `services` directory contains classes for handling the business logic needed for the application. Things like initializing a floor plan, or initializing scenes used by the RTIOW series when generating ray traced images.
+
+The `util` directory is further broken down to separate out classes associated with JOGL, ray tracing, different types of objects used in the floor plan (2D and 3D), as well as a general math directory which contains custom implementations of things like Vector, Matrix, Point3D, etc. I'm not going to go through each of the directories here as they are futher split themselves, but I think most of the directories and structure here is fairly self explanatory if you are familiar with any of the technologies used.
+
+## Author
+
+* **[Jonathan Phillips]** - (https://github.com/jphillips03)
+
+## Acknowledgements
+
+This project has been a long time coming (in the sense that I've been meaning to work on it for a while now). The original project this was based on was probably one of the hardest programming challenges I tackled. I never got the original program working 100%, and that has plagued me over the years, which is why I've wanted to take up the challenge again and make a better version. Not to try to get credit for it, but for my own satisfaction. While this project is still not perfect (there are definitely still some bugs), it is far better than the original one I submitted. I am much happier with the GUI layout, the functionality, structure, and overall code.
+
+Also, I'm pretty sure I would never have completed the ray tracing portion of the project had I not stumbled upon the [_Ray Tracing in One Weekend Series_](https://raytracing.github.io/). That was an invaluable resource with great explanations and full code examples. I did have to translate the code from C++ to Java, which was somewhat painful as it's been over 20 years since I've looked at any C++ code. But since the original project I wrote was in Java, I felt the need to re-write it in Java again. Big thanks to the authors of the series though, for making a great set of books, and for make them free and available to all!
