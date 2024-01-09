@@ -135,5 +135,19 @@ public class LightController implements Initializable {
         this.specularBlueChangeListener = new LightChangeListener(2, LightType.SPECULAR);
         this.blueSliderSpecular.valueProperty().addListener(this.specularBlueChangeListener);
         this.blueSliderSpecular.valueProperty().addListener(new SliderColorListener(this.blueSliderSpecular));
+
+        this.setDisableControls(true);
+    }
+
+    public void setDisableControls(boolean disable) {
+        this.redSliderAmbient.setDisable(disable);
+        this.greenSliderAmbient.setDisable(disable);
+        this.blueSliderAmbient.setDisable(disable);
+        this.redSliderDiffuse.setDisable(disable);
+        this.greenSliderDiffuse.setDisable(disable);
+        this.blueSliderDiffuse.setDisable(disable);
+        this.redSliderSpecular.setDisable(disable);
+        this.greenSliderSpecular.setDisable(disable);
+        this.blueSliderSpecular.setDisable(disable);
     }
 }

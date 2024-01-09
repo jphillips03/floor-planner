@@ -104,6 +104,19 @@ public class ElementController implements Initializable {
         this.objectBlueSpecularChangeListener = new ObjectColorChangeListener(2, true);
         this.blueSliderSpecular.valueProperty().addListener(this.objectBlueSpecularChangeListener);
         this.blueSliderSpecular.valueProperty().addListener(new SliderColorListener(this.blueSliderSpecular));
+
+        this.setDisableControls(true);
+    }
+
+    public void setDisableControls(boolean disable) {
+        this.materialTypeCombo.setDisable(disable);
+        this.objectTypeCombo.setDisable(disable);
+        this.redSliderAmbientDiffuse.setDisable(disable);
+        this.greenSliderAmbientDiffuse.setDisable(disable);
+        this.blueSliderAmbientDiffuse.setDisable(disable);
+        this.redSliderSpecular.setDisable(disable);
+        this.greenSliderSpecular.setDisable(disable);
+        this.blueSliderSpecular.setDisable(disable);
     }
 
     public void setElementDetails(int row, int col) {

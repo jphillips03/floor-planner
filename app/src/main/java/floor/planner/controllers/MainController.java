@@ -184,6 +184,8 @@ public class MainController implements Initializable {
         if (currentFile != null) {
             String contents = FileUtil.read(currentFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
+            this.elementController.setDisableControls(false);
+            this.lightController.setDisableControls(false);
             this.lightController.setLight(this.currentFloorPlan.getLight());
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
             this.init2D();
