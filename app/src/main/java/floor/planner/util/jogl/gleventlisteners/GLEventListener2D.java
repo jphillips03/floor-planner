@@ -21,6 +21,14 @@ public class GLEventListener2D implements GLEventListener {
     private GLU glu;
     private FloorPlan floorPlan;
 
+    public void setSelectedCol(int c) {
+        this.drawer.setSelectedCol(c);
+    }
+
+    public void setSelectedRow(int r) {
+        this.drawer.setSelectedRow(r);
+    }
+
     public GLEventListener2D(FloorPlan floorPlan, GLWindow glWindow) {
         this.drawer = new Drawer2D();
         this.floorPlan = floorPlan;

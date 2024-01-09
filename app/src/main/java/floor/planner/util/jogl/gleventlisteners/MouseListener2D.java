@@ -17,11 +17,13 @@ public class MouseListener2D implements MouseListener {
     private FloorPlan floorPlan;
     private GLWindow glWindow;
     private ElementController elementController;
+    private GLEventListener2D eventListener2D;
 
-    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, ElementController eController) {
+    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, ElementController eController, GLEventListener2D listener) {
         this.floorPlan = floorPlan;
         this.glWindow = glWindow;
         this.elementController = eController;
+        this.eventListener2D = listener;
     }
 
     @Override
@@ -56,6 +58,8 @@ public class MouseListener2D implements MouseListener {
 
         if (col >= 0 && row >= 0) {
             this.elementController.setElementDetails(row, col);
+            this.eventListener2D.setSelectedCol(col);
+            this.eventListener2D.setSelectedRow(row);
         }
     }
 

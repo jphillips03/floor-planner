@@ -209,7 +209,7 @@ public class MainController implements Initializable {
     private void init2D() {
         this.eventListener2D = new GLEventListener2D(this.currentFloorPlan, this.glWindow);
         this.glWindow.addGLEventListener(this.eventListener2D);
-        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.elementController));
+        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.elementController, this.eventListener2D));
     }
 
     @FXML
