@@ -126,39 +126,77 @@ public class ElementController implements Initializable {
         // otherwise the previous element selected (if it exists) will change
         // based on the new element selected when the combo box value is set
         // below...
-        this.objectTypeChangeListener.setProgrammaticChange(true);
-        this.objectTypeChangeListener.setCol(col);
-        this.objectTypeChangeListener.setRow(row);
+        this.setProgrammaticChange(true);
+        this.setChangeListenerProperties(row, col);
 
         this.objectTypeCombo.setValue(this.floor.getElementByRowAndCol(row, col));
+        this.materialTypeCombo.setValue(this.floor.getMaterialTypeByRowAndCol(row, col));
+        this.setAmbientDiffuseProperties();
+        this.setSpecularProperties();
 
-        // reset programmaticChange to false so user can change element at
-        // selected row x col using the combo box
-        this.objectTypeChangeListener.setProgrammaticChange(false);
+        // reset programmaticChange to false so user can change element
+        // properties using controls
+        this.setProgrammaticChange(false);
+    }
 
-        this.objectMaterialChangeListener.setProgrammaticChange(true);
+    private void setChangeListenerProperties(int row, int col) {
         this.objectMaterialChangeListener.setCol(col);
         this.objectMaterialChangeListener.setRow(row);
 
-        this.materialTypeCombo.setValue(this.floor.getMaterialTypeByRowAndCol(row, col));
+        this.objectTypeChangeListener.setCol(col);
+        this.objectTypeChangeListener.setRow(row);
 
-        this.objectMaterialChangeListener.setProgrammaticChange(false);
+        this.setColorChangeListenerProperties(row, col);
+    }
 
-        this.setElementColorDetails();
+    private void setColorChangeListenerProperties(int row, int col) {
+        this.objectRedSpecularChangeListener.setCol(col);
+        this.objectRedSpecularChangeListener.setRow(row);
+
+        this.objectGreenSpecularChangeListener.setCol(col);
+        this.objectGreenSpecularChangeListener.setRow(row);
+
+        this.objectBlueSpecularChangeListener.setCol(col);
+        this.objectBlueSpecularChangeListener.setRow(row);
+
+        this.objectRedChangeListener.setCol(col);
+        this.objectRedChangeListener.setRow(row);
+
+        this.objectGreenChangeListener.setCol(col);
+        this.objectGreenChangeListener.setRow(row);
+
+        this.objectBlueChangeListener.setCol(col);
+        this.objectBlueChangeListener.setRow(row);
     }
 
     public void setElementColorDetails() {
-        this.elements2D = this.floor.getElements()[row][col];
-        this.objectRedChangeListener.setCol(col);
-        this.objectRedChangeListener.setRow(row);
-        this.objectRedChangeListener.setProgrammaticChange(true);
-        this.objectGreenChangeListener.setCol(col);
-        this.objectGreenChangeListener.setRow(row);
-        this.objectGreenChangeListener.setProgrammaticChange(true);
-        this.objectBlueChangeListener.setCol(col);
-        this.objectBlueChangeListener.setRow(row);
-        this.objectBlueChangeListener.setProgrammaticChange(true);
+        this.setColorsProgrammaticChange(true);
+        this.setColorChangeListenerProperties(row, col);
 
+        this.setAmbientDiffuseProperties();
+        this.setSpecularProperties();
+
+        this.setColorsProgrammaticChange(false);
+    }
+
+    private void setProgrammaticChange(boolean change) {
+        this.objectMaterialChangeListener.setProgrammaticChange(change);
+        this.objectTypeChangeListener.setProgrammaticChange(change);
+        this.setColorsProgrammaticChange(change);
+    }
+
+    private void setColorsProgrammaticChange(boolean change) {
+        this.objectRedChangeListener.setProgrammaticChange(change);
+        this.objectGreenChangeListener.setProgrammaticChange(change);
+        this.objectBlueChangeListener.setProgrammaticChange(change);
+
+        this.objectRedSpecularChangeListener.setProgrammaticChange(change);
+        this.objectGreenSpecularChangeListener.setProgrammaticChange(change);
+        this.objectBlueSpecularChangeListener.setProgrammaticChange(change);
+    }
+
+    private void setAmbientDiffuseProperties() {
+        this.elements2D = this.floor.getElements()[row][col];
         if (this.elements2D.length > 0) {
             Color color = this.elements2D[0].getColor();
             this.redSliderAmbientDiffuse.setValue(color.getRed());
@@ -169,25 +207,9 @@ public class ElementController implements Initializable {
             this.greenSliderAmbientDiffuse.setValue(0);
             this.blueSliderAmbientDiffuse.setValue(0);
         }
-
-        this.objectRedChangeListener.setProgrammaticChange(false);
-        this.objectGreenChangeListener.setProgrammaticChange(false);
-        this.objectBlueChangeListener.setProgrammaticChange(false);
-
-        this.setSpecularProperties();
     }
 
     private void setSpecularProperties() {
-        this.objectRedSpecularChangeListener.setCol(col);
-        this.objectRedSpecularChangeListener.setRow(row);
-        this.objectRedSpecularChangeListener.setProgrammaticChange(true);
-        this.objectGreenSpecularChangeListener.setCol(col);
-        this.objectGreenSpecularChangeListener.setRow(row);
-        this.objectGreenSpecularChangeListener.setProgrammaticChange(true);
-        this.objectBlueSpecularChangeListener.setCol(col);
-        this.objectBlueSpecularChangeListener.setRow(row);
-        this.objectBlueSpecularChangeListener.setProgrammaticChange(true);
-
         DrawableElement3D[] elements = this.floor.getElements3D()[row][col];
         if (elements.length > 0) {
             float[] color = elements[0].getSpecular();
@@ -199,9 +221,5 @@ public class ElementController implements Initializable {
             this.greenSliderSpecular.setValue(0);
             this.blueSliderSpecular.setValue(0);
         }
-
-        this.objectRedSpecularChangeListener.setProgrammaticChange(false);
-        this.objectGreenSpecularChangeListener.setProgrammaticChange(false);
-        this.objectBlueSpecularChangeListener.setProgrammaticChange(false);
     }
 }
