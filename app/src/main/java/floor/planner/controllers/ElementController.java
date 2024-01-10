@@ -16,6 +16,7 @@ import floor.planner.util.objects.obj3d.DrawableElement3D;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.Slider;
 
 public class ElementController implements Initializable {
@@ -75,8 +76,12 @@ public class ElementController implements Initializable {
 
         this.objectMaterialChangeListener = new ObjectMaterialChangeListener();
         this.materialTypeCombo.getSelectionModel().selectedItemProperty().addListener(objectMaterialChangeListener);
+        // below ensures promptText rendered when combobox reset
+        this.materialTypeCombo.setButtonCell(new ListCellCustom<MaterialType>("Select Material"));
 
         this.objectTypeCombo.getItems().setAll(ObjectType.values());
+        // below ensures promptText rendered when combobox reset
+        this.objectTypeCombo.setButtonCell(new ListCellCustom<ObjectType>("Select Type"));
 
         this.objectTypeChangeListener = new ObjectTypeChangeListener(this);
         this.objectTypeCombo.getSelectionModel().selectedItemProperty().addListener(this.objectTypeChangeListener);
@@ -117,6 +122,27 @@ public class ElementController implements Initializable {
         this.redSliderSpecular.setDisable(disable);
         this.greenSliderSpecular.setDisable(disable);
         this.blueSliderSpecular.setDisable(disable);
+    }
+
+    public void resetElementDetails() {
+        this.row = -1;
+        this.col = -1;
+
+        this.setProgrammaticChange(true);
+        this.setChangeListenerProperties(-1, -1);
+        this.objectTypeCombo.setValue(null);
+        this.objectTypeCombo.getSelectionModel().clearSelection();
+        
+        this.materialTypeCombo.setValue(null);
+        this.materialTypeCombo.getSelectionModel().clearSelection();
+
+        this.redSliderAmbientDiffuse.setValue(0);
+        this.greenSliderAmbientDiffuse.setValue(0);
+        this.blueSliderAmbientDiffuse.setValue(0);
+
+        this.redSliderSpecular.setValue(0);
+        this.greenSliderSpecular.setValue(0);
+        this.blueSliderSpecular.setValue(0);
     }
 
     public void setElementDetails(int row, int col) {
@@ -221,5 +247,23 @@ public class ElementController implements Initializable {
             this.greenSliderSpecular.setValue(0);
             this.blueSliderSpecular.setValue(0);
         }
+    }
+
+    private class ListCellCustom<T> extends ListCell<T> {
+        private String promptText;
+
+        public ListCellCustom(String promptText) {
+            this.promptText = promptText;
+        }
+
+        @Override
+            protected void updateItem(T item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(this.promptText);
+                } else {
+                    setText(item.toString());
+                }
+            }
     }
 }

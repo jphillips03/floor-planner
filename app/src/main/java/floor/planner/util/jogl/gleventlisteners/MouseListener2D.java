@@ -60,6 +60,10 @@ public class MouseListener2D implements MouseListener {
             this.elementController.setElementDetails(row, col);
             this.eventListener2D.setSelectedCol(col);
             this.eventListener2D.setSelectedRow(row);
+        } else {
+            this.elementController.resetElementDetails();
+            this.eventListener2D.setSelectedCol(-1);
+            this.eventListener2D.setSelectedRow(-1);
         }
     }
 
