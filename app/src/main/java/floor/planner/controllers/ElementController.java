@@ -143,6 +143,8 @@ public class ElementController implements Initializable {
         this.redSliderSpecular.setValue(0);
         this.greenSliderSpecular.setValue(0);
         this.blueSliderSpecular.setValue(0);
+
+        this.setDisableControls(true);
     }
 
     public void setElementDetails(int row, int col) {
@@ -163,6 +165,8 @@ public class ElementController implements Initializable {
         // reset programmaticChange to false so user can change element
         // properties using controls
         this.setProgrammaticChange(false);
+
+        this.setDisableControls(false);
     }
 
     private void setChangeListenerProperties(int row, int col) {
