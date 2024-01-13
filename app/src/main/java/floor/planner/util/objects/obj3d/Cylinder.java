@@ -45,7 +45,7 @@ public class Cylinder extends DrawableElement3D {
     public void draw(GL2 gl) {
         // Draw tube...
         gl.glBegin(GL2.GL_QUAD_STRIP);
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
+            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, this.color.getFloatValues(), 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, this.getSpecular(), 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
             float angle = 0.0f;
@@ -67,7 +67,7 @@ public class Cylinder extends DrawableElement3D {
         // Draw the circle on top of tube
         gl.glBegin(GL2.GL_POLYGON);
             gl.glNormal3f(0f, 0f, 1f); // this is the top so normal should be up...
-            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, materialColor, 0);
+            gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_AMBIENT_AND_DIFFUSE, this.color.getFloatValues(), 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SPECULAR, this.getSpecular(), 0);
             gl.glMaterialfv(GL2.GL_FRONT_AND_BACK, GL2.GL_SHININESS, shininess, 0);
             angle = 0.0f;
