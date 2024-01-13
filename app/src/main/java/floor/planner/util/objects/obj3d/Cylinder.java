@@ -87,13 +87,10 @@ public class Cylinder extends DrawableElement3D {
         Interval rayT,
         IntersectRecord rec
     ) {
-        // TODO fix me: top of cylinder is not included in image right now
-        // because as is the entire quad where top sits is rendered instead of
-        // just the disk...
         // check if we intersected the top of cylinder first...
-        // if (this.intersectDisk(r, rayT, rec)) {
-        //     return true;
-        // }
+        if (this.intersectDisk(r, rayT, rec)) {
+            return true;
+        }
 
         double a = (r.getDirection().getX() * r.getDirection().getX()) + (r.getDirection().getY() * r.getDirection().getY());
         double b = 2 * r.getDirection().getX() * (r.getOrigin().getX() - this.center.getX()) + 2 * r.getDirection().getY() * (r.getOrigin().getY() - this.center.getY());
@@ -122,7 +119,7 @@ public class Cylinder extends DrawableElement3D {
         rec.setT(root);
         rec.setP(r.at(rec.getT()));
         Vector outwardNormal = new Vector(point.getX(), point.getY(), 0);
-        rec.setNormal(outwardNormal);
+        rec.setFaceNormal(r, outwardNormal);
         rec.setMaterial(this.mat);
         return true;
     }
@@ -136,11 +133,27 @@ public class Cylinder extends DrawableElement3D {
         float[] uf = new float[]{ this.x + 1, this.y - 0.5f, 1 };
         float[] vf = new float[]{ this.x - 0.5f, this.y + 1, 1 };
         Quad q = new Quad(originf, uf, vf, mat);
-        if (q.intersect(r, rayT, rec)) {
-            Vector p = r.getOrigin().add(r.getDirection().multiply(rec.getT()));
-            Vector v1 = p.subtract(new Vector(this.x, this.y, 1));
-            double d = Vector.dot(v1, v1);
-            return Math.sqrt(d) <= radius;
+        IntersectRecord qRec = new IntersectRecord();
+        if (q.intersect(r, rayT, qRec)) {
+            // if ray intersects quad where top of cylinder sits, then
+            // check if ray lies inside disk that represents top
+            Vector p = qRec.getP();
+            Vector v = p.subtract(this.center);
+            double d = Vector.dot(v, v);
+            if (Math.sqrt(d) <= radius) {
+                // only set the IntersectRecord properties if intersection is
+                // inside disk that represents top; otherwise we get the whole
+                // quad in the ray traced image...
+                rec.setP(qRec.getP());
+                rec.setT(qRec.getT());
+                rec.setU(qRec.getU());
+                rec.setV(qRec.getV());
+                rec.setMaterial(this.mat);
+                rec.setFaceNormal(r, qRec.getNormal());
+                return true;
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
