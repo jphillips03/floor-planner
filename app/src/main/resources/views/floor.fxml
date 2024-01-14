@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="floor.planner.controllers.FloorController">
+    <GridPane hgap="5" vgap="10" style="-fx-padding: 10 10 10 10;">
+        <Label text="Floor:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <ComboBox fx:id="floorCombo" GridPane.columnIndex="1" GridPane.rowIndex="0" promptText="Select Floor"/>
+    </GridPane>
+</VBox>

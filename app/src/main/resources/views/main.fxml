@@ -44,7 +44,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#onMenu3D" text="3 Dimensional Image" />
                     </items>
                 </Menu>
-                <Menu fx:id="floorMenu" mnemonicParsing="false" text="Floor"></Menu>
                 <Menu fx:id="rayTraceMenu" mnemonicParsing="false" text="Ray Trace">
                     <items>
                         <MenuItem fx:id="rayTraceFloorPlanMenuItem" mnemonicParsing="false" onAction="#onRayTrace" userData="THREE_D" text="3D Rendering" />
@@ -69,6 +68,11 @@
     <right>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER">
             <VBox>
+                <TitledPane text="Floor">
+                    <VBox>
+                        <fx:include fx:id="floor" source="floor.fxml" />
+                    </VBox>
+                </TitledPane>
                 <fx:include fx:id="element" source="element.fxml" />
                 <fx:include fx:id="light" source="light.fxml" />
             </VBox>

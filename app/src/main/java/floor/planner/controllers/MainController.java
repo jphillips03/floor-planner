@@ -55,6 +55,9 @@ public class MainController implements Initializable {
     ElementController elementController;
 
     @FXML
+    FloorController floorController;
+
+    @FXML
     LightController lightController;
 
     @FXML
@@ -69,10 +72,6 @@ public class MainController implements Initializable {
     /** The menu for switching between dimensions. */
     @FXML
     Menu dimensionMenu;
-
-    /** The menu for selecting Floor (used in 2D view). */
-    @FXML
-    Menu floorMenu;
 
     @FXML
     MenuBar menuBar;
@@ -89,11 +88,12 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.dimensionMenu.setDisable(true);
-        this.floorMenu.setDisable(true);
         this.center3D.setDisable(true);
         this.rayTraceFloorPlanMenuItem.setDisable(true);
         this.saveAsMenuItem.setDisable(true);
         this.saveMenuItem.setDisable(true);
+
+        this.floorController.setElementController(this.elementController);
     }
 
     /**
@@ -104,44 +104,10 @@ public class MainController implements Initializable {
      */
     private void initializeMenus(int floors) {
         this.dimensionMenu.setDisable(false);
-        this.initializeFloorsMenu(floors);
-
         this.center3D.setDisable(false);
         this.rayTraceFloorPlanMenuItem.setDisable(false);
         this.saveAsMenuItem.setDisable(false);
         this.saveMenuItem.setDisable(false);
-    }
-
-    /**
-     * Initializes the "Floors" menu with number of floors for the file.
-     *
-     * @param floors The number of floors to add to menu.
-     */
-    private void initializeFloorsMenu(int floors) {
-        // enable the menu (in case it was disabled) and clear existing items
-        this.floorMenu.setDisable(false);
-        this.floorMenu.getItems().clear();
-
-        // update current floor for ElementController
-        this.elementController.setFloor(this.currentFloorPlan.getFloor(0));
-
-        // add a MenuItem for each floor
-        for (int i = 0; i < floors; i++) {
-            int floor = i;
-            MenuItem menuItem = new MenuItem("Floor " + (i + 1));
-            this.floorMenu.getItems().add(menuItem);
-
-            // add handler for when menuItem is clicked
-            menuItem.setOnAction(e -> {
-                e.consume(); // stop further propagation of event
-
-                // just update the current floor so the GLEventListener2D
-                // display method renders the correct floor (since it uses the
-                // currentFloor property from FloorPlan)
-                this.currentFloorPlan.setCurrentFloor(floor);
-                this.elementController.setFloor(this.currentFloorPlan.getFloor(floor));
-            });
-        }
     }
 
     @FXML
@@ -162,6 +128,8 @@ public class MainController implements Initializable {
         Optional<FloorPlan> floorPlan = newDialog.showAndWait();
         if (floorPlan.isPresent()) {
             this.currentFloorPlan = floorPlan.get();
+            this.elementController.setFloor(this.currentFloorPlan.getFloor(0));
+            this.floorController.setCurrentFloorPlan(this.currentFloorPlan);
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
             this.init2D();
         }
@@ -184,6 +152,7 @@ public class MainController implements Initializable {
         if (currentFile != null) {
             String contents = FileUtil.read(currentFile);
             this.currentFloorPlan = this.floorPlanService.create(contents);
+            this.floorController.setCurrentFloorPlan(this.currentFloorPlan);
             this.lightController.setDisableControls(false);
             this.lightController.setLight(this.currentFloorPlan.getLight());
             this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
