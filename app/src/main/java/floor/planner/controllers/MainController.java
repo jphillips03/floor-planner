@@ -6,16 +6,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -28,6 +29,8 @@ import org.slf4j.LoggerFactory;
 import com.jogamp.newt.opengl.GLWindow;
 
 import floor.planner.constants.RayTraceTaskType;
+import floor.planner.models.CurrentFloorPlan;
+import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
@@ -41,8 +44,9 @@ public class MainController implements Initializable {
     /** The logger for the class. */
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
+    private CurrentFloorPlan currentFloorPlan;
     private File currentFile;
-    private FloorPlan currentFloorPlan;
+    private FloorPlan floorPlan;
     private GLWindow glWindow;
     private Stage stage;
     private Window window;
@@ -92,8 +96,6 @@ public class MainController implements Initializable {
         this.rayTraceFloorPlanMenuItem.setDisable(true);
         this.saveAsMenuItem.setDisable(true);
         this.saveMenuItem.setDisable(true);
-
-        this.floorController.setElementController(this.elementController);
     }
 
     /**
@@ -113,7 +115,7 @@ public class MainController implements Initializable {
     @FXML
     private void onCenter3D(ActionEvent event) {
         logger.info("Re-center image");
-        this.currentFloorPlan.getCamera().reset();
+        this.floorPlan.getCamera().reset();
     }
 
     /**
@@ -127,11 +129,7 @@ public class MainController implements Initializable {
         NewDialogController newDialog = new NewDialogController(this.stage);
         Optional<FloorPlan> floorPlan = newDialog.showAndWait();
         if (floorPlan.isPresent()) {
-            this.currentFloorPlan = floorPlan.get();
-            this.elementController.setFloor(this.currentFloorPlan.getFloor(0));
-            this.floorController.setCurrentFloorPlan(this.currentFloorPlan);
-            this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
-            this.init2D();
+            this.initFloorPlan(floorPlan.get());
         }
     }
 
@@ -151,13 +149,18 @@ public class MainController implements Initializable {
         currentFile = fileChooser.showOpenDialog(this.window);
         if (currentFile != null) {
             String contents = FileUtil.read(currentFile);
-            this.currentFloorPlan = this.floorPlanService.create(contents);
-            this.floorController.setCurrentFloorPlan(this.currentFloorPlan);
-            this.lightController.setDisableControls(false);
-            this.lightController.setLight(this.currentFloorPlan.getLight());
-            this.initializeMenus(this.currentFloorPlan.getFloorNumbers());
-            this.init2D();
+            this.initFloorPlan(this.floorPlanService.create(contents));
         }
+    }
+
+    private void initFloorPlan(FloorPlan floorPlan) {
+        this.floorPlan = floorPlan;
+        this.currentFloorPlan.setFloorPlan(floorPlan);
+        this.currentFloorPlan.setFloor(this.floorPlan.getFloor(0));
+        this.lightController.setDisableControls(false);
+        this.lightController.setLight(this.floorPlan.getLight());
+        this.initializeMenus(this.floorPlan.getFloorNumbers());
+        this.init2D();
     }
 
     @FXML
@@ -170,23 +173,23 @@ public class MainController implements Initializable {
     @FXML
     private void onMenuSave(ActionEvent event) {
         if (this.currentFile != null) {
-            this.floorPlanService.save(currentFile, this.currentFloorPlan);
+            this.floorPlanService.save(currentFile, this.floorPlan);
         }
     }
 
     private void init2D() {
-        this.eventListener2D = new GLEventListener2D(this.currentFloorPlan, this.glWindow);
+        this.eventListener2D = new GLEventListener2D(this.floorPlan, this.glWindow);
         this.glWindow.addGLEventListener(this.eventListener2D);
-        this.glWindow.addMouseListener(new MouseListener2D(this.currentFloorPlan, this.glWindow, this.elementController, this.eventListener2D));
+        this.glWindow.addMouseListener(new MouseListener2D(this.floorPlan, this.glWindow, this.elementController, this.eventListener2D));
     }
 
     @FXML
     private void onMenu3D(ActionEvent event) {
         this.glWindow.removeGLEventListener(this.eventListener2D);
-        this.eventListener3D = new GLEventListener3D(this.currentFloorPlan, this.glWindow);
+        this.eventListener3D = new GLEventListener3D(this.floorPlan, this.glWindow);
         this.glWindow.addGLEventListener(this.eventListener3D);
 
-        this.keyListener3D = new KeyListenerMove3D(this.currentFloorPlan);
+        this.keyListener3D = new KeyListenerMove3D(this.floorPlan);
         this.glWindow.addKeyListener(this.keyListener3D);
         this.glWindow.requestFocus(); // so key events are registered and fire
     }
@@ -219,7 +222,7 @@ public class MainController implements Initializable {
 
         RayTraceTask task;
         if (type.equals(RayTraceTaskType.THREE_D)) {
-            task = new RayTraceTask(this.currentFloorPlan, height, width, max, maxDepth, samplesPerPixel);
+            task = new RayTraceTask(this.floorPlan, height, width, max, maxDepth, samplesPerPixel);
         } else {
             task = new RayTraceTask(height, width, max, maxDepth, type, samplesPerPixel);
         }
@@ -234,6 +237,43 @@ public class MainController implements Initializable {
         progressBar.getDialogStage().show();
         Thread thread = new Thread(task);
         thread.start();
+    }
+
+    public void setCurrentFloorPlan(CurrentFloorPlan cfp) {
+        this.currentFloorPlan = cfp;
+        this.addCurrentFloorPlanListeners();
+    }
+
+    private void addCurrentFloorPlanListeners() {
+        // add FloorPlan property listener
+        FloorController floorController = this.floorController;
+        this.currentFloorPlan.floorPlanProperty().addListener(
+            new ChangeListener<FloorPlan>() {
+                @Override public void changed(
+                    ObservableValue<? extends FloorPlan> o,
+                    FloorPlan oldVal,
+                    FloorPlan newVal
+                ) {
+                    floorController.setCurrentFloorPlan(newVal);
+                    floorController.initializeFloorOptions(newVal.getFloorNumbers());
+                    floorController.setFloorComboDisable(false);
+                }
+            }
+        );
+
+        // add Floor property listener
+        ElementController elementController = this.elementController;
+        this.currentFloorPlan.floorProperty().addListener(
+            new ChangeListener<Floor>() {
+                @Override public void changed(
+                    ObservableValue<? extends Floor> o,
+                    Floor oldVal,
+                    Floor newVal
+                ) {
+                    elementController.setFloor(newVal);
+                }
+            }
+        );
     }
 
     public void setGLWindow(GLWindow window) {

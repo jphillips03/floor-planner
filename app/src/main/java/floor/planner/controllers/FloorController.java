@@ -20,6 +20,14 @@ public class FloorController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.floorCombo.setDisable(true);
+        this.floorChangeListener = new FloorChangeListener();
+        this.floorCombo.getSelectionModel().selectedItemProperty().addListener(this.floorChangeListener);
+    }
+
+    public void setFloorComboDisable(boolean val) {
+        if (this.floorCombo.isDisabled()) {
+            this.floorCombo.setDisable(false);
+        }
     }
 
     /**
@@ -27,7 +35,7 @@ public class FloorController implements Initializable {
      *
      * @param floors The number of floors to add to the combo box.
      */
-    private void initializeFloorOptions(int floors) {
+    public void initializeFloorOptions(int floors) {
         // generate options
         FloorOption[] options = new FloorOption[floors];
         for (int i = 0; i < floors; i++) {
@@ -39,15 +47,6 @@ public class FloorController implements Initializable {
     }
 
     public void setCurrentFloorPlan(FloorPlan cfp) {
-        if (this.floorCombo.isDisabled()) {
-            this.floorCombo.setDisable(false);
-        }
-        this.initializeFloorOptions(cfp.getFloorNumbers());
         this.floorChangeListener.setCurrentFloorPlan(cfp);
-    }
-
-    public void setElementController(ElementController eController) {
-        this.floorChangeListener = new FloorChangeListener(eController);
-        this.floorCombo.getSelectionModel().selectedItemProperty().addListener(this.floorChangeListener);
     }
 }

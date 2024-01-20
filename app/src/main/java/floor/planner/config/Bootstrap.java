@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import floor.planner.controllers.MainController;
+import floor.planner.models.CurrentFloorPlan;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -21,6 +22,7 @@ import javafx.stage.Stage;
 public class Bootstrap extends Application {
 
     private static Logger logger = LoggerFactory.getLogger(Bootstrap.class);
+    private CurrentFloorPlan currentFloorPlan;
     private JOGLConfig joglConfig;
     private BorderPane parent;
     private MainController main;
@@ -107,6 +109,8 @@ public class Bootstrap extends Application {
     }
 
     private void initializeControllerConfigs() {
+        this.currentFloorPlan = new CurrentFloorPlan();
+        this.main.setCurrentFloorPlan(currentFloorPlan);
         this.main.setGLWindow(this.joglConfig.getGlWindow());
     }
 
