@@ -14,7 +14,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class JOGLConfig {
