@@ -124,10 +124,18 @@ public class ElementController implements Initializable {
         this.blueSliderSpecular.setDisable(disable);
     }
 
-    public void resetElementDetails() {
-        this.row = -1;
-        this.col = -1;
+    public void setElementDetails(int row, int col) {
+        this.row = row;
+        this.col = col;
 
+        if (this.row < 0 || this.col < 0) {
+            this.resetElementDetails();
+        } else {
+            this.updateElementDetails();
+        }
+    }
+
+    private void resetElementDetails() {
         this.setProgrammaticChange(true);
         this.setChangeListenerProperties(-1, -1);
         this.objectTypeCombo.setValue(null);
@@ -147,9 +155,7 @@ public class ElementController implements Initializable {
         this.setDisableControls(true);
     }
 
-    public void setElementDetails(int row, int col) {
-        this.row = row;
-        this.col = col;
+    private void updateElementDetails() {
         // set programmaticChange to true so change listener does not fire,
         // otherwise the previous element selected (if it exists) will change
         // based on the new element selected when the combo box value is set

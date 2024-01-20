@@ -13,7 +13,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
@@ -34,10 +33,6 @@ import floor.planner.models.Floor;
 import floor.planner.models.FloorPlan;
 import floor.planner.services.FloorPlanService;
 import floor.planner.util.FileUtil;
-import floor.planner.util.jogl.event.KeyListenerMove3D;
-import floor.planner.util.jogl.gleventlisteners.GLEventListener2D;
-import floor.planner.util.jogl.gleventlisteners.GLEventListener3D;
-import floor.planner.util.jogl.gleventlisteners.MouseListener2D;
 import floor.planner.util.raytracer.RayTraceTask;
 
 public class MainController implements Initializable {
@@ -51,9 +46,9 @@ public class MainController implements Initializable {
     private Stage stage;
     private Window window;
     private FloorPlanService floorPlanService = new FloorPlanService();
-    private GLEventListener2D eventListener2D;
-    private GLEventListener3D eventListener3D;
-    private KeyListenerMove3D keyListener3D;
+
+    @FXML
+    DimensionController dimensionController;
 
     @FXML
     ElementController elementController;
@@ -73,10 +68,6 @@ public class MainController implements Initializable {
     @FXML
     VBox openGLPane;
 
-    /** The menu for switching between dimensions. */
-    @FXML
-    Menu dimensionMenu;
-
     @FXML
     MenuBar menuBar;
 
@@ -91,7 +82,6 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.dimensionMenu.setDisable(true);
         this.center3D.setDisable(true);
         this.rayTraceFloorPlanMenuItem.setDisable(true);
         this.saveAsMenuItem.setDisable(true);
@@ -105,7 +95,6 @@ public class MainController implements Initializable {
      * @param floors The number of floors to add to menu.
      */
     private void initializeMenus(int floors) {
-        this.dimensionMenu.setDisable(false);
         this.center3D.setDisable(false);
         this.rayTraceFloorPlanMenuItem.setDisable(false);
         this.saveAsMenuItem.setDisable(false);
@@ -160,14 +149,8 @@ public class MainController implements Initializable {
         this.lightController.setDisableControls(false);
         this.lightController.setLight(this.floorPlan.getLight());
         this.initializeMenus(this.floorPlan.getFloorNumbers());
-        this.init2D();
-    }
-
-    @FXML
-    private void onMenu2D(ActionEvent event) {
-        this.glWindow.removeGLEventListener(this.eventListener3D);
-        this.glWindow.removeKeyListener(this.keyListener3D);
-        this.init2D();
+        this.dimensionController.init2D();
+        this.dimensionController.enableControls();
     }
 
     @FXML
@@ -175,23 +158,6 @@ public class MainController implements Initializable {
         if (this.currentFile != null) {
             this.floorPlanService.save(currentFile, this.floorPlan);
         }
-    }
-
-    private void init2D() {
-        this.eventListener2D = new GLEventListener2D(this.floorPlan, this.glWindow);
-        this.glWindow.addGLEventListener(this.eventListener2D);
-        this.glWindow.addMouseListener(new MouseListener2D(this.floorPlan, this.glWindow, this.elementController, this.eventListener2D));
-    }
-
-    @FXML
-    private void onMenu3D(ActionEvent event) {
-        this.glWindow.removeGLEventListener(this.eventListener2D);
-        this.eventListener3D = new GLEventListener3D(this.floorPlan, this.glWindow);
-        this.glWindow.addGLEventListener(this.eventListener3D);
-
-        this.keyListener3D = new KeyListenerMove3D(this.floorPlan);
-        this.glWindow.addKeyListener(this.keyListener3D);
-        this.glWindow.requestFocus(); // so key events are registered and fire
     }
 
     @FXML
@@ -206,12 +172,10 @@ public class MainController implements Initializable {
         );
 
         int height = cornellBoxes.contains(type) ? 
-            600 : type.equals(RayTraceTaskType.THREE_D) ?
-            450 : 225; // this.glWindow.getHeight()
+            600 : this.glWindow.getHeight();
         int width = cornellBoxes.contains(type) ?
-            600 : type.equals(RayTraceTaskType.THREE_D) ?
-            800 : 400; // this.glWindow.getWidth()
-        int samplesPerPixel = 10;
+            600 : this.glWindow.getWidth();
+        int samplesPerPixel = 100;
         int sqrtSpp = (int) Math.sqrt(samplesPerPixel);
         int maxDepth = 50;
 
@@ -241,6 +205,7 @@ public class MainController implements Initializable {
 
     public void setCurrentFloorPlan(CurrentFloorPlan cfp) {
         this.currentFloorPlan = cfp;
+        this.dimensionController.setCurrentFloorPlan(cfp);
         this.addCurrentFloorPlanListeners();
     }
 
@@ -274,10 +239,41 @@ public class MainController implements Initializable {
                 }
             }
         );
+
+        // add row and col property listeners
+        this.currentFloorPlan.columnProperty().addListener(
+            new ChangeListener<Number>() {
+                @Override public void changed(
+                    ObservableValue<? extends Number> o,
+                    Number oldVal,
+                    Number newVal
+                ) {
+                    elementController.setElementDetails(
+                        currentFloorPlan.getRow(),
+                        newVal.intValue()
+                    );
+                }
+            }
+        );
+        this.currentFloorPlan.rowProperty().addListener(
+            new ChangeListener<Number>() {
+                @Override public void changed(
+                    ObservableValue<? extends Number> o,
+                    Number oldVal,
+                    Number newVal
+                ) {
+                    elementController.setElementDetails(
+                        newVal.intValue(),
+                        currentFloorPlan.getColumn()
+                    );
+                }
+            }
+        );
     }
 
     public void setGLWindow(GLWindow window) {
         this.glWindow = window;
+        this.dimensionController.setGLWindow(window);
     }
 
     public void setStage(Stage stage) {

@@ -38,12 +38,6 @@
                         <MenuItem mnemonicParsing="false" onAction="#onMenuOpenFile" text="Exit" />
                     </items>
                 </Menu>
-                <Menu fx:id="dimensionMenu" mnemonicParsing="false" text="Dimension">
-                    <items>
-                        <MenuItem mnemonicParsing="false" onAction="#onMenu2D" text="2 Dimensional Image" />
-                        <MenuItem mnemonicParsing="false" onAction="#onMenu3D" text="3 Dimensional Image" />
-                    </items>
-                </Menu>
                 <Menu fx:id="rayTraceMenu" mnemonicParsing="false" text="Ray Trace">
                     <items>
                         <MenuItem fx:id="rayTraceFloorPlanMenuItem" mnemonicParsing="false" onAction="#onRayTrace" userData="THREE_D" text="3D Rendering" />
@@ -70,6 +64,7 @@
             <VBox>
                 <TitledPane text="Floor">
                     <VBox>
+                        <fx:include fx:id="dimension" source="dimension.fxml" />
                         <fx:include fx:id="floor" source="floor.fxml" />
                     </VBox>
                 </TitledPane>

@@ -43,7 +43,10 @@ public class FloorController implements Initializable {
         }
 
         this.floorCombo.getItems().setAll(options);
+
+        this.floorChangeListener.setProgrammaticChange(true);
         this.floorCombo.setValue(options[0]);
+        this.floorChangeListener.setProgrammaticChange(false);
     }
 
     public void setCurrentFloorPlan(FloorPlan cfp) {

@@ -7,22 +7,19 @@ import com.jogamp.newt.event.MouseEvent;
 import com.jogamp.newt.event.MouseListener;
 import com.jogamp.newt.opengl.GLWindow;
 
-import floor.planner.controllers.ElementController;
-import floor.planner.models.FloorPlan;
+import floor.planner.models.CurrentFloorPlan;
 import floor.planner.util.objects.obj2d.ClippingPlane;
 
 public class MouseListener2D implements MouseListener {
     private static final Logger logger = LoggerFactory.getLogger(MouseListener2D.class);
 
-    private FloorPlan floorPlan;
+    private CurrentFloorPlan currentFloorPlan;
     private GLWindow glWindow;
-    private ElementController elementController;
     private GLEventListener2D eventListener2D;
 
-    public MouseListener2D(FloorPlan floorPlan, GLWindow glWindow, ElementController eController, GLEventListener2D listener) {
-        this.floorPlan = floorPlan;
+    public MouseListener2D(CurrentFloorPlan cfp, GLWindow glWindow, GLEventListener2D listener) {
+        this.currentFloorPlan = cfp;
         this.glWindow = glWindow;
-        this.elementController = eController;
         this.eventListener2D = listener;
     }
 
@@ -32,7 +29,7 @@ public class MouseListener2D implements MouseListener {
         int mouseY = e.getY();
         logger.info("Window Click: " + mouseX + " " + mouseY);
 
-        ClippingPlane plane = this.floorPlan.getClippingPlane();
+        ClippingPlane plane = this.currentFloorPlan.getFloorPlan().getClippingPlane();
         float tileWidth = (float) this.glWindow.getWidth() / plane.getWidth();
         float tileHeight = (float) this.glWindow.getHeight() / plane.getHeight();
         logger.info("Tile Width x Height: " + tileWidth + " " + tileHeight);
@@ -41,14 +38,14 @@ public class MouseListener2D implements MouseListener {
         float totalTilesY = this.glWindow.getHeight() / tileHeight;
         logger.info("Total Tiles (x, y): " + totalTilesX + ", " + totalTilesY);
 
-        float spaceAroundX = totalTilesX - this.floorPlan.getWidth();
-        float spaceAroundY = totalTilesY - this.floorPlan.getHeight();
+        float spaceAroundX = totalTilesX - this.currentFloorPlan.getFloorPlan().getWidth();
+        float spaceAroundY = totalTilesY - this.currentFloorPlan.getFloorPlan().getHeight();
         logger.info("Space Around (x, y): " + spaceAroundX + ", " + spaceAroundY);
 
         float planLeft = tileWidth * (spaceAroundX / 2);
-        float planRight = planLeft + (tileWidth * this.floorPlan.getWidth());
+        float planRight = planLeft + (tileWidth * this.currentFloorPlan.getFloorPlan().getWidth());
         float planBottom = tileHeight * (spaceAroundY / 2);
-        float planTop = planBottom + (tileHeight * this.floorPlan.getHeight());
+        float planTop = planBottom + (tileHeight * this.currentFloorPlan.getFloorPlan().getHeight());
         logger.info("Plan Starts Left x Bottom: " + planLeft + " " + planBottom);
         logger.info("Plan Ends Right x Top: " + planRight + " " + planTop);
 
@@ -57,11 +54,13 @@ public class MouseListener2D implements MouseListener {
         logger.info("Floor Plan Row x Col: " + row + " x " + col);
 
         if (col >= 0 && row >= 0) {
-            this.elementController.setElementDetails(row, col);
+            this.currentFloorPlan.setRow(row);
+            this.currentFloorPlan.setColumn(col);
             this.eventListener2D.setSelectedCol(col);
             this.eventListener2D.setSelectedRow(row);
         } else {
-            this.elementController.resetElementDetails();
+            this.currentFloorPlan.setRow(row);
+            this.currentFloorPlan.setColumn(col);
             this.eventListener2D.setSelectedCol(-1);
             this.eventListener2D.setSelectedRow(-1);
         }

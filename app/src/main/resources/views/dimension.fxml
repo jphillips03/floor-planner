@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+
+<GridPane hgap="5"
+    style="-fx-padding: 10 10 10 10;"
+    xmlns="http://javafx.com/javafx/8.0.171"
+    xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="floor.planner.controllers.DimensionController"
+    >
+    <fx:define>
+        <ToggleGroup fx:id="dimensionGroup" />
+    </fx:define>
+    <Label text="Dimension:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+    <RadioButton fx:id="radioButton2D"
+        GridPane.columnIndex="1"
+        GridPane.rowIndex="0"
+        onAction="#onDimensionClick"
+        userData="2d"
+        text="2D"
+        toggleGroup="$dimensionGroup"
+    >
+        <HBox.margin>
+            <Insets right="3.0"/>
+        </HBox.margin>
+    </RadioButton>
+    <RadioButton fx:id="radioButton3D"
+        GridPane.columnIndex="2"
+        GridPane.rowIndex="0"
+        onAction="#onDimensionClick"
+        userData="3d"
+        text="3D"
+        toggleGroup="$dimensionGroup"
+    >
+        <HBox.margin>
+            <Insets right="30.0"/>
+        </HBox.margin>
+    </RadioButton>
+</GridPane>

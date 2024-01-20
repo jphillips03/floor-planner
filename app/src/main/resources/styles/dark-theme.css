@@ -113,6 +113,11 @@
     padding: 1;
 }
 
+/* Radio button */
+.radio-button {
+    -fx-text-fill: -fx-primarytext;
+}
+
 /* Slider */
 .slider {
     -default-track-color: -fx-control-inner-background;
