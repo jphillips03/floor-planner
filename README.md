@@ -20,6 +20,12 @@ The application is written using Java 17 and JOGL. The user interface is develop
 * JavaFX version 17.0.9
 * JOGL version 2.5.0
 
+### Optional Software
+
+I utilize [SDKMAN!](https://sdkman.io) in my development environment for managing different versions of SDKs. I have included a `.sdkmanrc` file in the repo, so if you have SDKMAN! installed and have Java version 17.0.9-oracle installed, then you can run `sdk env` at the root of the application to initialize the correct Java version for the app (assuming this is not the default version of Java you are using in your environment).
+
+## Ray Tracer
+
 The ray trace code is based on the [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html) series. I worked through each of the books and implemented most of the functionality from there. I did skip some of the features contained in the book, like motion and volumes (i.e. smoke and fog) since these are not needed in the floor plan. Some of the worlds used in the series are available to generate from the "Ray Tracer" menu item. Selecting anything other than "3D Rendering" will generate the corresponding ray traced image from the series.
 
 > NOTE: This application was developed and tested on RHEL 9, and as such I've only included native JOGL files needed for linux. I do not expect this application to work as is on Windows or Mac since I have not included the native JOGL files needed for those operating systems.
@@ -34,13 +40,15 @@ Users can create new or load existing floor plans using the corresponding option
 
 ### 2D View
 
-The initial view of a floor plan (after one is created or loaded) will display a grid in 2D of the first floor (or the only floor if the plan is just 1 floor). When in 2D users can click any cell in the grid to change the element type in that cell as well as the material type using the corresponding drop down fields in the top right corner of the screen.
+The initial view of a floor plan (after one is created or loaded) will display a grid in 2D of the first floor (or the only floor if the plan is just 1 floor). When in 2D users can click any cell in the grid to change the element type in that cell as well as the material type using the corresponding drop down fields in the top right corner of the screen. The selected cell in the grid will "highlight" blue (instead of the default white).
+
+If there is more than 1 floor, users can switch between floors using the `Floor` drop down menu in the `Floor` panel on the right side of the app.
 
 > NOTE: Changing the material type will only effect the ray traced image.
 
 ### 3D View
 
-To switch between 2D and 3D simply click the corresponding option in the `Dimensions` menu. Once in 3D users can move around in the floor plan using the arrow buttons on their keyboard. They can also change the angle (up/down) of movement using the `pg up` and `pg dn` buttons. There is a `Re-Center` button which will bring the user back to the "bottom" of the floor plan.
+To switch between 2D and 3D simply click the corresponding radio button in the `Floor` panel on the right side of the app. Once in 3D users can move around in the floor plan using the arrow buttons on their keyboard. They can also change the angle (up/down) of movement using the `pg up` and `pg dn` buttons. There is a `Re-Center` button which will bring the user back to the "bottom" of the floor plan.
 
 ### Color and Lighting
 
@@ -130,6 +138,6 @@ The `util` directory is further broken down to separate out classes associated w
 
 ## Acknowledgements
 
-This project has been a long time coming (in the sense that I've been meaning to work on it for a while now). The original project this was based on was probably one of the hardest programming challenges I tackled. I never got the original program working 100%, and that has plagued me over the years, which is why I've wanted to take up the challenge again and make a better version. Not to try to get credit for it, but for my own satisfaction. While this project is still not perfect (there are definitely still some bugs), it is far better than the original one I submitted. I am much happier with the GUI layout, the functionality, structure, and overall code.
+This project has been a long time coming (in the sense that I've been meaning to work on it for a while now). The original project this was based on was probably one of the hardest programming challenges I tackled at the time. I never got the original program working 100%, and that has plagued me over the years, which is why I've wanted to take up the challenge again and make a better version. Not to try to get credit for it, but for my own satisfaction. While this project is still not perfect (there are definitely still some bugs), it is far better than the original one I submitted. I am much happier with the GUI layout, the functionality, structure, and overall code.
 
 Also, I'm pretty sure I would never have completed the ray tracing portion of the project had I not stumbled upon the [_Ray Tracing in One Weekend Series_](https://raytracing.github.io/). That was an invaluable resource with great explanations and full code examples. I did have to translate the code from C++ to Java, which was somewhat painful as it's been over 20 years since I've looked at any C++ code. But since the original project I wrote was in Java, I felt the need to re-write it in Java again. Big thanks to the authors of the series though, for making a great set of books, and for making them free and available to all!
