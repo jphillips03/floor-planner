@@ -48,6 +48,7 @@ public class FloorPlan {
      */
     public FloorPlan() {
         floors = new ArrayList<Floor>();
+        logger.debug("Floor plan initialized");
     }
 
     public FloorPlan(int numFloors, int height, int width) {

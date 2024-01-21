@@ -85,11 +85,13 @@ public class Cube extends DrawableElement3D {
     public Cube(float[][] vertices) {
         this.vertices = vertices;
         this.mat = new Lambertian(this.color);
+        logger.debug("3D Cube initialized");
     }
 
     public Cube(float[][] vertices, Material mat) {
         this.vertices = vertices;
         this.mat = mat;
+        logger.debug("3D Cube initialized");
     }
 
     public Cube(Point3D a, Point3D b, Material material) {
@@ -108,6 +110,7 @@ public class Cube extends DrawableElement3D {
             { (float) max.getX(), (float) max.getY(), (float) max.getZ() },
             { (float) max.getX(), (float) min.getY(), (float) max.getZ() }
         };
+        logger.debug("3D Cube initialized");
     }
 
     public Quad[] getQuads() {

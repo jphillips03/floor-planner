@@ -37,6 +37,7 @@ public class DimensionController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.radioButton2D.setDisable(true);
         this.radioButton3D.setDisable(true);
+        logger.debug("Initialization complete");
     }
 
     @FXML

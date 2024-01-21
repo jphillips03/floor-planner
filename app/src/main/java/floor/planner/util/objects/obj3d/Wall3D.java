@@ -18,6 +18,7 @@ public class Wall3D extends Cube {
         this.scaleCube();
         this.mat = new Lambertian(this.color);
         this.initQuads();
+        logger.debug("3D wall initialized");
     }
 
     public Wall3D(float[][] vertices, Orientation orientation, Material mat) {
@@ -26,6 +27,7 @@ public class Wall3D extends Cube {
         this.scaleCube();
         this.mat = mat;
         this.initQuads();
+        logger.debug("3D wall initialized");
     }
 
     /**

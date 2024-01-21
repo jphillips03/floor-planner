@@ -22,17 +22,20 @@ public class IntersectableList extends Intersectable {
     public IntersectableList() {
         this.elements = new ArrayList<Intersectable>();
         this.boundingBox = new Aabb();
+        logger.debug("Intersectable list for ray traced image initialized");
     }
 
     public IntersectableList(Intersectable element) {
         this.elements = new ArrayList<Intersectable>();
         this.boundingBox = new Aabb();
         this.add(element);
+        logger.debug("Intersectable list for ray traced image initialized");
     }
 
     public IntersectableList(List<Intersectable> elements, Aabb boundingBox) {
         this.elements = elements;
         this.boundingBox = boundingBox;
+        logger.debug("Intersectable list for ray traced image initialized");
     }
 
     public Aabb getBoundingBox() {

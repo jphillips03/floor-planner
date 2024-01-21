@@ -39,6 +39,7 @@ public class Cylinder extends DrawableElement3D {
         this.center = new Vector(this.x, this.y, 0.5);
         this.mat = new Lambertian(this.color);
         this.boundingBox = new Aabb();
+        logger.debug("3D cylinder initialized");
     }
 
     @Override

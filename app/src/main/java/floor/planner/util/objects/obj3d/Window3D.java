@@ -64,6 +64,7 @@ public class Window3D extends Cube {
         this.bottomWall = new Wall3D(bottomWallVertices, orientation, this.mat);
         this.topWall = new Wall3D(topWallVertices, orientation, this.mat);
         this.window = new Wall3D(windowVertices, orientation, new Dielectric(1.55));
+        logger.debug("3D window elements initialized");
     }
 
     @Override

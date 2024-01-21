@@ -58,7 +58,7 @@ public class RTIOWSeriesService {
         );
 
         IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
-
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world, lights);
     }
 
@@ -84,7 +84,7 @@ public class RTIOWSeriesService {
 
         IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
         lights.add(new Sphere(new Vector(190, 90, 190), 90, m));
-
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world, lights);
     }
 
@@ -118,7 +118,7 @@ public class RTIOWSeriesService {
         );
 
         IntersectableList lights = new IntersectableList(new Quad(new Point3D(343, 554, 332), new Vector(-130, 0, 0), new Vector(0, 0, -105), m));
-
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world, lights);
     }
 
@@ -163,6 +163,7 @@ public class RTIOWSeriesService {
         Cube cube = new Cube(Cube.DEFAULT_VERTICES);
         cube.initQuads();
         world.addAll(cube.getIntersectableList());
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world);
     }
 
@@ -200,6 +201,7 @@ public class RTIOWSeriesService {
             new Vector(0, 0, -4), teal)
         );
 
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world);
     }
 
@@ -214,6 +216,7 @@ public class RTIOWSeriesService {
         world.add(new Sphere(new Vector(4, 1, 0),  1, mat3));
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world);
     }
 
@@ -258,6 +261,7 @@ public class RTIOWSeriesService {
 
         BvhNode node = new BvhNode(world.getElements());
         world = new IntersectableList(world.getElements(), node.boundingBox());
+        logger.debug("RTIOW world initialized for ray tracing");
         return new IntersectableWorld(world);
     }
 }

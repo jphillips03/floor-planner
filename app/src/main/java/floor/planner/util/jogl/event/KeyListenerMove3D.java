@@ -19,6 +19,8 @@ public class KeyListenerMove3D implements KeyListener {
     }
 
     public void keyPressed(KeyEvent keyEvent) {
+        logger.debug("Key pressed in 3D view, checking KeyEvent...");
+
         Camera camera = this.currentFloorPlan.getCamera();
 
         // look up/down
@@ -44,6 +46,8 @@ public class KeyListenerMove3D implements KeyListener {
         if(keyEvent.getKeyCode() == KeyEvent.VK_RIGHT) {
             camera.turnRight();
         }
+
+        logger.debug("Key pressed event action complete");
     }
     public void keyReleased(KeyEvent arg0) {}
 }

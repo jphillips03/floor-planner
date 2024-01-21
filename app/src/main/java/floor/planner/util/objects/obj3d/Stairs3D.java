@@ -36,6 +36,7 @@ public class Stairs3D extends Cube {
         this.orientation = orientation;
         this.mat = new Lambertian(this.color);
         this.initStairs();
+        logger.debug("3D stair elements initialized");
     }
 
     /**

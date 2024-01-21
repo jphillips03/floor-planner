@@ -14,6 +14,8 @@ public class Drawer3D {
     private static final Logger logger = LoggerFactory.getLogger(Drawer3D.class);
 
     public void draw(GL2 gl, GLU glu, FloorPlan floorPlan) {
+        logger.debug("Draw 3D JOGL elements initializing");
+
         for (Floor floor : floorPlan.getFloors()) {
             DrawableElement3D[][][] elements = floor.getElements3D();
             for (int i = 0; i < floor.getHeight(); i++) {
@@ -24,5 +26,7 @@ public class Drawer3D {
                 }
             }
         }
+
+        logger.debug("Draw 3D JOGL elements complete");
     }
 }

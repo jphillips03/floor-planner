@@ -94,14 +94,17 @@ public class Matrix {
      * @return
      */
     public static float[][] rotateX(float[][] matrix, float degrees) {
+        logger.debug("Rotate matrix about x-axis");
         return rotate(matrix, degrees, 1, 2);
     }
 
     public static float[][] rotateY(float[][] matrix, float degrees) {
+        logger.debug("Rotate matrix about y-axis");
         return rotate(matrix, degrees, 0, 2);
     }
 
     public static float[][] rotateZ(float[][] matrix, float degrees) {
+        logger.debug("Rotate matrix about z-axis");
         return rotate(matrix, degrees, 0, 1);
     }
 

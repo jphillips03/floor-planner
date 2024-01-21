@@ -37,6 +37,7 @@ public class Quad extends Intersectable {
         this.mat = mat;
 
         this.init();
+        logger.debug("3D quad initialized");
     }
 
     public Quad(float[] originf, float[] uf, float[] vf, Material mat) {

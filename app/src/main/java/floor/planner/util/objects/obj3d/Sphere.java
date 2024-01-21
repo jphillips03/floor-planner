@@ -37,6 +37,7 @@ public class Sphere extends DrawableElement3D {
             new Point3D(pos.subtract(rvec)),
             new Point3D(pos.add(rvec))
         );
+        logger.debug("3D sphere initialized");
     }
 
     public Sphere(double x, double y, double z, double radius, Material mat) {
@@ -52,6 +53,7 @@ public class Sphere extends DrawableElement3D {
             new Point3D(this.center.subtract(rvec)),
             new Point3D(this.center.add(rvec))
         );
+        logger.debug("3D sphere initialized");
     }
 
     public Sphere(double x, double y, double z, double radius) {
@@ -67,6 +69,7 @@ public class Sphere extends DrawableElement3D {
             new Point3D(this.center.subtract(rvec)),
             new Point3D(this.center.add(rvec))
         );
+        logger.debug("3D sphere initialized");
     }
 
     public Vector getCenter() {

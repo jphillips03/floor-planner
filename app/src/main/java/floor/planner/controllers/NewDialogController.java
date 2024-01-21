@@ -63,6 +63,7 @@ public class NewDialogController extends Dialog<FloorPlan> {
             });
         }
         catch (IOException e) {
+            logger.error("Exception initializing new floor plan", e);
             throw new RuntimeException(e);
         }
     }

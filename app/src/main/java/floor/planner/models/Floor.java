@@ -45,6 +45,7 @@ public class Floor {
         this.elements3D = new DrawableElement3D[height][width][];
         this.elementsMatrix = new ObjectType[height][width];
         this.elementColors = new String[height][width];
+        logger.debug(String.format("Floor %d: %d x %d initialized", floorNumber, height, width));
     }
 
     public List<float[][]> getFloorTileVertices() {
