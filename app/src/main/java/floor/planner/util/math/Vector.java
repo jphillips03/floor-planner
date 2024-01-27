@@ -1,6 +1,7 @@
 package floor.planner.util.math;
 
 import java.nio.DoubleBuffer;
+import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -152,6 +153,17 @@ public sealed class Vector permits Point3D, Color {
             Math.abs(this.getZ()) < s;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Vector) {
+            Vector v = (Vector) o;
+            return Arrays.equals(v.getValues(), this.getValues());
+        } else {
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
         return String.format("[%.2f, %.2f, %.2f]", this.values[0], this.values[1], this.values[2]);
     }

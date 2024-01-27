@@ -9,3 +9,6 @@ refresh-dependencies:
 
 run: build
 	${gradle} run
+
+test: build
+	${gradle} test
