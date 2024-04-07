@@ -20,6 +20,8 @@ The application is written using Java 17 and JOGL. The user interface is develop
 * JavaFX version 17.0.9
 * JOGL version 2.5.0
 
+> NOTE: This application was developed and tested on RHEL 9, and as such I've only included native JOGL files needed for linux. I do not expect this application to work as is on Windows or Mac since I have not included the native JOGL files needed for those operating systems.
+
 ### Optional Software
 
 I utilize [SDKMAN!](https://sdkman.io) in my development environment for managing different versions of SDKs. I have included a `.sdkmanrc` file in the repo, so if you have SDKMAN! installed and have Java version 17.0.9-oracle installed, then you can run `sdk env` at the root of the application to initialize the correct Java version for the app (assuming this is not the default version of Java you are using in your environment).
@@ -27,8 +29,6 @@ I utilize [SDKMAN!](https://sdkman.io) in my development environment for managin
 ## Ray Tracer
 
 The ray trace code is based on the [_Ray Tracing in One Weekend_](https://raytracing.github.io/books/RayTracingInOneWeekend.html) series. I worked through each of the books and implemented most of the functionality from there. I did skip some of the features contained in the book, like motion and volumes (i.e. smoke and fog) since these are not needed in the floor plan. Some of the worlds used in the series are available to generate from the "Ray Tracer" menu item. Selecting anything other than "3D Rendering" will generate the corresponding ray traced image from the series.
-
-> NOTE: This application was developed and tested on RHEL 9, and as such I've only included native JOGL files needed for linux. I do not expect this application to work as is on Windows or Mac since I have not included the native JOGL files needed for those operating systems.
 
 ## Features
 
